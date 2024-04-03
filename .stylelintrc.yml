@@ -1,0 +1,16 @@
+extends:
+    - stylelint-config-standard
+
+plugins:
+    - stylelint-order
+
+rules:
+    selector-class-pattern: null
+    color-hex-length: long
+    declaration-no-important: true
+    max-nesting-depth: 0
+    no-descending-specificity: true
+
+    order/order:
+        - custom-properties
+        - declarations
