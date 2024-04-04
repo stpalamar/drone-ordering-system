@@ -6,7 +6,6 @@
         "npm:": "9.x.x"
     },
     "workspaces": [
-        "shared",
         "backend",
         "frontend"
     ],

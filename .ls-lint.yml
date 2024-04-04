@@ -12,8 +12,6 @@ ls:
     .ttf: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
     .woff: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
     .woff2: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
-    backend/src/migrations:
-        .ts: snake_case
 
 ignore:
     - .github
@@ -23,5 +21,6 @@ ignore:
     - shared/node_modules
     - frontend/build
     - frontend/node_modules
-    - backend/build
+    - backend/dist
     - backend/node_modules
+    - backend/src/migrations
