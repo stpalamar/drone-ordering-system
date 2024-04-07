@@ -7,6 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import User from '@modules/users/user.entity';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { UsersService } from '@modules/users/users.service';
 
 @Module({
     imports: [
@@ -26,6 +28,6 @@ import User from '@modules/users/user.entity';
         }),
     ],
     controllers: [AuthController],
-    providers: [AuthService],
+    providers: [AuthService, JwtStrategy, UsersService],
 })
 export class AuthModule {}

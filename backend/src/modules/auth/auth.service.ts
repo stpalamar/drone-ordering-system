@@ -16,7 +16,7 @@ import { TokenPayload } from './types/token-payload.type';
 export class AuthService {
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: EntityRepository<User>,
+        private readonly usersRepository: EntityRepository<User>,
         private readonly em: EntityManager,
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService,
@@ -25,7 +25,7 @@ export class AuthService {
     private async validateUser(
         signInUserRequestDto: SignInUserRequestDto,
     ): Promise<UserDto> {
-        const user = await this.userRepository.findOne({
+        const user = await this.usersRepository.findOne({
             email: signInUserRequestDto.email,
         });
 
@@ -70,7 +70,7 @@ export class AuthService {
     public async signUp(
         signUpUserRequestDto: SignUpUserRequestDto,
     ): Promise<UserDto> {
-        const user = await this.userRepository.findOne({
+        const user = await this.usersRepository.findOne({
             email: signUpUserRequestDto.email,
         });
         if (user) {
@@ -79,7 +79,7 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST,
             );
         }
-        const newUser = this.userRepository.create(signUpUserRequestDto);
+        const newUser = this.usersRepository.create(signUpUserRequestDto);
         await this.em.flush();
 
         return newUser;
