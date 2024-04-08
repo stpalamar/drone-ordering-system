@@ -26,6 +26,7 @@
         "@commitlint/cli": "19.2.1",
         "@commitlint/config-conventional": "19.1.0",
         "@ls-lint/ls-lint": "2.2.3",
+        "@typescript-eslint/utils": "7.5.0",
         "editorconfig-checker": "5.1.5",
         "eslint": "8.57.0",
         "eslint-plugin-import": "2.29.1",

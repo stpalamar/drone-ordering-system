@@ -36,3 +36,12 @@ overrides:
       rules:
           unicorn/prevent-abbreviations:
               - off
+    - files:
+          - src/bundles/common/components/ui/*.tsx
+      rules:
+          unicorn/prevent-abbreviations:
+              - off
+          '@typescript-eslint/consistent-type-definitions':
+              - off
+          no-restricted-syntax:
+              - off
