@@ -16,6 +16,9 @@ export const theme = {
         },
     },
     extend: {
+        fontFamily: {
+            sans: ['Roboto'],
+        },
         colors: {
             border: 'hsl(var(--border))',
             input: 'hsl(var(--input))',
