@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {
-    SignInUserRequestDto,
-    SignUpUserRequestDto,
-    UserDto,
-} from '@modules/users/dto/dto';
+    type UserSignInRequestDto,
+    type UserDto,
+} from '@modules/users/types/types';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import User from '@modules/users/user.entity';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
@@ -23,10 +22,10 @@ export class AuthService {
     ) {}
 
     private async validateUser(
-        signInUserRequestDto: SignInUserRequestDto,
+        userSignInRequestDto: UserSignInRequestDto,
     ): Promise<UserDto> {
         const user = await this.usersRepository.findOne({
-            email: signInUserRequestDto.email,
+            email: userSignInRequestDto.email,
         });
 
         if (!user) {
@@ -34,7 +33,7 @@ export class AuthService {
         }
 
         const isValid = HelperService.verifyHash(
-            signInUserRequestDto.password,
+            userSignInRequestDto.password,
             user.password,
         );
 
@@ -61,17 +60,17 @@ export class AuthService {
     }
 
     public async signIn(
-        signInUserRequestDto: SignInUserRequestDto,
+        userSignInRequestDto: UserSignInRequestDto,
     ): Promise<UserDto> {
-        const user = await this.validateUser(signInUserRequestDto);
+        const user = await this.validateUser(userSignInRequestDto);
         return user;
     }
 
     public async signUp(
-        signUpUserRequestDto: SignUpUserRequestDto,
+        userSignUpRequestDto: UserSignInRequestDto,
     ): Promise<UserDto> {
         const user = await this.usersRepository.findOne({
-            email: signUpUserRequestDto.email,
+            email: userSignUpRequestDto.email,
         });
         if (user) {
             throw new HttpException(
@@ -79,7 +78,7 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST,
             );
         }
-        const newUser = this.usersRepository.create(signUpUserRequestDto);
+        const newUser = this.usersRepository.create(userSignUpRequestDto);
         await this.em.flush();
 
         return newUser;

@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
-    SignInUserRequestDto,
-    SignUpUserRequestDto,
-} from '@modules/users/dto/dto';
+    type UserSignInRequestDto,
+    type UserSignUpRequestDto,
+} from '@modules/users/types/types';
 import { Response, Request } from 'express';
 import JwtAuthGuard from './guards/jwt-auth.guard';
 
@@ -29,10 +29,10 @@ export class AuthController {
     @HttpCode(200)
     @Post('sign-in')
     async signIn(
-        @Body() signInUserRequestDto: SignInUserRequestDto,
+        @Body() userSignInRequestDto: UserSignInRequestDto,
         @Res({ passthrough: true }) res: Response,
     ) {
-        const user = await this.authService.signIn(signInUserRequestDto);
+        const user = await this.authService.signIn(userSignInRequestDto);
         const cookie = await this.authService.getCookieWithJwtToken(user.id);
         res.setHeader('Set-Cookie', cookie);
         return user;
@@ -40,10 +40,10 @@ export class AuthController {
 
     @Post('sign-up')
     async signUp(
-        @Body() signUpUserRequestDto: SignUpUserRequestDto,
+        @Body() userSignUpRequestDto: UserSignUpRequestDto,
         @Res({ passthrough: true }) res: Response,
     ) {
-        const user = await this.authService.signUp(signUpUserRequestDto);
+        const user = await this.authService.signUp(userSignUpRequestDto);
         const cookie = await this.authService.getCookieWithJwtToken(user.id);
         res.setHeader('Set-Cookie', cookie);
         return user;
