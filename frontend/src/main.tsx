@@ -5,8 +5,13 @@ import { createRoot } from 'react-dom/client';
 
 import { App } from '~/app/app.js';
 import { Auth } from '~/bundles/auth/auth.js';
-import { RouterProvider } from '~/bundles/common/components/components.js';
+import {
+    RouterProvider,
+    StoreProvider,
+} from '~/bundles/common/components/components.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
+
+import { store } from './framework/store/store.js';
 
 const routes = [
     {
@@ -31,6 +36,8 @@ const routes = [
 
 createRoot(document.querySelector('#root') as HTMLElement).render(
     <StrictMode>
-        <RouterProvider routes={routes} />
+        <StoreProvider store={store.instance}>
+            <RouterProvider routes={routes} />
+        </StoreProvider>
     </StrictMode>,
 );

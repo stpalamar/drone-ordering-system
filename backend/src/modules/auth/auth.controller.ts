@@ -26,6 +26,7 @@ export class AuthController {
         return req.user;
     }
 
+    @HttpCode(200)
     @Post('sign-in')
     async signIn(
         @Body() signInUserRequestDto: SignInUserRequestDto,

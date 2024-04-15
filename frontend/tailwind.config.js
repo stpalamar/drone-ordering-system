@@ -72,6 +72,7 @@ export const theme = {
         animation: {
             'accordion-down': 'accordion-down 0.2s ease-out',
             'accordion-up': 'accordion-up 0.2s ease-out',
+            'load': 'spin 700ms infinite ease-in-out',
         },
     },
 };

@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 
 import reactPlugin from '@vitejs/plugin-react';
+import svgr from 'vite-plugin-svgr';
 import { type ConfigEnv, type PluginOption, defineConfig, loadEnv } from 'vite';
 
 const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
@@ -14,7 +15,7 @@ const config = ({ mode }: ConfigEnv): ReturnType<typeof defineConfig> => {
         build: {
             outDir: 'build',
         },
-        plugins: [reactPlugin()] as PluginOption[],
+        plugins: [reactPlugin(), svgr()] as PluginOption[],
         server: {
             port: Number(VITE_APP_DEVELOPMENT_PORT),
             proxy: {
