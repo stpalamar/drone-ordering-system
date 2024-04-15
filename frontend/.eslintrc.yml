@@ -37,3 +37,8 @@ overrides:
       rules:
           unicorn/prevent-abbreviations:
               - off
+    - files:
+          - '*-api.ts'
+      rules:
+          '@typescript-eslint/no-invalid-void-type':
+              - off

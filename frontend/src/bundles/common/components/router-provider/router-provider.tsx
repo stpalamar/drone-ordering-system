@@ -3,6 +3,7 @@ import {
     RouterProvider as LibraryRouterProvider,
 } from 'react-router-dom';
 
+import { ProtectedRoute } from '~/bundles/common/components/components.js';
 import {
     type LibraryRouteObject,
     type RouteObject,
@@ -21,7 +22,11 @@ const RouterProvider: React.FC<Properties> = ({ routes }) => {
                 const shouldProtect = !isAlreadyProtected && Boolean(isPrivate);
                 return {
                     ...(element && {
-                        element: shouldProtect ? <>{element}</> : element,
+                        element: shouldProtect ? (
+                            <ProtectedRoute>{element}</ProtectedRoute>
+                        ) : (
+                            element
+                        ),
                     }),
                     ...(children?.length && {
                         children: mapRoutes(

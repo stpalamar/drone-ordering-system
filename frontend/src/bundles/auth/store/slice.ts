@@ -29,6 +29,12 @@ const { reducer, actions, name } = createSlice({
                 state.user = payload;
             },
         );
+        builder.addMatcher(
+            authApi.endpoints.getMe.matchFulfilled,
+            (state, { payload }) => {
+                state.user = payload;
+            },
+        );
     },
 });
 

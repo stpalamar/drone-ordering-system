@@ -19,16 +19,17 @@ const routes = [
         element: <App />,
         children: [
             {
-                path: AppRoute.ROOT,
-                element: <>Root</>,
-            },
-            {
                 path: AppRoute.SIGN_IN,
                 element: <Auth />,
             },
             {
                 path: AppRoute.SIGN_UP,
                 element: <Auth />,
+            },
+            {
+                path: AppRoute.ROOT,
+                element: <>Protected Root</>,
+                isPrivate: true,
             },
         ],
     },

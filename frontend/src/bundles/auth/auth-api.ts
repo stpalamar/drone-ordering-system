@@ -21,9 +21,12 @@ const authApi = baseApi.injectEndpoints({
                 body: payload,
             }),
         }),
+        getMe: build.query<UserDto, void>({
+            query: () => '/auth/me',
+        }),
     }),
 });
 
-const { useSignInMutation, useSignUpMutation } = authApi;
+const { useSignInMutation, useSignUpMutation, useGetMeQuery } = authApi;
 
-export { authApi, useSignInMutation, useSignUpMutation };
+export { authApi, useGetMeQuery, useSignInMutation, useSignUpMutation };
