@@ -15,6 +15,11 @@ import {
 } from '@modules/users/types/types';
 import { Response, Request } from 'express';
 import JwtAuthGuard from './guards/jwt-auth.guard';
+import { YupValidationPipe } from '@common/pipes/yup-validation.pipe';
+import {
+    userSignInValidationSchema,
+    userSignUpValidationSchema,
+} from './validation-schemas/validation-schemas';
 
 @Controller('auth')
 export class AuthController {
@@ -29,7 +34,8 @@ export class AuthController {
     @HttpCode(200)
     @Post('sign-in')
     async signIn(
-        @Body() userSignInRequestDto: UserSignInRequestDto,
+        @Body(new YupValidationPipe(userSignInValidationSchema))
+        userSignInRequestDto: UserSignInRequestDto,
         @Res({ passthrough: true }) res: Response,
     ) {
         const user = await this.authService.signIn(userSignInRequestDto);
@@ -40,7 +46,8 @@ export class AuthController {
 
     @Post('sign-up')
     async signUp(
-        @Body() userSignUpRequestDto: UserSignUpRequestDto,
+        @Body(new YupValidationPipe(userSignUpValidationSchema))
+        userSignUpRequestDto: UserSignUpRequestDto,
         @Res({ passthrough: true }) res: Response,
     ) {
         const user = await this.authService.signUp(userSignUpRequestDto);
