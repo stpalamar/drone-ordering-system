@@ -13,5 +13,8 @@
         "lint:js": "npx eslint \"src/**/*.ts\"",
         "lint": "npm run lint:type && npm run lint:js",
         "build": "tsc && tsc-alias"
+    },
+    "dependencies": {
+        "yup": "1.4.0"
     }
 }
