@@ -1,9 +1,13 @@
 {
     "name": "shared",
     "version": "1.0.0",
-    "type": "commonjs",
-    "main": "build/index.js",
+    "main": "build/cjs/index.js",
+    "module": "build/esm/index.js",
     "types": "src/index.ts",
+    "exports": {
+        "import": "./build/esm/index.js",
+        "require": "./build/cjs/index.js"
+    },
     "engines": {
         "node": "18.x.x",
         "npm": ">=9.x.x"
@@ -12,7 +16,7 @@
         "lint:type": "npx tsc --noEmit",
         "lint:js": "npx eslint \"src/**/*.ts\"",
         "lint": "npm run lint:type && npm run lint:js",
-        "build": "tsc && tsc-alias"
+        "build": "tsc --module commonjs --outDir build/cjs && tsc --module esnext --outDir build/esm"
     },
     "dependencies": {
         "yup": "1.4.0"
