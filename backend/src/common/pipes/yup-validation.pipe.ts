@@ -1,4 +1,4 @@
-import { PipeTransform, BadRequestException } from '@nestjs/common';
+import { BadRequestException, PipeTransform } from '@nestjs/common';
 import { ObjectSchema } from 'yup';
 
 export class YupValidationPipe implements PipeTransform {

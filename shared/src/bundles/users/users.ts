@@ -1,3 +1,4 @@
+export { UserRole } from './enums/enums.js';
 export {
     type UserDto,
     type UserSignInRequestDto,

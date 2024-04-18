@@ -1,6 +1,6 @@
-import { PostgreSqlDriver, defineConfig } from '@mikro-orm/postgresql';
 import { Migrator } from '@mikro-orm/migrations';
-
+import { defineConfig, PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { SeedManager } from '@mikro-orm/seeder';
 import * as dotEnv from 'dotenv';
 const envFilePath: string = `${process.cwd()}/.env`;
 dotEnv.config({ path: envFilePath });
@@ -15,5 +15,8 @@ export default defineConfig({
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     debug: true,
-    extensions: [Migrator],
+    extensions: [Migrator, SeedManager],
+    seeder: {
+        path: 'src/common/database/seeder',
+    },
 });

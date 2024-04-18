@@ -1,4 +1,5 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/postgresql';
+
 import { HelperService } from '../helpers/helpers';
 
 @Entity({ abstract: true })

@@ -1,5 +1,7 @@
+export { PermissionAction } from './bundles/permission/permission.js';
 export {
     type UserDto,
+    UserRole,
     type UserSignInRequestDto,
     userSignInValidationSchema,
     type UserSignUpRequestDto,

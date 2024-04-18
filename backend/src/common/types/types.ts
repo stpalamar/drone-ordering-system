@@ -1,0 +1,1 @@
+export { ValueOf } from 'shared';

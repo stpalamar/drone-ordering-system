@@ -1,13 +1,15 @@
+import { BaseEntity } from '@common/database/base.entity';
+import { HelperService } from '@common/helpers/helpers';
 import {
-    Entity,
-    Property,
     BeforeCreate,
     BeforeUpdate,
     BeforeUpsert,
+    Entity,
     EventArgs,
-} from '@mikro-orm/core';
-import { BaseEntity } from '@common/database/base.entity';
-import { HelperService } from '@common/helpers/helpers';
+    ManyToOne,
+    Property,
+} from '@mikro-orm/postgresql';
+import { Role } from '@modules/permission/entities/role.entity';
 
 @Entity()
 class User extends BaseEntity {
@@ -16,6 +18,9 @@ class User extends BaseEntity {
 
     @Property({ hidden: true })
     password!: string;
+
+    @ManyToOne()
+    role!: Role;
 
     @BeforeCreate()
     @BeforeUpdate()
@@ -29,8 +34,9 @@ class User extends BaseEntity {
         return {
             id: this.id,
             email: this.email,
+            role: this.role,
         };
     }
 }
 
-export default User;
+export { User };

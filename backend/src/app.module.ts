@@ -1,11 +1,13 @@
+import { AuthModule } from '@modules/auth/auth.module';
+import { UsersModule } from '@modules/users/users.module';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './common/database/database.module';
-import * as Joi from 'joi';
-import { UsersModule } from '@modules/users/users.module';
-import { AuthModule } from '@modules/auth/auth.module';
+import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
     imports: [
@@ -23,6 +25,7 @@ import { AuthModule } from '@modules/auth/auth.module';
         DatabaseModule,
         UsersModule,
         AuthModule,
+        PermissionModule,
     ],
     controllers: [AppController],
     providers: [AppService],

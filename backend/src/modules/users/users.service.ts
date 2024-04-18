@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import User from './user.entity';
-import { EntityRepository } from '@mikro-orm/postgresql';
 import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityRepository } from '@mikro-orm/postgresql';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+
+import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {

@@ -1,0 +1,1 @@
+export { PermissionAction } from 'shared';

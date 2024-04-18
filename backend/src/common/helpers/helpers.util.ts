@@ -1,5 +1,5 @@
-import { format, zonedTimeToUtc } from 'date-fns-tz';
 import * as bcrypt from 'bcrypt';
+import { format, zonedTimeToUtc } from 'date-fns-tz';
 
 export const HelperService = {
     getTimeInUtc(date: Date | string): Date {

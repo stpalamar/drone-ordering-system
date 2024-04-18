@@ -1,14 +1,16 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import {
-    type UserSignInRequestDto,
-    type UserDto,
-} from '@modules/users/types/types';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import User from '@modules/users/user.entity';
-import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { HelperService } from '@common/helpers/helpers';
-import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { Role } from '@modules/permission/entities/role.entity';
+import {
+    type UserDto,
+    type UserSignInRequestDto,
+} from '@modules/users/types/types';
+import { User } from '@modules/users/user.entity';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+
 import { TokenPayload } from './types/token-payload.type';
 
 @Injectable()
@@ -78,7 +80,11 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST,
             );
         }
-        const newUser = this.usersRepository.create(userSignUpRequestDto);
+        const role = await this.em.findOne(Role, { name: 'manager' });
+        const newUser = this.usersRepository.create({
+            ...userSignUpRequestDto,
+            role: role,
+        });
         await this.em.flush();
 
         return newUser;

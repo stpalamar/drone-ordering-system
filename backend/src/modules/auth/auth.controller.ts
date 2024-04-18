@@ -1,21 +1,22 @@
-import {
-    Controller,
-    Post,
-    Body,
-    Res,
-    HttpCode,
-    UseGuards,
-    Req,
-    Get,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { YupValidationPipe } from '@common/pipes/yup-validation.pipe';
 import {
     type UserSignInRequestDto,
     type UserSignUpRequestDto,
 } from '@modules/users/types/types';
-import { Response, Request } from 'express';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    Post,
+    Req,
+    Res,
+    UseGuards,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
+
+import { AuthService } from './auth.service';
 import JwtAuthGuard from './guards/jwt-auth.guard';
-import { YupValidationPipe } from '@common/pipes/yup-validation.pipe';
 import {
     userSignInValidationSchema,
     userSignUpValidationSchema,
