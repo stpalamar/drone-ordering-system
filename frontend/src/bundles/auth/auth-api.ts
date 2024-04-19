@@ -24,9 +24,26 @@ const authApi = baseApi.injectEndpoints({
         getMe: build.query<UserDto, void>({
             query: () => '/auth/me',
         }),
+        logout: build.mutation<void, void>({
+            query: () => ({
+                url: '/auth/logout',
+                method: 'POST',
+            }),
+        }),
     }),
 });
 
-const { useSignInMutation, useSignUpMutation, useGetMeQuery } = authApi;
+const {
+    useSignInMutation,
+    useSignUpMutation,
+    useGetMeQuery,
+    useLogoutMutation,
+} = authApi;
 
-export { authApi, useGetMeQuery, useSignInMutation, useSignUpMutation };
+export {
+    authApi,
+    useGetMeQuery,
+    useLogoutMutation,
+    useSignInMutation,
+    useSignUpMutation,
+};

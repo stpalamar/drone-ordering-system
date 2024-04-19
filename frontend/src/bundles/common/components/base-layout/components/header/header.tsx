@@ -1,5 +1,6 @@
 import { CircleUser, Menu, Package2, Search } from 'lucide-react';
 
+import { useLogoutMutation } from '~/bundles/auth/auth-api.js';
 import { Link } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import {
@@ -17,6 +18,7 @@ import {
     SheetTrigger,
 } from '~/bundles/common/components/ui/sheet.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
+import { useCallback, useNavigate } from '~/bundles/common/hooks/hooks.js';
 
 import { type NavItem } from '../../types/types.js';
 import { HeaderNav } from './components/components.js';
@@ -26,6 +28,14 @@ type Properties = {
 };
 
 const Header: React.FC<Properties> = ({ navItems }) => {
+    const navigate = useNavigate();
+    const [logout] = useLogoutMutation();
+
+    const handleLogout = useCallback(() => {
+        void logout();
+        navigate(AppRoute.SIGN_IN);
+    }, [logout, navigate]);
+
     return (
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
             <Sheet>
@@ -82,7 +92,9 @@ const Header: React.FC<Properties> = ({ navItems }) => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                        Logout
+                    </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </header>
