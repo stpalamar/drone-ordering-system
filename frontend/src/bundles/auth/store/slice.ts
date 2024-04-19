@@ -35,6 +35,9 @@ const { reducer, actions, name } = createSlice({
                 state.user = payload;
             },
         );
+        builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (state) => {
+            state.user = null;
+        });
     },
 });
 
