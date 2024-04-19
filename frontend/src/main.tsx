@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from '~/app/app.js';
 import { Auth } from '~/bundles/auth/auth.js';
 import {
+    NotificationContainer,
     RouterProvider,
     StoreProvider,
 } from '~/bundles/common/components/components.js';
@@ -39,6 +40,7 @@ createRoot(document.querySelector('#root') as HTMLElement).render(
     <StrictMode>
         <StoreProvider store={store.instance}>
             <RouterProvider routes={routes} />
+            <NotificationContainer />
         </StoreProvider>
     </StrictMode>,
 );

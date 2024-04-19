@@ -10,6 +10,8 @@ import { reducer as authReducer } from '~/bundles/auth/store/auth.js';
 import { AppEnvironment } from '~/bundles/common/enums/enums.js';
 import { type Config } from '~/framework/config/config.js';
 
+import { errorMiddleware } from './middlewares/middlewares.js';
+
 type RootReducer = {
     auth: ReturnType<typeof authReducer>;
 };
@@ -31,7 +33,11 @@ class Store {
                 auth: authReducer,
             },
             middleware: (getDefaultMiddleware) =>
-                new Tuple(...getDefaultMiddleware(), authApi.middleware),
+                new Tuple(
+                    ...getDefaultMiddleware(),
+                    authApi.middleware,
+                    errorMiddleware,
+                ),
         });
     }
 }
