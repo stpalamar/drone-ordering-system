@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from '~/app/app.js';
 import { Auth } from '~/bundles/auth/auth.js';
 import {
+    BaseLayout,
     NotificationContainer,
     RouterProvider,
     StoreProvider,
@@ -29,8 +30,30 @@ const routes = [
             },
             {
                 path: AppRoute.ROOT,
-                element: <>Protected Root</>,
+                element: <BaseLayout />,
                 isPrivate: true,
+                children: [
+                    {
+                        path: AppRoute.DASHBOARD,
+                        element: <div>Dashboard</div>,
+                    },
+                    {
+                        path: AppRoute.ORDERS,
+                        element: <div>Orders</div>,
+                    },
+                    {
+                        path: AppRoute.PRODUCTS,
+                        element: <div>Products</div>,
+                    },
+                    {
+                        path: AppRoute.ANALYTICS,
+                        element: <div>Analytics</div>,
+                    },
+                    {
+                        path: AppRoute.MANAGERS,
+                        element: <div>Managers</div>,
+                    },
+                ],
             },
         ],
     },

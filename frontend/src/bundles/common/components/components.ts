@@ -1,3 +1,4 @@
+export { BaseLayout } from './base-layout/base-layout.js';
 export { Link } from './link/link.js';
 export { Loader } from './loader/loader.js';
 export { NotificationContainer } from './notification-container/notification-container.js';
