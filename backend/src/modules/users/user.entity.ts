@@ -16,7 +16,7 @@ class User extends BaseEntity {
     @Property({ unique: true })
     email!: string;
 
-    @Property({ hidden: true })
+    @Property()
     password!: string;
 
     @ManyToOne()
@@ -30,11 +30,11 @@ class User extends BaseEntity {
             this.password = await HelperService.encryptSync(this.password);
     }
 
-    toJSON() {
+    toObject() {
         return {
             id: this.id,
             email: this.email,
-            role: this.role,
+            role: this.role.name,
         };
     }
 }

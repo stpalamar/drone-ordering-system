@@ -1,6 +1,6 @@
 import { HelperService } from '@common/helpers/helpers';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager, EntityRepository, wrap } from '@mikro-orm/postgresql';
 import { Role } from '@modules/permission/entities/role.entity';
 import {
     type UserDto,
@@ -25,7 +25,7 @@ export class AuthService {
 
     private async validateUser(
         userSignInRequestDto: UserSignInRequestDto,
-    ): Promise<UserDto> {
+    ): Promise<User> {
         const user = await this.usersRepository.findOne({
             email: userSignInRequestDto.email,
         });
@@ -65,7 +65,8 @@ export class AuthService {
         userSignInRequestDto: UserSignInRequestDto,
     ): Promise<UserDto> {
         const user = await this.validateUser(userSignInRequestDto);
-        return user;
+
+        return (await wrap(user).populate(['role'])).toObject();
     }
 
     public async signUp(
@@ -87,6 +88,6 @@ export class AuthService {
         });
         await this.em.flush();
 
-        return newUser;
+        return (await wrap(newUser).populate(['role'])).toObject();
     }
 }
