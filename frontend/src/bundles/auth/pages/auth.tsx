@@ -2,6 +2,7 @@ import { AppRoute } from '~/bundles/common/enums/enums.js';
 import {
     useAppSelector,
     useCallback,
+    useEffect,
     useLocation,
     useNavigate,
 } from '~/bundles/common/hooks/hooks.js';
@@ -57,10 +58,11 @@ const Auth: React.FC = () => {
         return null;
     };
 
-    if (user) {
-        navigate(AppRoute.ROOT);
-    }
-
+    useEffect(() => {
+        if (user) {
+            navigate(AppRoute.ROOT);
+        }
+    }, [user, navigate]);
     return (
         <div className="flex h-screen justify-center items-center">
             {getScreen(pathname)}
