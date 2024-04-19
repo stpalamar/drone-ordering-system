@@ -1,5 +1,6 @@
-import { Bell, Package2 } from 'lucide-react';
+import { Bell } from 'lucide-react';
 
+import DroneIcon from '~/assets/img/icons/drone-icon.svg?react';
 import { Link } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
@@ -20,7 +21,7 @@ const Sidebar: React.FC<Properties> = ({ navItems }) => {
                         to={AppRoute.DASHBOARD}
                         className="flex items-center gap-2 font-semibold"
                     >
-                        <Package2 className="h-6 w-6" />
+                        <DroneIcon className="h-6 w-6" />
                         <span className="">Drone Ordering</span>
                     </Link>
                     <Button

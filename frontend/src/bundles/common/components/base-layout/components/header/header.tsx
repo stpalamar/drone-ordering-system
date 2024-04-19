@@ -1,5 +1,6 @@
-import { CircleUser, Menu, Package2, Search } from 'lucide-react';
+import { CircleUser, Menu, Search } from 'lucide-react';
 
+import DroneIcon from '~/assets/img/icons/drone-icon.svg?react';
 import { useLogoutMutation } from '~/bundles/auth/auth-api.js';
 import { Link } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
@@ -53,7 +54,7 @@ const Header: React.FC<Properties> = ({ navItems }) => {
                             to={AppRoute.DASHBOARD}
                             className="flex items-center gap-2 text-lg font-semibold"
                         >
-                            <Package2 className="h-6 w-6" />
+                            <DroneIcon className="h-6 w-6" />
                             <span className="sr-only">Drone Ordering</span>
                         </Link>
                         {navItems.map((navItem) => (
