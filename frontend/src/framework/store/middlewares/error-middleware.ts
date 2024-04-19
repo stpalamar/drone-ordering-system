@@ -6,8 +6,8 @@ const errorMiddleware: Middleware = () => {
         if (isRejected(action)) {
             const { data } = action.payload as { data: { message: string } };
             toast.error(data.message);
-            next(action);
         }
+        next(action);
     };
 };
 
