@@ -1,0 +1,1 @@
+export { orderValidationSchema } from 'shared';

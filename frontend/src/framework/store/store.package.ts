@@ -5,9 +5,9 @@ import {
 } from '@reduxjs/toolkit';
 import { configureStore } from '@reduxjs/toolkit';
 
-import { authApi } from '~/bundles/auth/auth.js';
 import { reducer as authReducer } from '~/bundles/auth/store/auth.js';
 import { AppEnvironment } from '~/bundles/common/enums/enums.js';
+import { baseApi } from '~/framework/base-api/base-api.js';
 import { type Config } from '~/framework/config/config.js';
 
 import { errorMiddleware } from './middlewares/middlewares.js';
@@ -29,13 +29,13 @@ class Store {
         this.instance = configureStore({
             devTools: config.ENV.APP.ENVIRONMENT !== AppEnvironment.PRODUCTION,
             reducer: {
-                [authApi.reducerPath]: authApi.reducer,
                 auth: authReducer,
+                [baseApi.reducerPath]: baseApi.reducer,
             },
             middleware: (getDefaultMiddleware) =>
                 new Tuple(
                     ...getDefaultMiddleware(),
-                    authApi.middleware,
+                    baseApi.middleware,
                     errorMiddleware,
                 ),
         });

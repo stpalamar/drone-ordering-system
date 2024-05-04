@@ -1,2 +1,1 @@
-export { ComponentSize } from './component-size.enum.js';
-export { AppEnvironment, AppRoute } from 'shared';
+export { ApiPath, AppEnvironment, AppRoute, AppSubject } from 'shared';

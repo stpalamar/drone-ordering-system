@@ -1,4 +1,4 @@
-import { YupValidationPipe } from '@common/pipes/yup-validation.pipe';
+import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
 import {
     type UserSignInRequestDto,
     type UserSignUpRequestDto,
@@ -16,7 +16,7 @@ import {
 import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
-import JwtAuthGuard from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {
     userSignInValidationSchema,
     userSignUpValidationSchema,
@@ -35,7 +35,7 @@ export class AuthController {
     @HttpCode(200)
     @Post('sign-in')
     async signIn(
-        @Body(new YupValidationPipe(userSignInValidationSchema))
+        @Body(new ZodValidationPipe(userSignInValidationSchema))
         userSignInRequestDto: UserSignInRequestDto,
         @Res({ passthrough: true }) res: Response,
     ) {
@@ -47,7 +47,7 @@ export class AuthController {
 
     @Post('sign-up')
     async signUp(
-        @Body(new YupValidationPipe(userSignUpValidationSchema))
+        @Body(new ZodValidationPipe(userSignUpValidationSchema))
         userSignUpRequestDto: UserSignUpRequestDto,
         @Res({ passthrough: true }) res: Response,
     ) {

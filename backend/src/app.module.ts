@@ -1,4 +1,7 @@
 import { AuthModule } from '@modules/auth/auth.module';
+import { FilesModule } from '@modules/files/files.module';
+import { OrdersModule } from '@modules/orders/orders.module';
+import { ProductsModule } from '@modules/products/products.module';
 import { UsersModule } from '@modules/users/users.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -20,12 +23,19 @@ import { PermissionModule } from './modules/permission/permission.module';
                 DB_PASSWORD: Joi.string().required(),
                 JWT_SECRET: Joi.string().required(),
                 JWT_EXPIRATION_TIME: Joi.string().required(),
+                S3_ACCESS_KEY: Joi.string().required(),
+                S3_SECRET_KEY: Joi.string().required(),
+                S3_BUCKET_NAME: Joi.string().required(),
+                S3_REGION: Joi.string().required(),
             }),
         }),
         DatabaseModule,
         UsersModule,
         AuthModule,
         PermissionModule,
+        FilesModule,
+        ProductsModule,
+        OrdersModule,
     ],
     controllers: [AppController],
     providers: [AppService],

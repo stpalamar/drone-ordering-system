@@ -1,1 +1,1 @@
-export { ValueOf } from 'shared';
+export { PagedResponse, PaginationQueryDto, ValueOf } from 'shared';

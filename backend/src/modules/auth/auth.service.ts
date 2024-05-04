@@ -18,6 +18,8 @@ export class AuthService {
     constructor(
         @InjectRepository(User)
         private readonly usersRepository: EntityRepository<User>,
+        @InjectRepository(Role)
+        private readonly roleRepository: EntityRepository<Role>,
         private readonly em: EntityManager,
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService,
@@ -81,13 +83,12 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST,
             );
         }
-        const role = await this.em.findOne(Role, { name: 'manager' });
+        const role = await this.roleRepository.findOne({ name: 'admin' });
         const newUser = this.usersRepository.create({
             ...userSignUpRequestDto,
             role: role,
         });
-        await this.em.flush();
-
+        await this.em.persistAndFlush(newUser);
         return (await wrap(newUser).populate(['role'])).toObject();
     }
 }

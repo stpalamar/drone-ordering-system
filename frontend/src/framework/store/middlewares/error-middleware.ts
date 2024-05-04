@@ -5,7 +5,11 @@ const errorMiddleware: Middleware = () => {
     return (next) => (action) => {
         if (isRejected(action)) {
             const { data } = action.payload as { data: { message: string } };
-            toast.error(data.message);
+            if (data) {
+                toast.error(data.message);
+            } else {
+                toast.error('Something went wrong');
+            }
         }
         next(action);
     };

@@ -17,7 +17,7 @@ class Role {
     name: string;
 
     @ManyToMany(() => Permission)
-    permissions: Collection<Permission> = new Collection<Permission>(this);
+    permissions = new Collection<Permission>(this);
 }
 
 export { Role };

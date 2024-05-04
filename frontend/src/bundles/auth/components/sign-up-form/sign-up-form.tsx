@@ -1,6 +1,3 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { type InferType } from 'yup';
-
 import { Link, Loader } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import {
@@ -21,6 +18,7 @@ import {
 } from '~/bundles/common/components/ui/form.js';
 import { Input } from '~/bundles/common/components/ui/input.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
+import { zodResolver } from '~/bundles/common/helpers/helpers.js';
 import { useAppForm, useCallback } from '~/bundles/common/hooks/hooks.js';
 import {
     type UserSignUpRequestDto,
@@ -33,8 +31,8 @@ type Properties = {
 };
 
 const SignUpForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
-    const form = useAppForm<InferType<typeof userSignUpValidationSchema>>({
-        resolver: yupResolver(userSignUpValidationSchema),
+    const form = useAppForm<UserSignUpRequestDto>({
+        resolver: zodResolver(userSignUpValidationSchema),
         defaultValues: {
             email: '',
             password: '',
@@ -119,8 +117,16 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
                     </CardContent>
                     <CardFooter>
                         <div className="flex flex-col w-full">
-                            <Button type="submit" className="w-full">
-                                {isLoading ? <Loader /> : 'Sign up'}
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <Loader variant="secondary" />
+                                ) : (
+                                    'Sign up'
+                                )}
                             </Button>
                             <div className="mt-4 text-center text-sm">
                                 Already have an account?{' '}

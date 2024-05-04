@@ -1,4 +1,5 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Role } from '@modules/permission/entities/role.entity';
 import { User } from '@modules/users/user.entity';
 import { UsersModule } from '@modules/users/users.module';
 import { UsersService } from '@modules/users/users.service';
@@ -16,7 +17,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         ConfigModule,
         UsersModule,
         PassportModule,
-        MikroOrmModule.forFeature([User]),
+        MikroOrmModule.forFeature([User, Role]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],

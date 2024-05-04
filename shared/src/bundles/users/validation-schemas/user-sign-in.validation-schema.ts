@@ -1,14 +1,12 @@
-import * as yup from 'yup';
+import { z } from 'zod';
 
 import { UserValidationMessage, UserValidationRule } from '../enums/enums.js';
 
-const userSignInValidationSchema = yup.object({
-    email: yup
+const userSignInValidationSchema = z.object({
+    email: z.string().trim().email(UserValidationMessage.EMAIL_INVALID),
+    password: z
         .string()
-        .email(UserValidationMessage.EMAIL_INVALID)
-        .required(UserValidationMessage.EMAIL_REQUIRED),
-    password: yup
-        .string()
+        .trim()
         .min(
             UserValidationRule.PASSWORD.MIN_LENGTH,
             UserValidationMessage.PASSWORD_MIN_LENGTH,
@@ -16,8 +14,7 @@ const userSignInValidationSchema = yup.object({
         .max(
             UserValidationRule.PASSWORD.MAX_LENGTH,
             UserValidationMessage.PASSWORD_MAX_LENGTH,
-        )
-        .required(UserValidationMessage.PASSWORD_REQUIRED),
+        ),
 });
 
 export { userSignInValidationSchema };

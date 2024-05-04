@@ -1,12 +1,12 @@
 import { BadRequestException, PipeTransform } from '@nestjs/common';
-import { ObjectSchema } from 'yup';
+import { ZodSchema } from 'zod';
 
-export class YupValidationPipe implements PipeTransform {
-    constructor(private schema: ObjectSchema<object>) {}
+export class ZodValidationPipe implements PipeTransform {
+    constructor(private schema: ZodSchema<object>) {}
 
     async transform(value: unknown) {
         try {
-            this.schema.validateSync(value, { abortEarly: false });
+            this.schema.parse(value);
             return value;
         } catch (error) {
             throw new BadRequestException(error.errors);

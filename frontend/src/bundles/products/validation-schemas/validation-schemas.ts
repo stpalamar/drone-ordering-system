@@ -1,0 +1,1 @@
+export { productValidationSchema } from 'shared';

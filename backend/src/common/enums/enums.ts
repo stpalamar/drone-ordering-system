@@ -1,0 +1,1 @@
+export { EntityStatus } from 'shared';

@@ -1,0 +1,5 @@
+const DEFAULT_PAGE_SIZE = 10;
+
+const DEFAULT_PAGE = 1;
+
+export { DEFAULT_PAGE, DEFAULT_PAGE_SIZE };

@@ -6,7 +6,10 @@ import {
     useLocation,
     useNavigate,
 } from '~/bundles/common/hooks/hooks.js';
-import { type UserSignInRequestDto } from '~/bundles/users/users.js';
+import {
+    type UserSignInRequestDto,
+    type UserSignUpRequestDto,
+} from '~/bundles/users/users.js';
 
 import { useSignInMutation, useSignUpMutation } from '../auth-api.js';
 import { SignInForm, SignUpForm } from '../components/components.js';
@@ -29,7 +32,7 @@ const Auth: React.FC = () => {
     );
 
     const handleSignUpSubmit = useCallback(
-        (payload: UserSignInRequestDto): void => {
+        (payload: UserSignUpRequestDto): void => {
             void signUp(payload);
         },
         [signUp],

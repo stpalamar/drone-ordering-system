@@ -38,36 +38,6 @@ const Sidebar: React.FC<Properties> = ({ navItems }) => {
                         {navItems.map((navItem) => (
                             <SidebarNav key={navItem.to} {...navItem} />
                         ))}
-                        {/* <SidebarNav
-                            to={AppRoute.DASHBOARD}
-                            icon={Home}
-                            label="Dashboard"
-                            isActive={pathname === AppRoute.DASHBOARD}
-                        />
-                        <SidebarNav
-                            to={AppRoute.ORDERS}
-                            icon={ShoppingCart}
-                            label="Orders"
-                            isActive={pathname === AppRoute.ORDERS}
-                        />
-                        <SidebarNav
-                            to={AppRoute.PRODUCTS}
-                            icon={Package}
-                            label="Products"
-                            isActive={pathname === AppRoute.PRODUCTS}
-                        />
-                        <SidebarNav
-                            to={AppRoute.ANALYTICS}
-                            icon={LineChart}
-                            label="Analytics"
-                            isActive={pathname === AppRoute.ANALYTICS}
-                        />
-                        <SidebarNav
-                            to={AppRoute.MANAGERS}
-                            icon={Users}
-                            label="Managers"
-                            isActive={pathname === AppRoute.MANAGERS}
-                        /> */}
                     </nav>
                 </div>
             </div>

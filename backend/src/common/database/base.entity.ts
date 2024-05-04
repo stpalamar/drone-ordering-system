@@ -7,7 +7,7 @@ export abstract class BaseEntity {
     @PrimaryKey({ index: true })
     id!: number;
 
-    @Property({ hidden: true })
+    @Property()
     createdAt? = HelperService.getTimeInUtc(new Date());
 
     @Property({

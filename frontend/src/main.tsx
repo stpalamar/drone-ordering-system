@@ -12,7 +12,10 @@ import {
     StoreProvider,
 } from '~/bundles/common/components/components.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
+import { CreateOrder } from '~/bundles/orders/pages/create-order.js';
+import { Orders } from '~/bundles/orders/pages/orders.js';
 
+import { Products } from './bundles/products/pages/products.js';
 import { store } from './framework/store/store.js';
 
 const routes = [
@@ -39,11 +42,15 @@ const routes = [
                     },
                     {
                         path: AppRoute.ORDERS,
-                        element: <div>Orders</div>,
+                        element: <Orders />,
+                    },
+                    {
+                        path: AppRoute.ORDERS_CREATE,
+                        element: <CreateOrder />,
                     },
                     {
                         path: AppRoute.PRODUCTS,
-                        element: <div>Products</div>,
+                        element: <Products />,
                     },
                     {
                         path: AppRoute.ANALYTICS,
