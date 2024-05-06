@@ -6,10 +6,12 @@ import { authApi } from '../auth-api.js';
 
 type State = {
     user: UserResponseDto | null;
+    isRefreshing: boolean;
 };
 
 const initialState: State = {
     user: null,
+    isRefreshing: true,
 };
 
 const { reducer, actions, name } = createSlice({
@@ -33,8 +35,12 @@ const { reducer, actions, name } = createSlice({
             authApi.endpoints.getMe.matchFulfilled,
             (state, { payload }) => {
                 state.user = payload;
+                state.isRefreshing = false;
             },
         );
+        builder.addMatcher(authApi.endpoints.getMe.matchRejected, (state) => {
+            state.isRefreshing = false;
+        });
         builder.addMatcher(authApi.endpoints.logout.matchFulfilled, (state) => {
             state.user = null;
         });

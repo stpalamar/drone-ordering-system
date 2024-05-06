@@ -1,10 +1,9 @@
+import { Loader, Navigate } from '~/bundles/common/components/components.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
 import {
     useAppSelector,
     useCallback,
-    useEffect,
     useLocation,
-    useNavigate,
 } from '~/bundles/common/hooks/hooks.js';
 import {
     type UserSignInRequestDto,
@@ -16,9 +15,8 @@ import { SignInForm, SignUpForm } from '../components/components.js';
 
 const Auth: React.FC = () => {
     const { pathname } = useLocation();
-    const navigate = useNavigate();
 
-    const { user } = useAppSelector(({ auth }) => auth);
+    const { user, isRefreshing } = useAppSelector(({ auth }) => auth);
 
     const [signIn, { isLoading: isLoadingSignIn }] = useSignInMutation();
 
@@ -61,14 +59,13 @@ const Auth: React.FC = () => {
         return null;
     };
 
-    useEffect(() => {
-        if (user) {
-            navigate(AppRoute.ROOT);
-        }
-    }, [user, navigate]);
+    if (user) {
+        return <Navigate to={AppRoute.ROOT} />;
+    }
+
     return (
         <div className="flex h-screen justify-center items-center">
-            {getScreen(pathname)}
+            {!isRefreshing && user ? getScreen(pathname) : <Loader />}
         </div>
     );
 };
