@@ -65,7 +65,11 @@ const Auth: React.FC = () => {
 
     return (
         <div className="flex h-screen justify-center items-center">
-            {!isRefreshing && user ? getScreen(pathname) : <Loader />}
+            {!isRefreshing && !user ? (
+                getScreen(pathname)
+            ) : (
+                <Loader size="large" />
+            )}
         </div>
     );
 };
