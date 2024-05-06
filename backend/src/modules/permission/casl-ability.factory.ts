@@ -1,17 +1,10 @@
-import { createMongoAbility, MongoAbility } from '@casl/ability';
-import { ValueOf } from '@common/types/types';
+import { createMongoAbility } from '@casl/ability';
 import { User } from '@modules/users/user.entity';
 import { Injectable } from '@nestjs/common';
 
 import { Permission } from './entities/entities';
-import { PermissionAction } from './enums/enums';
 import { PermissionService } from './permission.service';
-
-export type PermissionSubjectType = any;
-
-export type AppAbility = MongoAbility<
-    [ValueOf<typeof PermissionAction>, PermissionSubjectType]
->;
+import { type AppAbility } from './types/types';
 
 @Injectable()
 export class CaslAbilityFactory {

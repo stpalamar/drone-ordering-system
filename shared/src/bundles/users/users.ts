@@ -1,6 +1,6 @@
 export { UserRole } from './enums/enums.js';
 export {
-    type UserDto,
+    type UserResponseDto,
     type UserSignInRequestDto,
     type UserSignUpRequestDto,
 } from './types/types.js';

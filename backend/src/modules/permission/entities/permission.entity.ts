@@ -25,7 +25,7 @@ class Permission {
     subject: Subject;
 
     @Property({ type: 'json', nullable: true })
-    condition?: string;
+    condition: string | null;
 }
 
 export { Permission };

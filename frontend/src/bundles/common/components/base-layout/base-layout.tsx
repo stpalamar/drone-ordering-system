@@ -1,4 +1,4 @@
-import { Home, LineChart, Package, ShoppingCart, Users } from 'lucide-react';
+import { Home, LineChart, Package, ShoppingCart } from 'lucide-react';
 
 import { RouterOutlet } from '~/bundles/common/components/components.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
@@ -34,12 +34,6 @@ const BaseLayout: React.FC = () => {
             icon: LineChart,
             label: 'Analytics',
             isActive: pathname === AppRoute.ANALYTICS,
-        },
-        {
-            to: AppRoute.MANAGERS,
-            icon: Users,
-            label: 'Managers',
-            isActive: pathname === AppRoute.MANAGERS,
         },
     ];
 

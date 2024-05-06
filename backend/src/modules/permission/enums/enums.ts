@@ -1,1 +1,1 @@
-export { PermissionAction } from 'shared';
+export { PermissionAction, PermissionSubject } from 'shared';

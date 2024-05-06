@@ -1,4 +1,5 @@
 export { useAppSelector } from './use-app-selector/use-app-selector.hook.js';
+export { useAbility } from '@casl/react';
 export { useCallback, useEffect, useRef, useState } from 'react';
 export {
     useForm as useAppForm,

@@ -1,5 +1,6 @@
 import { File, ListFilter, PlusCircle } from 'lucide-react';
 
+import { AbilityContext } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import {
     Card,
@@ -32,8 +33,13 @@ import {
     TabsList,
     TabsTrigger,
 } from '~/bundles/common/components/ui/tabs.js';
+import {
+    PermissionAction,
+    PermissionSubject,
+} from '~/bundles/common/enums/enums.js';
 import { getFileForm } from '~/bundles/common/helpers/helpers.js';
 import {
+    useAbility,
     useCallback,
     useSearchParams,
     useState,
@@ -51,6 +57,8 @@ import {
 import { type ProductRequestDto } from '~/bundles/products/types/types.js';
 
 const Products: React.FC = () => {
+    const ability = useAbility(AbilityContext);
+
     const [searchParameters, setSearchParameters] = useSearchParams({
         page: '1',
     });
@@ -97,6 +105,10 @@ const Products: React.FC = () => {
         [deleteProduct],
     );
 
+    const canCreate = ability.can(
+        PermissionAction.DELETE,
+        PermissionSubject.PRODUCT,
+    );
     return (
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
             <Tabs defaultValue="all">
@@ -152,7 +164,11 @@ const Products: React.FC = () => {
                         </Button>
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
-                                <Button size="sm" className="h-8 gap-1">
+                                <Button
+                                    size="sm"
+                                    className="h-8 gap-1"
+                                    disabled={!canCreate}
+                                >
                                     <PlusCircle className="h-3.5 w-3.5" />
                                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                                         Add Product

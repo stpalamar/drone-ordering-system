@@ -1,9 +1,13 @@
-import { Bell } from 'lucide-react';
+import { Bell, Users } from 'lucide-react';
 
 import DroneIcon from '~/assets/img/icons/drone-icon.svg?react';
-import { Link } from '~/bundles/common/components/components.js';
+import { Can, Link } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
-import { AppRoute } from '~/bundles/common/enums/enums.js';
+import {
+    AppRoute,
+    PermissionAction,
+    PermissionSubject,
+} from '~/bundles/common/enums/enums.js';
 
 import { type NavItem } from '../../types/types.js';
 import { SidebarNav } from './components/components.js';
@@ -38,6 +42,17 @@ const Sidebar: React.FC<Properties> = ({ navItems }) => {
                         {navItems.map((navItem) => (
                             <SidebarNav key={navItem.to} {...navItem} />
                         ))}
+                        <Can
+                            I={PermissionAction.MANAGE}
+                            a={PermissionSubject.USER}
+                        >
+                            <SidebarNav
+                                to={AppRoute.MANAGERS}
+                                icon={Users}
+                                label="Managers"
+                                isActive={false}
+                            />
+                        </Can>
                     </nav>
                 </div>
             </div>

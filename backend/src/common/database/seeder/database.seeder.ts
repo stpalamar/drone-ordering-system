@@ -6,7 +6,10 @@ import {
     Role,
     Subject,
 } from '@modules/permission/entities/entities';
-import { PermissionAction } from '@modules/permission/enums/enums';
+import {
+    PermissionAction,
+    PermissionSubject,
+} from '@modules/permission/enums/enums';
 import { Product } from '@modules/products/entities/product.entity';
 
 export class DatabaseSeeder extends Seeder {
@@ -14,7 +17,7 @@ export class DatabaseSeeder extends Seeder {
         const adminRole = em.create(Role, {
             name: 'admin',
         });
-        em.create(Role, {
+        const managerRole = em.create(Role, {
             name: 'manager',
         });
         em.create(Role, {
@@ -22,16 +25,68 @@ export class DatabaseSeeder extends Seeder {
         });
 
         const allSubject = em.create(Subject, {
-            name: 'all',
+            name: PermissionSubject.ALL,
         });
         em.create(Subject, {
-            name: 'User',
+            name: PermissionSubject.USER,
+        });
+        const productSubject = em.create(Subject, {
+            name: PermissionSubject.PRODUCT,
+        });
+        const orderSubject = em.create(Subject, {
+            name: PermissionSubject.ORDER,
+        });
+        const fileSubject = em.create(Subject, {
+            name: PermissionSubject.FILE,
         });
 
         const manageAll = em.create(Permission, {
             action: PermissionAction.MANAGE,
             subject: allSubject,
         });
+
+        const readProduct = em.create(Permission, {
+            action: PermissionAction.READ,
+            subject: productSubject,
+        });
+
+        const createOrder = em.create(Permission, {
+            action: PermissionAction.CREATE,
+            subject: orderSubject,
+        });
+        const readOrder = em.create(Permission, {
+            action: PermissionAction.READ,
+            subject: orderSubject,
+        });
+        const updateOrder = em.create(Permission, {
+            action: PermissionAction.UPDATE,
+            subject: orderSubject,
+        });
+        const deleteOrder = em.create(Permission, {
+            action: PermissionAction.DELETE,
+            subject: orderSubject,
+        });
+
+        const createFile = em.create(Permission, {
+            action: PermissionAction.CREATE,
+            subject: fileSubject,
+        });
+        const readFile = em.create(Permission, {
+            action: PermissionAction.READ,
+            subject: fileSubject,
+        });
+
+        managerRole.permissions.add([
+            readProduct,
+            createOrder,
+            readOrder,
+            updateOrder,
+            deleteOrder,
+            readFile,
+            createFile,
+        ]);
+
+        adminRole.permissions.add(manageAll);
 
         const photo1 = em.create(PublicFile, {
             key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
@@ -134,7 +189,5 @@ export class DatabaseSeeder extends Seeder {
             basePrice: 6899,
             image: photo10,
         });
-
-        adminRole.permissions.add(manageAll);
     }
 }

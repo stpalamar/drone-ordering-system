@@ -1,7 +1,10 @@
 import { MoreHorizontal } from 'lucide-react';
 
 import placeholder from '~/assets/img/placeholder.svg';
-import { Loader } from '~/bundles/common/components/components.js';
+import {
+    AbilityContext,
+    Loader,
+} from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import {
     Dialog,
@@ -26,8 +29,16 @@ import {
     TableHeader,
     TableRow,
 } from '~/bundles/common/components/ui/table.js';
+import {
+    PermissionAction,
+    PermissionSubject,
+} from '~/bundles/common/enums/enums.js';
 import { formatDate } from '~/bundles/common/helpers/helpers.js';
-import { useCallback, useState } from '~/bundles/common/hooks/hooks.js';
+import {
+    useAbility,
+    useCallback,
+    useState,
+} from '~/bundles/common/hooks/hooks.js';
 import { type ProductResponseDto } from '~/bundles/products/types/types.js';
 
 type Properties = {
@@ -43,6 +54,8 @@ const ProductsTable: React.FC<Properties> = ({
     isLoadingDelete,
     onDelete,
 }) => {
+    const ability = useAbility(AbilityContext);
+
     const [productToDelete, setProductToDelete] =
         useState<ProductResponseDto | null>(null);
     const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
@@ -64,6 +77,15 @@ const ProductsTable: React.FC<Properties> = ({
             setDeleteOpen(false);
         }
     }, [onDelete, setDeleteOpen, productToDelete, isLoadingDelete]);
+
+    const canDelete = ability.can(
+        PermissionAction.DELETE,
+        PermissionSubject.PRODUCT,
+    );
+    const canEdit = ability.can(
+        PermissionAction.UPDATE,
+        PermissionSubject.PRODUCT,
+    );
 
     return (
         <>
@@ -151,7 +173,9 @@ const ProductsTable: React.FC<Properties> = ({
                                             <DropdownMenuLabel>
                                                 Actions
                                             </DropdownMenuLabel>
-                                            <DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                disabled={!canEdit}
+                                            >
                                                 Edit
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
@@ -160,6 +184,7 @@ const ProductsTable: React.FC<Properties> = ({
                                                         product,
                                                     )
                                                 }
+                                                disabled={!canDelete}
                                             >
                                                 Delete
                                             </DropdownMenuItem>

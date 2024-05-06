@@ -1,6 +1,9 @@
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 import { CheckPermissions } from '@modules/permission/decorators/permissions.decorator';
-import { PermissionAction } from '@modules/permission/enums/enums';
+import {
+    PermissionAction,
+    PermissionSubject,
+} from '@modules/permission/enums/enums';
 import { PermissionsGuard } from '@modules/permission/guards/permissions.guard';
 import {
     Controller,
@@ -20,7 +23,7 @@ export class FilesController {
 
     @Post('upload')
     @UseGuards(PermissionsGuard)
-    @CheckPermissions([PermissionAction.CREATE, 'Files'])
+    @CheckPermissions([PermissionAction.CREATE, PermissionSubject.FILE])
     @UseInterceptors(FileInterceptor('file'))
     uploadImage(@UploadedFile() file: Express.Multer.File) {
         return this.filesService.uploadPublicFile(file);

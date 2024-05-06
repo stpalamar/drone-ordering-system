@@ -1,3 +1,4 @@
+export { AbilityContext, Can } from './ability/ability.js';
 export { BaseLayout } from './base-layout/base-layout.js';
 export { ColorBox } from './color-box/color-box.js';
 export { DialogCropper } from './dialog-cropper/dialog-cropper.js';

@@ -15,7 +15,7 @@ export class PermissionService {
     async findAllPermissionsOfUser(user: User) {
         const roleWithPermissions = await this.roleRepository.findOne(
             { id: user.role.id },
-            { populate: ['permissions'] },
+            { populate: ['permissions', 'permissions.subject'] },
         );
         return roleWithPermissions?.permissions.getItems() as Permission[];
     }

@@ -19,6 +19,7 @@
         "build": "tsc --module commonjs --outDir build/cjs && tsc --module esnext --outDir build/esm"
     },
     "dependencies": {
+        "@casl/ability": "6.7.1",
         "zod": "3.23.4"
     }
 }

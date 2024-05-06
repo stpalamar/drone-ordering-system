@@ -6,7 +6,11 @@ export {
     OrderStatus,
     orderValidationSchema,
 } from './bundles/orders/orders.js';
-export { PermissionAction } from './bundles/permission/permission.js';
+export { type AppAbility } from './bundles/permission/permission.js';
+export {
+    PermissionAction,
+    PermissionSubject,
+} from './bundles/permission/permission.js';
 export {
     type ProductRequestDto,
     type ProductResponseDto,
@@ -14,7 +18,7 @@ export {
     productValidationSchema,
 } from './bundles/products/products.js';
 export {
-    type UserDto,
+    type UserResponseDto,
     UserRole,
     type UserSignInRequestDto,
     userSignInValidationSchema,

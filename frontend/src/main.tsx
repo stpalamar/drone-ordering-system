@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from '~/app/app.js';
 import { Auth } from '~/bundles/auth/auth.js';
 import {
+    AbilityContext,
     BaseLayout,
     NotificationContainer,
     RouterProvider,
@@ -16,6 +17,7 @@ import { CreateOrder } from '~/bundles/orders/pages/create-order.js';
 import { Orders } from '~/bundles/orders/pages/orders.js';
 
 import { Products } from './bundles/products/pages/products.js';
+import { ability } from './framework/casl/casl.package.js';
 import { store } from './framework/store/store.js';
 
 const routes = [
@@ -69,8 +71,10 @@ const routes = [
 createRoot(document.querySelector('#root') as HTMLElement).render(
     <StrictMode>
         <StoreProvider store={store.instance}>
-            <RouterProvider routes={routes} />
-            <NotificationContainer />
+            <AbilityContext.Provider value={ability}>
+                <RouterProvider routes={routes} />
+                <NotificationContainer />
+            </AbilityContext.Provider>
         </StoreProvider>
     </StrictMode>,
 );

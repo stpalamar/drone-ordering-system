@@ -1,12 +1,11 @@
 import { ValueOf } from '@common/types/types';
 import { CustomDecorator, SetMetadata } from '@nestjs/common';
 
-import { PermissionSubjectType } from '../casl-ability.factory';
-import { PermissionAction } from '../enums/enums';
+import { PermissionAction, PermissionSubject } from '../enums/enums';
 
 export type RequiredPermission = [
     ValueOf<typeof PermissionAction>,
-    PermissionSubjectType,
+    ValueOf<typeof PermissionSubject>,
 ];
 export const PERMISSION_CHECKER_KEY = 'permission_checker_params_key';
 export const CheckPermissions = (

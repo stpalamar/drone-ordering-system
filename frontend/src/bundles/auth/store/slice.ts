@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { type UserDto } from '~/bundles/users/users.js';
+import { type UserResponseDto } from '~/bundles/users/users.js';
 
 import { authApi } from '../auth-api.js';
 
 type State = {
-    user: UserDto | null;
+    user: UserResponseDto | null;
 };
 
 const initialState: State = {

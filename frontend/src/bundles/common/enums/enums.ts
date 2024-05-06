@@ -1,1 +1,8 @@
-export { ApiPath, AppEnvironment, AppRoute, AppSubject } from 'shared';
+export {
+    ApiPath,
+    AppEnvironment,
+    AppRoute,
+    AppSubject,
+    PermissionAction,
+    PermissionSubject,
+} from 'shared';

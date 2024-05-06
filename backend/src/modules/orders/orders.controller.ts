@@ -4,7 +4,10 @@ import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
 import { PaginationQueryDto } from '@common/types/types';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 import { CheckPermissions } from '@modules/permission/decorators/permissions.decorator';
-import { PermissionAction } from '@modules/permission/enums/enums';
+import {
+    PermissionAction,
+    PermissionSubject,
+} from '@modules/permission/enums/enums';
 import { PermissionsGuard } from '@modules/permission/guards/permissions.guard';
 import { User } from '@modules/users/user.entity';
 import {
@@ -30,7 +33,7 @@ export class OrdersController {
 
     @Post()
     @UseGuards(PermissionsGuard)
-    @CheckPermissions([PermissionAction.CREATE, 'Order'])
+    @CheckPermissions([PermissionAction.CREATE, PermissionSubject.ORDER])
     create(
         @Body()
         createOrderDto: OrderRequestDto,
@@ -41,7 +44,7 @@ export class OrdersController {
 
     @Get()
     @UseGuards(PermissionsGuard)
-    @CheckPermissions([PermissionAction.READ, 'Order'])
+    @CheckPermissions([PermissionAction.READ, PermissionSubject.ORDER])
     findAll(@Query() pagination: PaginationQueryDto) {
         const { page = DEFAULT_PAGE, limit = DEFAULT_PAGE_SIZE } = pagination;
         return this.ordersService.findAll(+page, +limit);
@@ -49,14 +52,14 @@ export class OrdersController {
 
     @Get(':id')
     @UseGuards(PermissionsGuard)
-    @CheckPermissions([PermissionAction.READ, 'Order'])
+    @CheckPermissions([PermissionAction.READ, PermissionSubject.ORDER])
     findOne(@Param('id') id: string) {
         return this.ordersService.findOne(+id);
     }
 
     @Put(':id')
     @UseGuards(PermissionsGuard)
-    @CheckPermissions([PermissionAction.UPDATE, 'Order'])
+    @CheckPermissions([PermissionAction.UPDATE, PermissionSubject.ORDER])
     update(
         @Param('id') id: string,
         @Body(new ZodValidationPipe(orderValidationSchema))
@@ -67,7 +70,7 @@ export class OrdersController {
 
     @Delete(':id')
     @UseGuards(PermissionsGuard)
-    @CheckPermissions([PermissionAction.DELETE, 'Order'])
+    @CheckPermissions([PermissionAction.DELETE, PermissionSubject.ORDER])
     remove(@Param('id') id: string) {
         return this.ordersService.softDelete(+id);
     }

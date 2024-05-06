@@ -3,7 +3,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository, wrap } from '@mikro-orm/postgresql';
 import { Role } from '@modules/permission/entities/role.entity';
 import {
-    type UserDto,
+    type UserResponseDto,
     type UserSignInRequestDto,
 } from '@modules/users/types/types';
 import { User } from '@modules/users/user.entity';
@@ -65,15 +65,21 @@ export class AuthService {
 
     public async signIn(
         userSignInRequestDto: UserSignInRequestDto,
-    ): Promise<UserDto> {
+    ): Promise<UserResponseDto> {
         const user = await this.validateUser(userSignInRequestDto);
 
-        return (await wrap(user).populate(['role'])).toObject();
+        return (
+            await wrap(user).populate([
+                'role',
+                'role.permissions',
+                'role.permissions.subject',
+            ])
+        ).toObject();
     }
 
     public async signUp(
         userSignUpRequestDto: UserSignInRequestDto,
-    ): Promise<UserDto> {
+    ): Promise<UserResponseDto> {
         const user = await this.usersRepository.findOne({
             email: userSignUpRequestDto.email,
         });
@@ -83,12 +89,14 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST,
             );
         }
-        const role = await this.roleRepository.findOne({ name: 'admin' });
+        const role = await this.roleRepository.findOne({ name: 'manager' });
         const newUser = this.usersRepository.create({
             ...userSignUpRequestDto,
             role: role,
         });
         await this.em.persistAndFlush(newUser);
-        return (await wrap(newUser).populate(['role'])).toObject();
+        return (
+            await wrap(newUser).populate(['role', 'role.permissions'])
+        ).toObject();
     }
 }

@@ -35,6 +35,10 @@ class User extends BaseEntity {
             id: this.id,
             email: this.email,
             role: this.role.name,
+            permissions: this.role.permissions.getItems().map((permission) => ({
+                ...permission,
+                subject: permission.subject.name,
+            })),
         };
     }
 }
