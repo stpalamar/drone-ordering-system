@@ -11,7 +11,7 @@ type OrderResponseDto = {
     email: string;
     items: OrderItemDto[];
     status: ValueOf<typeof OrderStatus>;
-    createdAt: Date;
+    createdAt: string;
 };
 
 export { type OrderResponseDto };

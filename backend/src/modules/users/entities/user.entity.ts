@@ -7,9 +7,12 @@ import {
     Entity,
     EventArgs,
     ManyToOne,
+    OneToOne,
     Property,
 } from '@mikro-orm/postgresql';
 import { Role } from '@modules/permission/entities/role.entity';
+
+import { UserDetails } from './user-details.entity';
 
 @Entity()
 class User extends BaseEntity {
@@ -21,6 +24,16 @@ class User extends BaseEntity {
 
     @ManyToOne()
     role!: Role;
+
+    @OneToOne({
+        entity: () => UserDetails,
+        orphanRemoval: true,
+        nullable: true,
+    })
+    details!: UserDetails | null;
+
+    @Property({ default: false })
+    isEmailConfirmed!: boolean;
 
     @BeforeCreate()
     @BeforeUpdate()
@@ -39,6 +52,7 @@ class User extends BaseEntity {
                 ...permission,
                 subject: permission.subject.name,
             })),
+            details: this.details ? this.details.toObject() : null,
         };
     }
 }

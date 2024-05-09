@@ -1,0 +1,1 @@
+export { managerSignUpValidationSchema } from 'shared';

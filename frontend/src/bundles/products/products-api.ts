@@ -1,6 +1,6 @@
 import { ApiPath, AppSubject } from '~/bundles/common/enums/enums.js';
 import { type PagedResponse } from '~/bundles/common/types/types.js';
-import { baseApi } from '~/framework/base-api/base-api.package.js';
+import { baseApi } from '~/framework/base-api/base-api.js';
 
 import {
     type ProductRequestDto,

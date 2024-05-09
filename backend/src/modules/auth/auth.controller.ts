@@ -1,5 +1,9 @@
 import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
+import { ManagerSignUpRequestDto } from '@modules/managers/types/types';
+import { managerSignUpValidationSchema } from '@modules/managers/validation-schemas/validation-schemas';
+import { UserRole } from '@modules/users/enums/enums';
 import {
+    UserConfirmEmailRequestDto,
     type UserSignInRequestDto,
     type UserSignUpRequestDto,
 } from '@modules/users/types/types';
@@ -7,6 +11,7 @@ import {
     Body,
     Controller,
     Get,
+    Headers,
     HttpCode,
     Post,
     Req,
@@ -18,6 +23,7 @@ import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import {
+    userConfirmEmailValidationSchema,
     userSignInValidationSchema,
     userSignUpValidationSchema,
 } from './validation-schemas/validation-schemas';
@@ -51,7 +57,35 @@ export class AuthController {
         userSignUpRequestDto: UserSignUpRequestDto,
         @Res({ passthrough: true }) res: Response,
     ) {
-        const user = await this.authService.signUp(userSignUpRequestDto);
+        const user = await this.authService.signUp(
+            userSignUpRequestDto,
+            UserRole.USER,
+        );
+        const cookie = await this.authService.getCookieWithJwtToken(user.id);
+        res.setHeader('Set-Cookie', cookie);
+        return user;
+    }
+
+    @Post('sign-up-manager')
+    async signUpManager(
+        @Body(new ZodValidationPipe(managerSignUpValidationSchema))
+        managerSignUpRequestDto: ManagerSignUpRequestDto,
+        @Headers('origin')
+        host: string,
+    ) {
+        return this.authService.signUpManager(managerSignUpRequestDto, host);
+    }
+
+    @Post('confirm-email')
+    async confirmEmail(
+        @Body(new ZodValidationPipe(userConfirmEmailValidationSchema))
+        userConfirmEmailRequestDto: UserConfirmEmailRequestDto,
+        @Res({ passthrough: true }) res: Response,
+    ) {
+        const user = await this.authService.confirmEmail(
+            userConfirmEmailRequestDto,
+        );
+
         const cookie = await this.authService.getCookieWithJwtToken(user.id);
         res.setHeader('Set-Cookie', cookie);
         return user;

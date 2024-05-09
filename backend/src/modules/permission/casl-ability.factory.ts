@@ -1,5 +1,5 @@
 import { createMongoAbility } from '@casl/ability';
-import { User } from '@modules/users/user.entity';
+import { User } from '@modules/users/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 
 import { Permission } from './entities/entities';

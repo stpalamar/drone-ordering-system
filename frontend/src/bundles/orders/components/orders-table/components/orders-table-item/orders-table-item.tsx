@@ -45,7 +45,7 @@ const OrdersTableItem: React.FC<Properties> = ({
                 </Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">
-                {formatDate(createdAt)}
+                {formatDate(new Date(createdAt))}
             </TableCell>
             <TableCell className="text-right">
                 {/* To be implemented */}

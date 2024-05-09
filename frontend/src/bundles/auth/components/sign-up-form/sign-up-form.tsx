@@ -28,9 +28,14 @@ import {
 type Properties = {
     onSubmit: (payload: UserSignUpRequestDto) => void;
     isLoading: boolean;
+    isManager?: boolean;
 };
 
-const SignUpForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
+const SignUpForm: React.FC<Properties> = ({
+    onSubmit,
+    isLoading,
+    isManager = false,
+}) => {
     const form = useAppForm<UserSignUpRequestDto>({
         resolver: zodResolver(userSignUpValidationSchema),
         defaultValues: {
@@ -52,7 +57,9 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
             <form onSubmit={handleSubmit} className="space-y-8">
                 <Card className="w-full max-w-sm">
                     <CardHeader>
-                        <CardTitle className="text-2xl">Sign Up</CardTitle>
+                        <CardTitle className="text-2xl">
+                            {isManager ? 'New manager' : 'Sign up'}
+                        </CardTitle>
                         <CardDescription>
                             Enter your information to create an account.
                         </CardDescription>
@@ -128,15 +135,17 @@ const SignUpForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
                                     'Sign up'
                                 )}
                             </Button>
-                            <div className="mt-4 text-center text-sm">
-                                Already have an account?{' '}
-                                <Link
-                                    to={AppRoute.SIGN_IN}
-                                    className="underline"
-                                >
-                                    Sign in
-                                </Link>
-                            </div>
+                            {!isManager && (
+                                <div className="mt-4 text-center text-sm">
+                                    Already have an account?{' '}
+                                    <Link
+                                        to={AppRoute.SIGN_IN}
+                                        className="underline"
+                                    >
+                                        Sign in
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </CardFooter>
                 </Card>

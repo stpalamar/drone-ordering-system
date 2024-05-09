@@ -58,7 +58,7 @@ class Order extends BaseEntity {
             email: this.email,
             items: this.items.getItems().map((item) => item.toObject()),
             status: this.status,
-            createdAt: this.createdAt,
+            createdAt: this.createdAt.toString(),
         };
     }
 }

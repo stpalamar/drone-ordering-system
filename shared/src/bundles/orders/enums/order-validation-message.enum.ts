@@ -64,6 +64,6 @@ const OrderValidationMessage = {
     additionalInfo: {
         INVALID: 'Invalid additional info',
     },
-};
+} as const;
 
 export { OrderValidationMessage };

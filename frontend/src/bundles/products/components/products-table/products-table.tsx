@@ -153,7 +153,7 @@ const ProductsTable: React.FC<Properties> = ({
                                     25
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    {formatDate(product.createdAt)}
+                                    {formatDate(new Date(product.createdAt))}
                                 </TableCell>
                                 <TableCell>
                                     <DropdownMenu>

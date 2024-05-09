@@ -8,7 +8,7 @@ const userSignUpValidationSchema = userSignInValidationSchema
         passwordConfirm: z.string().trim(),
     })
     .refine((data) => data.password === data.passwordConfirm, {
-        message: UserValidationMessage.PASSWORD_MATCH,
+        message: UserValidationMessage.PASSWORD.MATCH,
         path: ['passwordConfirm'],
     });
 

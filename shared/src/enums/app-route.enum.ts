@@ -8,6 +8,8 @@ const AppRoute = {
     PRODUCTS: '/products',
     ANALYTICS: '/analytics',
     MANAGERS: '/managers',
+    SIGN_UP_MANAGER: '/sign-up-manager',
+    CONFIRM_EMAIL: '/confirm-email',
 } as const;
 
 export { AppRoute };

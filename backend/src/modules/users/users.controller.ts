@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Headers, Post } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 
@@ -30,4 +30,9 @@ export class UsersController {
     // remove(@Param('id') id: string) {
     //     return this.usersService.remove(+id);
     // }
+
+    @Post('registration-url')
+    generateManagerLink(@Headers('host') host: string) {
+        return this.usersService.generateManagerRegistrationUrl(host);
+    }
 }

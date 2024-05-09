@@ -1,4 +1,4 @@
-import { CircleUser, Menu, Search } from 'lucide-react';
+import { CircleUser, Menu } from 'lucide-react';
 
 import DroneIcon from '~/assets/img/icons/drone-icon.svg?react';
 import { useLogoutMutation } from '~/bundles/auth/auth-api.js';
@@ -12,7 +12,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '~/bundles/common/components/ui/dropdown-menu.js';
-import { Input } from '~/bundles/common/components/ui/input.js';
 import {
     Sheet,
     SheetContent,
@@ -36,7 +35,7 @@ const Header: React.FC<Properties> = ({ navItems }) => {
     }, [logout]);
 
     return (
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center justify-between md:justify-end gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
             <Sheet>
                 <SheetTrigger asChild>
                     <Button
@@ -63,18 +62,6 @@ const Header: React.FC<Properties> = ({ navItems }) => {
                     </nav>
                 </SheetContent>
             </Sheet>
-            <div className="w-full flex-1">
-                <form>
-                    <div className="relative">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                            type="search"
-                            placeholder="Search products..."
-                            className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                        />
-                    </div>
-                </form>
-            </div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button

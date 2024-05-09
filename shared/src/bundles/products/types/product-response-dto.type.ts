@@ -6,7 +6,7 @@ type ProductResponseDto = {
     wingsType: string;
     basePrice: number;
     image: FileResponseDto;
-    createdAt: Date;
+    createdAt: string;
 };
 
 export { type ProductResponseDto };

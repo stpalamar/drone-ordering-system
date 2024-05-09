@@ -17,6 +17,6 @@ const ProductValidationMessage = {
     IMAGE: {
         REQUIRED: 'Image is required',
     },
-};
+} as const;
 
 export { ProductValidationMessage };

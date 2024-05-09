@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { User } from '@modules/users/user.entity';
+import { User } from '@modules/users/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 
 import { Permission, Role } from './entities/entities';

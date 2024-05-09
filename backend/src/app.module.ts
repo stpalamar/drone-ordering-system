@@ -1,5 +1,7 @@
 import { AuthModule } from '@modules/auth/auth.module';
+import { EmailModule } from '@modules/email/email.module';
 import { FilesModule } from '@modules/files/files.module';
+import { ManagersModule } from '@modules/managers/managers.module';
 import { OrdersModule } from '@modules/orders/orders.module';
 import { ProductsModule } from '@modules/products/products.module';
 import { UsersModule } from '@modules/users/users.module';
@@ -27,6 +29,9 @@ import { PermissionModule } from './modules/permission/permission.module';
                 S3_SECRET_KEY: Joi.string().required(),
                 S3_BUCKET_NAME: Joi.string().required(),
                 S3_REGION: Joi.string().required(),
+                SENDGRID_API_KEY: Joi.string().required(),
+                SENDGRID_EMAIL_FROM: Joi.string().required(),
+                SENDGRID_TEMPLATE_ID: Joi.string().required(),
             }),
         }),
         DatabaseModule,
@@ -36,6 +41,8 @@ import { PermissionModule } from './modules/permission/permission.module';
         FilesModule,
         ProductsModule,
         OrdersModule,
+        ManagersModule,
+        EmailModule,
     ],
     controllers: [AppController],
     providers: [AppService],

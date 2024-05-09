@@ -4,8 +4,8 @@ import { PagedResponse } from '@common/types/types';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository, wrap } from '@mikro-orm/postgresql';
 import { Product } from '@modules/products/entities/product.entity';
+import { User } from '@modules/users/entities/user.entity';
 import { UserRole } from '@modules/users/enums/enums';
-import { User } from '@modules/users/user.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Order } from './entities/order.entity';

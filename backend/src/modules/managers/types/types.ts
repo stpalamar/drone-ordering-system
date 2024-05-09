@@ -1,0 +1,1 @@
+export { ManagerSignUpRequestDto } from 'shared';

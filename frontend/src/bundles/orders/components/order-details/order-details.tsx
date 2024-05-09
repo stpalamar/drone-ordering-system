@@ -56,7 +56,7 @@ const OrderDetails: React.FC<Properties> = ({ order }) => {
                             </Button>
                         </CardTitle>
                         <CardDescription>
-                            Date: {formatDateWithMonth(createdAt)}
+                            Date: {formatDateWithMonth(new Date(createdAt))}
                         </CardDescription>
                     </div>
                     <div className="ml-auto flex items-center gap-1">
@@ -141,7 +141,7 @@ const OrderDetails: React.FC<Properties> = ({ order }) => {
                     <div className="text-xs text-muted-foreground">
                         Updated{' '}
                         <time dateTime="2023-11-23">
-                            {formatDateWithMonth(createdAt)}
+                            {formatDateWithMonth(new Date(createdAt))}
                         </time>
                     </div>
                     <PaginationNav className="ml-auto mr-0 w-auto">

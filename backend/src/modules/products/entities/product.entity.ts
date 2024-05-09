@@ -34,7 +34,7 @@ class Product extends BaseEntity {
             wingsType: this.wingsType,
             image: this.image,
             basePrice: this.basePrice,
-            createdAt: this.createdAt,
+            createdAt: this.createdAt.toISOString(),
         };
     }
 }

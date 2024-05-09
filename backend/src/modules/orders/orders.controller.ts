@@ -9,7 +9,7 @@ import {
     PermissionSubject,
 } from '@modules/permission/enums/enums';
 import { PermissionsGuard } from '@modules/permission/guards/permissions.guard';
-import { User } from '@modules/users/user.entity';
+import { User } from '@modules/users/entities/user.entity';
 import {
     Body,
     Controller,

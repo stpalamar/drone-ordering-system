@@ -1,5 +1,10 @@
 export { type FileResponseDto } from './bundles/files/files.js';
 export {
+    type ManagerSignUpRequestDto,
+    managerSignUpValidationSchema,
+    type RegistrationUrlResponseDto,
+} from './bundles/managers/managers.js';
+export {
     type OrderItemDto,
     type OrderRequestDto,
     type OrderResponseDto,
@@ -18,6 +23,10 @@ export {
     productValidationSchema,
 } from './bundles/products/products.js';
 export {
+    type UserConfirmEmailRequestDto,
+    userConfirmEmailValidationSchema,
+    type UserDetailsDto,
+    userDetailsValidationSchema,
     type UserResponseDto,
     UserRole,
     type UserSignInRequestDto,

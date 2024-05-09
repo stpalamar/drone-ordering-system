@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { toast } from 'sonner';
 
 import { type UserResponseDto } from '~/bundles/users/users.js';
 
@@ -29,6 +30,13 @@ const { reducer, actions, name } = createSlice({
             authApi.endpoints.signUp.matchFulfilled,
             (state, { payload }) => {
                 state.user = payload;
+            },
+        );
+        builder.addMatcher(
+            authApi.endpoints.confirmEmail.matchFulfilled,
+            (state, { payload }) => {
+                state.user = payload;
+                toast.success('Email confirmed successfully');
             },
         );
         builder.addMatcher(

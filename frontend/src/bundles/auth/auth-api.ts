@@ -1,4 +1,6 @@
+import { type ManagerSignUpRequestDto } from '~/bundles/managers/types/types.js';
 import {
+    type UserConfirmEmailRequestDto,
     type UserResponseDto,
     type UserSignInRequestDto,
     type UserSignUpRequestDto,
@@ -21,6 +23,23 @@ const authApi = baseApi.injectEndpoints({
                 body: payload,
             }),
         }),
+        signUpManager: build.mutation<void, ManagerSignUpRequestDto>({
+            query: (payload) => ({
+                url: '/auth/sign-up-manager',
+                method: 'POST',
+                body: payload,
+            }),
+        }),
+        confirmEmail: build.mutation<
+            UserResponseDto,
+            UserConfirmEmailRequestDto
+        >({
+            query: (payload) => ({
+                url: '/auth/confirm-email',
+                method: 'POST',
+                body: payload,
+            }),
+        }),
         getMe: build.query<UserResponseDto, void>({
             query: () => '/auth/me',
         }),
@@ -36,14 +55,18 @@ const authApi = baseApi.injectEndpoints({
 const {
     useSignInMutation,
     useSignUpMutation,
+    useSignUpManagerMutation,
+    useConfirmEmailMutation,
     useGetMeQuery,
     useLogoutMutation,
 } = authApi;
 
 export {
     authApi,
+    useConfirmEmailMutation,
     useGetMeQuery,
     useLogoutMutation,
     useSignInMutation,
+    useSignUpManagerMutation,
     useSignUpMutation,
 };

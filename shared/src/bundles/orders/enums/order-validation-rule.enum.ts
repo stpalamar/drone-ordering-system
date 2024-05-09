@@ -23,6 +23,6 @@ const OrderValidationRule = {
         MIN: 1,
         MAX: 100,
     },
-};
+} as const;
 
 export { OrderValidationRule };
