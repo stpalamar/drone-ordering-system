@@ -25,13 +25,13 @@ export class UsersService {
                 ],
             },
         );
-        if (user) {
-            return user.toObject();
+        if (!user) {
+            throw new HttpException(
+                'User with this id does not exist',
+                HttpStatus.NOT_FOUND,
+            );
         }
-        throw new HttpException(
-            'User with this id does not exist',
-            HttpStatus.NOT_FOUND,
-        );
+        return user.toObject();
     }
 
     async generateManagerRegistrationUrl(origin: string) {

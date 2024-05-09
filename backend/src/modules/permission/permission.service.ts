@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { User } from '@modules/users/entities/user.entity';
+import { UserResponseDto } from '@modules/users/types/types';
 import { Injectable } from '@nestjs/common';
 
 import { Permission, Role } from './entities/entities';
@@ -12,9 +12,9 @@ export class PermissionService {
         private readonly roleRepository: EntityRepository<Role>,
     ) {}
 
-    async findAllPermissionsOfUser(user: User) {
+    async findAllPermissionsOfUser(user: UserResponseDto) {
         const roleWithPermissions = await this.roleRepository.findOne(
-            { id: user.role.id },
+            { name: user.role },
             { populate: ['permissions', 'permissions.subject'] },
         );
         return roleWithPermissions?.permissions.getItems() as Permission[];
