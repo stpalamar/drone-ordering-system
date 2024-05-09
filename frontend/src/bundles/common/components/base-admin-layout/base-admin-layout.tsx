@@ -7,7 +7,7 @@ import { useLocation } from '~/bundles/common/hooks/hooks.js';
 import { Header, Sidebar } from './components/components.js';
 import { type NavItem } from './types/types.js';
 
-const BaseLayout: React.FC = () => {
+const BaseAdminLayout: React.FC = () => {
     const { pathname } = useLocation();
 
     const navItems: NavItem[] = [
@@ -50,4 +50,4 @@ const BaseLayout: React.FC = () => {
     );
 };
 
-export { BaseLayout };
+export { BaseAdminLayout };

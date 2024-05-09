@@ -1,1 +1,1 @@
-export { type AppAbility } from 'shared';
+export { type AppAbility, type RequiredPermission } from 'shared';

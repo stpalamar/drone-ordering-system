@@ -18,8 +18,10 @@ import {
     SheetTrigger,
 } from '~/bundles/common/components/ui/sheet.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
-import { useCallback } from '~/bundles/common/hooks/hooks.js';
+import { capitalizeFirstLetter } from '~/bundles/common/helpers/helpers.js';
+import { useAppSelector, useCallback } from '~/bundles/common/hooks/hooks.js';
 
+import { Badge } from '../../../ui/badge.js';
 import { type NavItem } from '../../types/types.js';
 import { HeaderNav } from './components/components.js';
 
@@ -28,6 +30,8 @@ type Properties = {
 };
 
 const Header: React.FC<Properties> = ({ navItems }) => {
+    const { user } = useAppSelector(({ auth }) => auth);
+
     const [logout] = useLogoutMutation();
 
     const handleLogout = useCallback(() => {
@@ -35,7 +39,12 @@ const Header: React.FC<Properties> = ({ navItems }) => {
     }, [logout]);
 
     return (
-        <header className="flex h-14 items-center justify-between md:justify-end gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center justify-between gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+            {user && user.details && (
+                <div className="hidden md:flex text-lg font-semibold">
+                    <div className="">Welcome, {user.details.firstName}</div>
+                </div>
+            )}
             <Sheet>
                 <SheetTrigger asChild>
                     <Button
@@ -62,27 +71,36 @@ const Header: React.FC<Properties> = ({ navItems }) => {
                     </nav>
                 </SheetContent>
             </Sheet>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="secondary"
-                        size="icon"
-                        className="rounded-full"
-                    >
-                        <CircleUser className="h-5 w-5" />
-                        <span className="sr-only">Toggle user menu</span>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout}>
-                        Logout
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex gap-2 items-center">
+                {user && user.details && (
+                    <span>
+                        <Badge className="cursor-default">
+                            {capitalizeFirstLetter(user.role)}
+                        </Badge>
+                    </span>
+                )}
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="secondary"
+                            size="icon"
+                            className="rounded-full"
+                        >
+                            <CircleUser className="h-5 w-5" />
+                            <span className="sr-only">Toggle user menu</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Settings</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleLogout}>
+                            Logout
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
         </header>
     );
 };

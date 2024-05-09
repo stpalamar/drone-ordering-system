@@ -1,15 +1,17 @@
 const AppRoute = {
     ROOT: '/',
+    ADMIN_ROOT: '/admin',
     SIGN_IN: '/sign-in',
     SIGN_UP: '/sign-up',
-    DASHBOARD: '/dashboard',
-    ORDERS: '/orders',
-    ORDERS_CREATE: '/orders/create',
-    PRODUCTS: '/products',
-    ANALYTICS: '/analytics',
-    MANAGERS: '/managers',
+    DASHBOARD: '/admin/dashboard',
+    ORDERS: '/admin/orders',
+    ORDERS_CREATE: '/admin/orders/create',
+    PRODUCTS: '/admin/products',
+    ANALYTICS: '/admin/analytics',
+    MANAGERS: '/admin/managers',
     SIGN_UP_MANAGER: '/sign-up-manager',
     CONFIRM_EMAIL: '/confirm-email',
+    NOT_FOUND: '*',
 } as const;
 
 export { AppRoute };

@@ -11,7 +11,10 @@ export {
     OrderStatus,
     orderValidationSchema,
 } from './bundles/orders/orders.js';
-export { type AppAbility } from './bundles/permission/permission.js';
+export {
+    type AppAbility,
+    type RequiredPermission,
+} from './bundles/permission/permission.js';
 export {
     PermissionAction,
     PermissionSubject,

@@ -7,17 +7,23 @@ import { App } from '~/app/app.js';
 import { Auth } from '~/bundles/auth/auth.js';
 import {
     AbilityContext,
-    BaseLayout,
+    BaseAdminLayout,
+    BaseUserLayout,
     NotificationContainer,
     RouterProvider,
     StoreProvider,
 } from '~/bundles/common/components/components.js';
-import { AppRoute } from '~/bundles/common/enums/enums.js';
+import {
+    AppRoute,
+    PermissionAction,
+    PermissionSubject,
+} from '~/bundles/common/enums/enums.js';
 import { CreateOrder } from '~/bundles/orders/pages/create-order.js';
 import { Orders } from '~/bundles/orders/pages/orders.js';
 
 import { ConfirmEmail } from './bundles/auth/pages/confirm-email.js';
 import { ManagerSignUp } from './bundles/auth/pages/manager-sign-up.js';
+import { NotFound } from './bundles/common/pages/pages.js';
 import { Managers } from './bundles/managers/pages/managers.js';
 import { Products } from './bundles/products/pages/products.js';
 import { ability } from './framework/casl/casl.package.js';
@@ -46,7 +52,11 @@ const routes = [
             },
             {
                 path: AppRoute.ROOT,
-                element: <BaseLayout />,
+                element: <BaseUserLayout />,
+            },
+            {
+                path: AppRoute.ADMIN_ROOT,
+                element: <BaseAdminLayout />,
                 isPrivate: true,
                 children: [
                     {
@@ -72,10 +82,21 @@ const routes = [
                     {
                         path: AppRoute.MANAGERS,
                         element: <Managers />,
+                        isPrivate: true,
+                        permissions: [
+                            {
+                                subject: PermissionSubject.USER,
+                                action: PermissionAction.MANAGE,
+                            },
+                        ],
                     },
                 ],
             },
         ],
+    },
+    {
+        path: AppRoute.NOT_FOUND,
+        element: <NotFound />,
     },
 ];
 

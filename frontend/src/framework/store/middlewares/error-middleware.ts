@@ -4,9 +4,15 @@ import { toast } from 'sonner';
 const errorMiddleware: Middleware = () => {
     return (next) => (action) => {
         if (isRejected(action)) {
-            const { data } = action.payload as { data: { message: string } };
+            const { data } = action.payload as {
+                data: { message: string; statusCode: number };
+            };
             if (data) {
-                toast.error(data.message);
+                if (data.statusCode === 401) {
+                    next(action);
+                } else {
+                    toast.error(data.message);
+                }
             } else {
                 toast.error('Something went wrong');
             }
