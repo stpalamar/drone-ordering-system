@@ -35,7 +35,8 @@ export class AuthController {
     @Get('me')
     @UseGuards(JwtAuthGuard)
     async getMe(@Req() req: Request) {
-        return req.user;
+        const user = req.user;
+        return user.toObject();
     }
 
     @HttpCode(200)

@@ -1,6 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { EmailModule } from '@modules/email/email.module';
 import { EmailService } from '@modules/email/email.service';
+import { PublicFile } from '@modules/files/entities/public-file.entity';
 import { Role } from '@modules/permission/entities/role.entity';
 import { User } from '@modules/users/entities/user.entity';
 import { UserDetails } from '@modules/users/entities/user-details.entity';
@@ -21,7 +22,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
         UsersModule,
         PassportModule,
         EmailModule,
-        MikroOrmModule.forFeature([User, Role, UserDetails]),
+        MikroOrmModule.forFeature([User, Role, UserDetails, PublicFile]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],

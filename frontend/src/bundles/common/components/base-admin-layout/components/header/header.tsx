@@ -1,8 +1,15 @@
-import { CircleUser, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 
 import DroneIcon from '~/assets/img/icons/drone-icon.svg?react';
 import { useLogoutMutation } from '~/bundles/auth/auth-api.js';
+import { type NavItem } from '~/bundles/common/components/base-admin-layout/types/types.js';
 import { Link } from '~/bundles/common/components/components.js';
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from '~/bundles/common/components/ui/avatar.js';
+import { Badge } from '~/bundles/common/components/ui/badge.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import {
     DropdownMenu,
@@ -18,11 +25,16 @@ import {
     SheetTrigger,
 } from '~/bundles/common/components/ui/sheet.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
-import { capitalizeFirstLetter } from '~/bundles/common/helpers/helpers.js';
-import { useAppSelector, useCallback } from '~/bundles/common/hooks/hooks.js';
+import {
+    capitalizeFirstLetter,
+    getFirstLetter,
+} from '~/bundles/common/helpers/helpers.js';
+import {
+    useAppSelector,
+    useCallback,
+    useNavigate,
+} from '~/bundles/common/hooks/hooks.js';
 
-import { Badge } from '../../../ui/badge.js';
-import { type NavItem } from '../../types/types.js';
 import { HeaderNav } from './components/components.js';
 
 type Properties = {
@@ -30,6 +42,7 @@ type Properties = {
 };
 
 const Header: React.FC<Properties> = ({ navItems }) => {
+    const navigate = useNavigate();
     const { user } = useAppSelector(({ auth }) => auth);
 
     const [logout] = useLogoutMutation();
@@ -37,6 +50,16 @@ const Header: React.FC<Properties> = ({ navItems }) => {
     const handleLogout = useCallback(() => {
         void logout();
     }, [logout]);
+
+    const handleClickSettings = useCallback(() => {
+        navigate(AppRoute.PROFILE);
+    }, [navigate]);
+
+    const avatarFallback =
+        user &&
+        user.details &&
+        getFirstLetter(user?.details.firstName) +
+            getFirstLetter(user?.details.lastName);
 
     return (
         <header className="flex h-14 items-center justify-between gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
@@ -86,14 +109,30 @@ const Header: React.FC<Properties> = ({ navItems }) => {
                             size="icon"
                             className="rounded-full"
                         >
-                            <CircleUser className="h-5 w-5" />
+                            <Avatar>
+                                <AvatarImage
+                                    src={
+                                        user &&
+                                        user.details &&
+                                        user.details.avatar
+                                            ? user.details.avatar.url
+                                            : undefined
+                                    }
+                                    alt="Your avatar"
+                                />
+                                <AvatarFallback>
+                                    {avatarFallback}
+                                </AvatarFallback>
+                            </Avatar>
                             <span className="sr-only">Toggle user menu</span>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Settings</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleClickSettings}>
+                            Settings
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={handleLogout}>
                             Logout

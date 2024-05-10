@@ -11,6 +11,7 @@ const AppRoute = {
     MANAGERS: '/admin/managers',
     SIGN_UP_MANAGER: '/sign-up-manager',
     CONFIRM_EMAIL: '/confirm-email',
+    PROFILE: '/admin/profile',
     NOT_FOUND: '*',
 } as const;
 

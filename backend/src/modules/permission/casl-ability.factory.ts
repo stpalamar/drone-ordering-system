@@ -1,5 +1,5 @@
 import { createMongoAbility } from '@casl/ability';
-import { UserResponseDto } from '@modules/users/types/types';
+import { User } from '@modules/users/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 
 import { Permission } from './entities/entities';
@@ -10,7 +10,7 @@ import { type AppAbility } from './types/types';
 export class CaslAbilityFactory {
     constructor(private readonly permissionService: PermissionService) {}
 
-    async createForUser(user: UserResponseDto) {
+    async createForUser(user: User) {
         const dbPermissions: Permission[] =
             await this.permissionService.findAllPermissionsOfUser(user);
         const caslPermissions = dbPermissions.map((permission) => ({

@@ -1,16 +1,22 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { wrap } from '@mikro-orm/postgresql';
+import { PublicFile } from '@modules/files/entities/public-file.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { User } from './entities/user.entity';
+import { UserDetailsDto } from './types/types';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User)
         private readonly usersRepository: EntityRepository<User>,
+        @InjectRepository(PublicFile)
+        private readonly publicFilesRepository: EntityRepository<PublicFile>,
         private readonly jwtService: JwtService,
+        private readonly em: EntityManager,
     ) {}
 
     async getById(id: number) {
@@ -31,7 +37,7 @@ export class UsersService {
                 HttpStatus.NOT_FOUND,
             );
         }
-        return user.toObject();
+        return user;
     }
 
     async generateManagerRegistrationUrl(origin: string) {
@@ -42,6 +48,32 @@ export class UsersService {
         return {
             url,
         };
+    }
+
+    async update(id: number, updateUserDetailsDto: UserDetailsDto, user: User) {
+        if (id !== user.id) {
+            throw new HttpException(
+                'You are not allowed to update this user',
+                HttpStatus.FORBIDDEN,
+            );
+        }
+
+        const userToUpdate = await this.getById(id);
+
+        const avatar = await this.publicFilesRepository.findOne({
+            id: updateUserDetailsDto.avatar.id,
+        });
+
+        wrap(userToUpdate).assign({
+            details: {
+                ...updateUserDetailsDto,
+                avatar: avatar,
+            },
+        });
+
+        await this.em.persistAndFlush(userToUpdate);
+
+        return userToUpdate.toObject();
     }
 
     // create(createUserDto: CreateUserDto) {

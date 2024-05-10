@@ -1,9 +1,11 @@
 import 'react-advanced-cropper/dist/style.css';
 
 import {
+    CircleStencil,
     Cropper,
     type CropperRef,
     ImageRestriction,
+    RectangleStencil,
 } from 'react-advanced-cropper';
 
 import { Button } from '~/bundles/common/components/ui/button.js';
@@ -23,6 +25,7 @@ type Properties = {
     open: boolean;
     onOpenChange: (isOpen: boolean) => void;
     onCrop: (croppedImage: HTMLCanvasElement) => Promise<void>;
+    isCircle?: boolean;
 };
 
 const DialogCropper: React.FC<Properties> = ({
@@ -30,6 +33,7 @@ const DialogCropper: React.FC<Properties> = ({
     onOpenChange,
     src,
     onCrop,
+    isCircle = false,
 }) => {
     const cropperReference = useRef<CropperRef>(null);
 
@@ -53,18 +57,22 @@ const DialogCropper: React.FC<Properties> = ({
                 <DialogDescription>
                     Crop the image to the desired size
                 </DialogDescription>
-                <Cropper
-                    src={src}
-                    ref={cropperReference}
-                    imageRestriction={ImageRestriction.fillArea}
-                    className={'cropper'}
-                    stencilProps={{
-                        resizable: true,
-                        aspectRatio: aspectRatio,
-                        grid: true,
-                    }}
-                />
-
+                <div className="flex justify-center">
+                    <Cropper
+                        src={src}
+                        ref={cropperReference}
+                        imageRestriction={ImageRestriction.fitArea}
+                        className="rounded-xl w-[20rem] h-[28rem] md:w-[28rem] md:h-[40rem]"
+                        stencilProps={{
+                            resizable: true,
+                            aspectRatio: aspectRatio,
+                            grid: true,
+                        }}
+                        stencilComponent={
+                            isCircle ? CircleStencil : RectangleStencil
+                        }
+                    />
+                </div>
                 <DialogFooter className="justify-center">
                     <Button onClick={handleCrop}>Crop</Button>
                 </DialogFooter>

@@ -26,6 +26,7 @@ import { ManagerSignUp } from './bundles/auth/pages/manager-sign-up.js';
 import { NotFound } from './bundles/common/pages/pages.js';
 import { Managers } from './bundles/managers/pages/managers.js';
 import { Products } from './bundles/products/pages/products.js';
+import { ProfileSettings } from './bundles/profile/pages/profile-settings.js';
 import { ability } from './framework/casl/casl.package.js';
 import { store } from './framework/store/store.js';
 
@@ -78,6 +79,10 @@ const routes = [
                     {
                         path: AppRoute.ANALYTICS,
                         element: <div>Analytics</div>,
+                    },
+                    {
+                        path: AppRoute.PROFILE,
+                        element: <ProfileSettings />,
                     },
                     {
                         path: AppRoute.MANAGERS,

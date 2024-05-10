@@ -1,4 +1,5 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { PublicFile } from '@modules/files/entities/public-file.entity';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -10,7 +11,7 @@ import { UsersService } from './users.service';
 @Module({
     imports: [
         ConfigModule,
-        MikroOrmModule.forFeature([User]),
+        MikroOrmModule.forFeature([User, PublicFile]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],

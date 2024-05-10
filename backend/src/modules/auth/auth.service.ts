@@ -76,6 +76,13 @@ export class AuthService {
     ): Promise<UserResponseDto> {
         const user = await this.validateUser(userSignInRequestDto);
 
+        if (!user.isEmailConfirmed) {
+            throw new HttpException(
+                'Email is not confirmed',
+                HttpStatus.FORBIDDEN,
+            );
+        }
+
         return (
             await wrap(user).populate([
                 'role',

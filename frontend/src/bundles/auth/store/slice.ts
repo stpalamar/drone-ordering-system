@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { toast } from 'sonner';
 
 import { type UserResponseDto } from '~/bundles/users/users.js';
+import { usersApi } from '~/bundles/users/users-api.js';
 
 import { authApi } from '../auth-api.js';
 
@@ -44,6 +45,13 @@ const { reducer, actions, name } = createSlice({
             (state, { payload }) => {
                 state.user = payload;
                 state.isRefreshing = false;
+            },
+        );
+        builder.addMatcher(
+            usersApi.endpoints.updateUser.matchFulfilled,
+            (state, { payload }) => {
+                state.user = payload;
+                toast.success('Profile updated successfully');
             },
         );
         builder.addMatcher(authApi.endpoints.getMe.matchRejected, (state) => {
