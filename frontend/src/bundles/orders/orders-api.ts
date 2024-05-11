@@ -2,12 +2,18 @@ import { ApiPath, AppSubject } from '~/bundles/common/enums/enums.js';
 import { type PagedResponse } from '~/bundles/common/types/types.js';
 import { baseApi } from '~/framework/base-api/base-api.package.js';
 
-import { type OrderRequestDto, type OrderResponseDto } from './types/types.js';
+import {
+    type OrderQueryDto,
+    type OrderRequestDto,
+    type OrderResponseDto,
+} from './types/types.js';
 
 const ordersApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        getOrders: build.query<PagedResponse<OrderResponseDto>, number | void>({
-            query: (page = 1) => `${ApiPath.ORDERS}?page=${page}&limit=10`,
+        getOrders: build.query<PagedResponse<OrderResponseDto>, OrderQueryDto>({
+            query: ({ page, limit, period, status }) => {
+                return `${ApiPath.ORDERS}?page=${page}&limit=${limit}&period=${period}&status=${status}`;
+            },
             providesTags: [AppSubject.Order],
         }),
         getOrderById: build.query<OrderResponseDto, number>({

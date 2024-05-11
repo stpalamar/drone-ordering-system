@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@common/constants/constants';
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from '@common/constants/constants';
 import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
 import { PaginationQueryDto } from '@common/types/types';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
@@ -43,7 +43,7 @@ export class ProductsController {
     @UseGuards(PermissionsGuard)
     @CheckPermissions([PermissionAction.READ, PermissionSubject.PRODUCT])
     findAll(@Query() pagination: PaginationQueryDto) {
-        const { page = DEFAULT_PAGE, limit = DEFAULT_PAGE_SIZE } = pagination;
+        const { page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = pagination;
         return this.productsService.findAll(+page, +limit);
     }
 

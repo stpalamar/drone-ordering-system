@@ -1,1 +1,1 @@
-export { AppRoute } from 'shared';
+export { AppRoute, Period } from 'shared';

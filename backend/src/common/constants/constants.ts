@@ -1,1 +1,1 @@
-export { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from 'shared';
+export { DEFAULT_LIMIT, DEFAULT_PAGE } from 'shared';

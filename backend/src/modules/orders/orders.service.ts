@@ -10,7 +10,12 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Order } from './entities/order.entity';
 import { OrderStatus } from './enums/enums';
-import { OrderRequestDto, OrderResponseDto } from './types/types';
+import { getPeriodDate } from './helpers/helpers';
+import {
+    OrderQueryDto,
+    OrderRequestDto,
+    OrderResponseDto,
+} from './types/types';
 
 @Injectable()
 export class OrdersService {
@@ -66,18 +71,17 @@ export class OrdersService {
     }
 
     async findAll(
-        page: number,
-        limit: number,
+        query: OrderQueryDto,
     ): Promise<PagedResponse<OrderResponseDto>> {
-        if (page < 1 || limit < 1) {
-            throw new HttpException(
-                'Invalid query parameters',
-                HttpStatus.BAD_REQUEST,
-            );
-        }
+        const { page, limit, status, period } = query;
+
+        const periodDate = getPeriodDate(period);
 
         const [orders, count] = await this.orderRepository.findAndCount(
-            {},
+            {
+                status: status ? { $in: status } : {},
+                createdAt: periodDate ? { $gte: periodDate } : {},
+            },
             {
                 populate: ['items', 'items.product'],
                 offset: (page - 1) * limit,

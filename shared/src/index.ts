@@ -6,6 +6,8 @@ export {
 } from './bundles/managers/managers.js';
 export {
     type OrderItemDto,
+    type OrderQueryDto,
+    orderQueryValidationSchema,
     type OrderRequestDto,
     type OrderResponseDto,
     OrderStatus,
@@ -37,12 +39,13 @@ export {
     type UserSignUpRequestDto,
     userSignUpValidationSchema,
 } from './bundles/users/users.js';
-export { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from './constants/constants.js';
+export { DEFAULT_LIMIT, DEFAULT_PAGE } from './constants/constants.js';
 export {
     ApiPath,
     AppEnvironment,
     AppRoute,
     AppSubject,
+    Period,
 } from './enums/enums.js';
 export {
     type PagedResponse,

@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from '@common/constants/constants';
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from '@common/constants/constants';
 import { PaginationQueryDto } from '@common/types/types';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 import {
@@ -24,7 +24,7 @@ export class ManagersController {
 
     @Get()
     findAll(@Query() pagination: PaginationQueryDto) {
-        const { page = DEFAULT_PAGE, limit = DEFAULT_PAGE_SIZE } = pagination;
+        const { page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = pagination;
         return this.managersService.findAll(+page, +limit);
     }
 
