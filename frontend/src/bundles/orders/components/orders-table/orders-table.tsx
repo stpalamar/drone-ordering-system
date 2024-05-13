@@ -45,15 +45,16 @@ const OrdersTable: React.FC<Properties> = ({
                         </TableCell>
                     </TableRow>
                 )}
-                {!isLoading && items?.length === 0 && (
-                    <TableRow>
-                        <TableCell colSpan={5} className="p-24">
-                            <p className="text-center text-gray-500">
-                                No orders found
-                            </p>
-                        </TableCell>
-                    </TableRow>
-                )}
+                {(!isLoading && !items) ||
+                    (items?.length === 0 && (
+                        <TableRow>
+                            <TableCell colSpan={5} className="p-24">
+                                <p className="text-center text-gray-500">
+                                    No orders found
+                                </p>
+                            </TableCell>
+                        </TableRow>
+                    ))}
                 {!isLoading &&
                     items &&
                     items.map((item, index) => (

@@ -12,7 +12,8 @@ const ordersApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getOrders: build.query<PagedResponse<OrderResponseDto>, OrderQueryDto>({
             query: ({ page, limit, period, status }) => {
-                return `${ApiPath.ORDERS}?page=${page}&limit=${limit}&period=${period}&status=${status}`;
+                const statusQuery = status ? `&status=${status}` : '';
+                return `${ApiPath.ORDERS}?page=${page}&limit=${limit}&period=${period}${statusQuery}`;
             },
             providesTags: [AppSubject.Order],
         }),
