@@ -38,12 +38,18 @@ type Properties = {
     onSubmit: (payload: OrderRequestDto) => Promise<void>;
     productTypes: ProductTypesDto | null;
     isLoadingMutation: boolean;
+    disabled?: boolean;
+    defaultValues?: CreateOrderPayload;
+    isEdit?: boolean;
 };
 
 const CreateOrderForm: React.FC<Properties> = ({
     onSubmit,
     productTypes,
     isLoadingMutation,
+    disabled = false,
+    defaultValues = DEFAULT_CREATE_ORDER_PAYLOAD,
+    isEdit = false,
 }) => {
     const form = useAppForm<
         CreateOrderPayload,
@@ -51,7 +57,7 @@ const CreateOrderForm: React.FC<Properties> = ({
         OrderRequestDto
     >({
         resolver: zodResolver(orderValidationSchema),
-        defaultValues: DEFAULT_CREATE_ORDER_PAYLOAD,
+        defaultValues: defaultValues,
     });
 
     const { fields, append, remove } = useFieldArray<CreateOrderPayload>({
@@ -70,6 +76,8 @@ const CreateOrderForm: React.FC<Properties> = ({
         [form, onSubmit],
     );
 
+    const buttonLabel = isEdit ? 'Save changes' : 'Create order';
+
     return (
         <Form {...form}>
             <form onSubmit={handleSubmit}>
@@ -84,6 +92,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                                     <FormField
                                         control={form.control}
                                         name="firstName"
+                                        disabled={disabled}
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>
@@ -104,6 +113,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                                     <FormField
                                         control={form.control}
                                         name="lastName"
+                                        disabled={disabled}
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Last name</FormLabel>
@@ -122,6 +132,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                                     <FormField
                                         control={form.control}
                                         name="phone"
+                                        disabled={disabled}
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Phone</FormLabel>
@@ -140,6 +151,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                                     <FormField
                                         control={form.control}
                                         name="email"
+                                        disabled={disabled}
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Email</FormLabel>
@@ -164,6 +176,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                             index={index}
                             onRemove={remove}
                             productTypes={productTypes}
+                            disabled={disabled}
                         />
                     ))}
                 </div>
@@ -171,12 +184,12 @@ const CreateOrderForm: React.FC<Properties> = ({
                     <Button
                         type="submit"
                         className="flex items-center gap-2 min-w-28"
-                        disabled={isLoadingMutation}
+                        disabled={isLoadingMutation || disabled}
                     >
                         {isLoadingMutation ? (
                             <Loader variant="secondary" />
                         ) : (
-                            'Create order'
+                            buttonLabel
                         )}
                     </Button>
                     <Button
@@ -185,7 +198,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                             append(DEFAULT_ORDER_ITEM_PAYLOAD);
                         }}
                         className="gap-1"
-                        disabled={isLoadingMutation}
+                        disabled={isLoadingMutation || disabled}
                     >
                         <Plus className="h-4 w-4" />
                         <span>Add item</span>

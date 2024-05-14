@@ -1,1 +1,5 @@
-export { orderQueryValidationSchema, orderValidationSchema } from 'shared';
+export {
+    orderQueryValidationSchema,
+    orderValidationSchema,
+    updateOrderStatusValidationSchema,
+} from 'shared';

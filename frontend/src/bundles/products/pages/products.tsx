@@ -196,7 +196,7 @@ const Products: React.FC = () => {
                     </div>
                 </div>
                 <TabsContent value="all">
-                    <Card x-chunk="dashboard-06-chunk-0">
+                    <Card>
                         <CardHeader>
                             <CardTitle>Products</CardTitle>
                             <CardDescription>

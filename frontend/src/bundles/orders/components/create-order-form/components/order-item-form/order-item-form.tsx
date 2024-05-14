@@ -25,6 +25,11 @@ import {
 import { Input } from '~/bundles/common/components/ui/input.js';
 import { Label } from '~/bundles/common/components/ui/label.js';
 import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '~/bundles/common/components/ui/popover.js';
+import {
     Select,
     SelectContent,
     SelectItem,
@@ -40,6 +45,7 @@ import {
     useState,
     useWatch,
 } from '~/bundles/common/hooks/hooks.js';
+import { cn } from '~/bundles/common/lib/utils.js';
 import {
     type UseFieldArrayRemove,
     type UseFormReturn,
@@ -62,6 +68,7 @@ type Properties = {
     index: number;
     productTypes: ProductTypesDto | null;
     onRemove: UseFieldArrayRemove;
+    disabled?: boolean;
 };
 
 const OrderItemForm: React.FC<Properties> = ({
@@ -69,9 +76,9 @@ const OrderItemForm: React.FC<Properties> = ({
     index,
     onRemove,
     productTypes,
+    disabled = false,
 }) => {
     const [cropperOpen, setCropperOpen] = useState(false);
-    const [colorPickerOpen, setColorPickerOpen] = useState(false);
     const imageInputReference = useRef<HTMLInputElement>(null);
     const [image, setImage] = useState<{
         src: string;
@@ -89,17 +96,6 @@ const OrderItemForm: React.FC<Properties> = ({
         control: form.control,
         name: `items.${index}.wingsType`,
     });
-
-    const handleColorPicker = useCallback(() => {
-        setColorPickerOpen(!colorPickerOpen);
-    }, [colorPickerOpen]);
-
-    const handleColorChange = useCallback(
-        (color: string) => {
-            form.setValue(`items.${index}.color`, color);
-        },
-        [form, index],
-    );
 
     const handleLoadImage = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +156,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                 type="button"
                                 onClick={handleDeleteItem}
                                 className="gap-1"
+                                disabled={disabled}
                             >
                                 <Trash className="h-4 w-4" />
                                 <span>Remove</span>
@@ -181,6 +178,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
+                                        disabled={disabled}
                                     >
                                         <FormControl>
                                             <SelectTrigger
@@ -219,6 +217,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
+                                        disabled={disabled}
                                     >
                                         <FormControl>
                                             <SelectTrigger
@@ -257,6 +256,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
+                                        disabled={disabled}
                                     >
                                         <FormControl>
                                             <SelectTrigger
@@ -290,6 +290,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
+                                        disabled={disabled}
                                     >
                                         <FormControl>
                                             <SelectTrigger
@@ -326,6 +327,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                 <FormField
                                     control={form.control}
                                     name={`items.${index}.length`}
+                                    disabled={disabled}
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Length (cm)</FormLabel>
@@ -346,6 +348,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                 <FormField
                                     control={form.control}
                                     name={`items.${index}.width`}
+                                    disabled={disabled}
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Width (cm)</FormLabel>
@@ -368,6 +371,7 @@ const OrderItemForm: React.FC<Properties> = ({
                         <FormField
                             control={form.control}
                             name={`items.${index}.payloadCapacity`}
+                            disabled={disabled}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Payload capacity (kg)</FormLabel>
@@ -387,6 +391,7 @@ const OrderItemForm: React.FC<Properties> = ({
                         <FormField
                             control={form.control}
                             name={`items.${index}.flightDistance`}
+                            disabled={disabled}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Flight distance (km)</FormLabel>
@@ -406,6 +411,7 @@ const OrderItemForm: React.FC<Properties> = ({
                         <FormField
                             control={form.control}
                             name={`items.${index}.flightTime`}
+                            disabled={disabled}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Flight time (minutes)</FormLabel>
@@ -432,12 +438,14 @@ const OrderItemForm: React.FC<Properties> = ({
                             <FormField
                                 control={form.control}
                                 name={`items.${index}.additionalEquipment.camera`}
+                                disabled={disabled}
                                 render={({ field }) => (
                                     <FormItem className="space-x-2">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
+                                                disabled={disabled}
                                             />
                                         </FormControl>
                                         <FormLabel>Camera</FormLabel>
@@ -450,12 +458,14 @@ const OrderItemForm: React.FC<Properties> = ({
                             <FormField
                                 control={form.control}
                                 name={`items.${index}.additionalEquipment.thermographicCamera`}
+                                disabled={disabled}
                                 render={({ field }) => (
                                     <FormItem className="space-x-2">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
+                                                disabled={disabled}
                                             />
                                         </FormControl>
                                         <FormLabel>
@@ -470,12 +480,14 @@ const OrderItemForm: React.FC<Properties> = ({
                             <FormField
                                 control={form.control}
                                 name={`items.${index}.additionalEquipment.nightVision`}
+                                disabled={disabled}
                                 render={({ field }) => (
                                     <FormItem className="space-x-2">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
+                                                disabled={disabled}
                                             />
                                         </FormControl>
                                         <FormLabel>Night vision</FormLabel>
@@ -488,12 +500,14 @@ const OrderItemForm: React.FC<Properties> = ({
                             <FormField
                                 control={form.control}
                                 name={`items.${index}.additionalEquipment.parachute`}
+                                disabled={disabled}
                                 render={({ field }) => (
                                     <FormItem className="space-x-2">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
+                                                disabled={disabled}
                                             />
                                         </FormControl>
                                         <FormLabel>Parachute</FormLabel>
@@ -506,12 +520,14 @@ const OrderItemForm: React.FC<Properties> = ({
                             <FormField
                                 control={form.control}
                                 name={`items.${index}.additionalEquipment.autopilot`}
+                                disabled={disabled}
                                 render={({ field }) => (
                                     <FormItem className="space-x-2">
                                         <FormControl>
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
+                                                disabled={disabled}
                                             />
                                         </FormControl>
                                         <FormLabel>Autopilot</FormLabel>
@@ -530,6 +546,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
+                                                disabled={disabled}
                                             />
                                         </FormControl>
                                         <FormLabel>
@@ -550,6 +567,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                             <Checkbox
                                                 checked={field.value}
                                                 onCheckedChange={field.onChange}
+                                                disabled={disabled}
                                             />
                                         </FormControl>
                                         <FormLabel>GPS</FormLabel>
@@ -564,6 +582,7 @@ const OrderItemForm: React.FC<Properties> = ({
                         <FormField
                             control={form.control}
                             name={`items.${index}.amount`}
+                            disabled={disabled}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Amount</FormLabel>
@@ -583,22 +602,37 @@ const OrderItemForm: React.FC<Properties> = ({
                         <FormField
                             control={form.control}
                             name={`items.${index}.color`}
+                            disabled={disabled}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Color</FormLabel>
                                     <FormControl>
                                         <div className="relative w-10 h-10">
-                                            <ColorBox
-                                                color={field.value}
-                                                onClick={handleColorPicker}
-                                            />
-                                            {colorPickerOpen && (
-                                                <HexColorPicker
-                                                    className="absolute left-1/2 shadow-2xl"
-                                                    color={field.value}
-                                                    onChange={handleColorChange}
-                                                />
-                                            )}
+                                            <Popover>
+                                                <PopoverTrigger
+                                                    disabled={disabled}
+                                                    className={cn(
+                                                        disabled &&
+                                                            'cursor-not-allowed',
+                                                    )}
+                                                >
+                                                    <ColorBox
+                                                        color={field.value}
+                                                    />
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-min">
+                                                    <HexColorPicker
+                                                        color={field.value}
+                                                        onChange={(
+                                                            newColor: string,
+                                                        ) =>
+                                                            field.onChange(
+                                                                newColor,
+                                                            )
+                                                        }
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
                                         </div>
                                     </FormControl>
                                     <FormMessage />
@@ -611,6 +645,7 @@ const OrderItemForm: React.FC<Properties> = ({
                             <FormField
                                 control={form.control}
                                 name={`items.${index}.coatingTexture`}
+                                disabled={disabled}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Coating texture</FormLabel>
@@ -637,6 +672,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                 accept="image/*"
                                 onChange={handleLoadImage}
                                 ref={imageInputReference}
+                                disabled={disabled}
                             />
                         </div>
                         <DialogCropper
@@ -650,6 +686,7 @@ const OrderItemForm: React.FC<Properties> = ({
                         <FormField
                             control={form.control}
                             name={`items.${index}.additionalInfo`}
+                            disabled={disabled}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Additional info</FormLabel>

@@ -35,15 +35,7 @@ class OrderItem extends BaseEntity {
     materialType: string;
 
     @Property()
-    additionalEquipment: {
-        camera: boolean;
-        thermographicCamera: boolean;
-        nightVision: boolean;
-        parachute: boolean;
-        autopilot: boolean;
-        targetIdentification: boolean;
-        gps: boolean;
-    };
+    additionalEquipment: string;
 
     @Property()
     amount!: number;
@@ -68,7 +60,7 @@ class OrderItem extends BaseEntity {
             flightTime: this.flightTime,
             powerSource: this.powerSource,
             materialType: this.materialType,
-            additionalEquipment: this.additionalEquipment,
+            additionalEquipment: JSON.parse(this.additionalEquipment),
             amount: this.amount,
             color: this.color,
             coatingTexture: this.coatingTexture,

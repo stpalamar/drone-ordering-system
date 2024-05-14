@@ -9,7 +9,6 @@ const DEFAULT_ORDER_ITEM_PAYLOAD: OrderItemPayload = {
     length: '',
     width: '',
     payloadCapacity: '',
-    tankVolume: '',
     flightDistance: '',
     flightTime: '',
     powerSource: 'battery',

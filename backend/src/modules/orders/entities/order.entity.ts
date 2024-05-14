@@ -41,7 +41,9 @@ class Order extends BaseEntity {
     })
     status: ValueOf<typeof OrderStatus>;
 
-    @OneToMany(() => OrderItem, (orderItem) => orderItem.order)
+    @OneToMany(() => OrderItem, (orderItem) => orderItem.order, {
+        orphanRemoval: true,
+    })
     items = new Collection<OrderItem>(this);
 
     @Index()

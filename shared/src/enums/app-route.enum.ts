@@ -5,6 +5,7 @@ const AppRoute = {
     SIGN_UP: '/sign-up',
     DASHBOARD: '/admin/dashboard',
     ORDERS: '/admin/orders',
+    ORDER_$ID: '/admin/orders/:id',
     ORDERS_CREATE: '/admin/orders/create',
     PRODUCTS: '/admin/products',
     ANALYTICS: '/admin/analytics',

@@ -64,6 +64,10 @@ const OrderValidationMessage = {
     additionalInfo: {
         INVALID: 'Invalid additional info',
     },
+    status: {
+        FIELD_REQUIRED: 'Status is required',
+        FIELD_INVALID: 'Invalid status',
+    },
 } as const;
 
 export { OrderValidationMessage };

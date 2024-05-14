@@ -1,10 +1,4 @@
-import {
-    ChevronLeft,
-    ChevronRight,
-    Copy,
-    MoreVertical,
-    Truck,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy, MoreVertical } from 'lucide-react';
 
 import { RouterOutlet } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
@@ -29,15 +23,30 @@ import {
     PaginationNav,
 } from '~/bundles/common/components/ui/pagination.js';
 import { Separator } from '~/bundles/common/components/ui/separator.js';
-import { formatDateWithMonth } from '~/bundles/common/helpers/helpers.js';
+import {
+    configureUrlString,
+    formatDateWithMonth,
+} from '~/bundles/common/helpers/helpers.js';
+import { useCallback, useNavigate } from '~/bundles/common/hooks/hooks.js';
 import { type OrderResponseDto } from '~/bundles/orders/types/types.js';
+
+import { AppRoute } from '../../../../../../shared/src/enums/app-route.enum.js';
 
 type Properties = {
     order: OrderResponseDto;
 };
 
-const OrderDetails: React.FC<Properties> = ({ order }) => {
+const OrderCard: React.FC<Properties> = ({ order }) => {
     const { orderNumber, createdAt, firstName, lastName, phone, email } = order;
+
+    const navigate = useNavigate();
+
+    const handleViewMore = useCallback(() => {
+        const path = configureUrlString(AppRoute.ORDER_$ID, {
+            id: String(order.id),
+        });
+        navigate(path);
+    }, [order.id, navigate]);
 
     return (
         <div>
@@ -64,10 +73,11 @@ const OrderDetails: React.FC<Properties> = ({ order }) => {
                             size="sm"
                             variant="outline"
                             className="h-8 gap-1"
+                            onClick={handleViewMore}
                         >
-                            <Truck className="h-3.5 w-3.5" />
+                            <ChevronRight className="h-3.5 w-3.5" />
                             <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                                Track Order
+                                View more
                             </span>
                         </Button>
                         <DropdownMenu>
@@ -82,7 +92,9 @@ const OrderDetails: React.FC<Properties> = ({ order }) => {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    Change status
+                                </DropdownMenuItem>
                                 <DropdownMenuItem>Export</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>Trash</DropdownMenuItem>
@@ -177,4 +189,4 @@ const OrderDetails: React.FC<Properties> = ({ order }) => {
     );
 };
 
-export { OrderDetails };
+export { OrderCard };

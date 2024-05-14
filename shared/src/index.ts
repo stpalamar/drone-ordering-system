@@ -11,7 +11,9 @@ export {
     type OrderRequestDto,
     type OrderResponseDto,
     OrderStatus,
+    type OrderStatusDto,
     orderValidationSchema,
+    updateOrderStatusValidationSchema,
 } from './bundles/orders/orders.js';
 export {
     type AppAbility,

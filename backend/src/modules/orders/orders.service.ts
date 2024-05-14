@@ -12,9 +12,11 @@ import { Order } from './entities/order.entity';
 import { OrderStatus } from './enums/enums';
 import { getPeriodDate } from './helpers/helpers';
 import {
+    OrderItemDto,
     OrderQueryDto,
     OrderRequestDto,
     OrderResponseDto,
+    OrderStatusDto,
 } from './types/types';
 
 @Injectable()
@@ -33,29 +35,7 @@ export class OrdersService {
     ): Promise<OrderResponseDto> {
         const uuid = randomUUID();
 
-        const orderItems = await Promise.all(
-            createOrderDto.items.map(async (item) => {
-                const product = await this.productRepository.findOne({
-                    wingsType: item.wingsType,
-                    purpose: item.purpose,
-                });
-
-                if (!product) {
-                    throw new HttpException(
-                        'Product not found',
-                        HttpStatus.NOT_FOUND,
-                    );
-                }
-
-                return {
-                    ...item,
-                    coatingTexture: item.coatingTexture
-                        ? item.coatingTexture.id
-                        : null,
-                    product,
-                };
-            }),
-        );
+        const orderItems = await this.getOrderItems(createOrderDto.items);
 
         const newOrder = this.orderRepository.create({
             ...createOrderDto,
@@ -102,7 +82,7 @@ export class OrdersService {
     async findOne(id: number): Promise<OrderResponseDto> {
         const order = await this.orderRepository.findOne(
             { id },
-            { populate: ['items', 'items.product'] },
+            { populate: ['items', 'items.product', 'items.coatingTexture'] },
         );
 
         if (!order) {
@@ -113,20 +93,41 @@ export class OrdersService {
     }
 
     async update(id: number, updateOrderDto: OrderRequestDto) {
-        const order = await this.orderRepository.findOne({ id });
+        const order = await this.orderRepository.findOne(
+            { id },
+            { populate: ['items', 'items.coatingTexture'] },
+        );
 
         if (!order) {
             throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
         }
+
+        const orderItems = await this.getOrderItems(updateOrderDto.items);
 
         wrap(order).assign({
             email: updateOrderDto.email,
             firstName: updateOrderDto.firstName,
             lastName: updateOrderDto.lastName,
             phone: updateOrderDto.phone,
+            items: orderItems,
         });
         this.em.persistAndFlush(order);
-        return order;
+        return order.toObject();
+    }
+
+    async updateStatus(id: number, updateOrderStatusDto: OrderStatusDto) {
+        const order = await this.orderRepository.findOne(
+            { id },
+            { populate: ['items'] },
+        );
+
+        if (!order) {
+            throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+        }
+
+        wrap(order).assign({ status: updateOrderStatusDto.status });
+        this.em.persistAndFlush(order);
+        return order.toObject();
     }
 
     async softDelete(id: number) {
@@ -138,5 +139,34 @@ export class OrdersService {
 
         order.deletedAt = new Date();
         this.em.persistAndFlush(order);
+    }
+
+    private async getOrderItems(items: OrderItemDto[]) {
+        return await Promise.all(
+            items.map(async (item) => {
+                const product = await this.productRepository.findOne({
+                    wingsType: item.wingsType,
+                    purpose: item.purpose,
+                });
+
+                if (!product) {
+                    throw new HttpException(
+                        'Product not found',
+                        HttpStatus.NOT_FOUND,
+                    );
+                }
+
+                return {
+                    ...item,
+                    additionalEquipment: JSON.stringify(
+                        item.additionalEquipment,
+                    ),
+                    coatingTexture: item.coatingTexture
+                        ? item.coatingTexture.id
+                        : null,
+                    product,
+                };
+            }),
+        );
     }
 }

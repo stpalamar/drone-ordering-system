@@ -25,6 +25,7 @@ import { ConfirmEmail } from './bundles/auth/pages/confirm-email.js';
 import { ManagerSignUp } from './bundles/auth/pages/manager-sign-up.js';
 import { NotFound } from './bundles/common/pages/pages.js';
 import { Managers } from './bundles/managers/pages/managers.js';
+import { Order } from './bundles/orders/pages/order.js';
 import { Products } from './bundles/products/pages/products.js';
 import { ProfileSettings } from './bundles/profile/pages/profile-settings.js';
 import { ability } from './framework/casl/casl.package.js';
@@ -67,6 +68,10 @@ const routes = [
                     {
                         path: AppRoute.ORDERS,
                         element: <Orders />,
+                    },
+                    {
+                        path: AppRoute.ORDER_$ID,
+                        element: <Order />,
                     },
                     {
                         path: AppRoute.ORDERS_CREATE,

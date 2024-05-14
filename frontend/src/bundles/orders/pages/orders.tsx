@@ -34,7 +34,7 @@ import {
 import { cn } from '~/bundles/common/lib/utils.js';
 import { type ValueOf } from '~/bundles/common/types/types.js';
 import {
-    OrderDetails,
+    OrderCard,
     OrdersTable,
 } from '~/bundles/orders/components/components.js';
 import { OrderStatus, Period } from '~/bundles/orders/enums/enums.js';
@@ -112,8 +112,8 @@ const Orders: React.FC = () => {
                         <CardHeader className="pb-3">
                             <CardTitle>Your Orders</CardTitle>
                             <CardDescription className="max-w-lg text-balance leading-relaxed">
-                                Introducing Our Dynamic Orders Dashboard for
-                                Seamless Management and Insightful Analysis.
+                                Keep track of your orders and manage them
+                                efficiently. You can see only your orders here.
                             </CardDescription>
                         </CardHeader>
                         <CardFooter>
@@ -365,7 +365,7 @@ const Orders: React.FC = () => {
                     </Card>
                 </div>
             </div>
-            {selectedOrder && <OrderDetails order={selectedOrder} />}
+            {selectedOrder && <OrderCard order={selectedOrder} />}
         </main>
     );
 };

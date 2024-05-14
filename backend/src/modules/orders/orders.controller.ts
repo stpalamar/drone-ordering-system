@@ -14,6 +14,7 @@ import {
     Delete,
     Get,
     Param,
+    Patch,
     Post,
     Put,
     Query,
@@ -21,10 +22,11 @@ import {
 } from '@nestjs/common';
 
 import { OrdersService } from './orders.service';
-import { OrderQueryDto, OrderRequestDto } from './types/types';
+import { OrderQueryDto, OrderRequestDto, OrderStatusDto } from './types/types';
 import {
     orderQueryValidationSchema,
     orderValidationSchema,
+    updateOrderStatusValidationSchema,
 } from './validation-schemas/validation-schemas';
 
 @Controller('orders')
@@ -69,6 +71,17 @@ export class OrdersController {
         updateOrderDto: OrderRequestDto,
     ) {
         return this.ordersService.update(+id, updateOrderDto);
+    }
+
+    @Patch('/update-status/:id')
+    @UseGuards(PermissionsGuard)
+    @CheckPermissions([PermissionAction.UPDATE, PermissionSubject.ORDER])
+    updateStatus(
+        @Param('id') id: string,
+        @Body(new ZodValidationPipe(updateOrderStatusValidationSchema))
+        updateOrderStatusDto: OrderStatusDto,
+    ) {
+        return this.ordersService.updateStatus(+id, updateOrderStatusDto);
     }
 
     @Delete(':id')

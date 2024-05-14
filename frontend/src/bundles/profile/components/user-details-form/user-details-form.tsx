@@ -70,7 +70,9 @@ const UserDetailsForm: React.FC<Properties> = ({
         resolver: zodResolver(userDetailsValidationSchema),
         defaultValues: {
             ...userDetails,
-            dateOfBirth: getISODate(new Date(userDetails.dateOfBirth)),
+            dateOfBirth:
+                userDetails.dateOfBirth ??
+                getISODate(new Date(userDetails.dateOfBirth)),
         },
     });
 

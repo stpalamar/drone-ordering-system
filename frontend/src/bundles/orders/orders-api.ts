@@ -6,6 +6,7 @@ import {
     type OrderQueryDto,
     type OrderRequestDto,
     type OrderResponseDto,
+    type OrderStatusDto,
 } from './types/types.js';
 
 const ordersApi = baseApi.injectEndpoints({
@@ -23,6 +24,17 @@ const ordersApi = baseApi.injectEndpoints({
             }),
             providesTags: [AppSubject.Order],
         }),
+        updateOrderStatus: build.mutation<
+            OrderResponseDto,
+            { id: number; status: OrderStatusDto }
+        >({
+            query: (payload) => ({
+                url: `${ApiPath.ORDERS}/update-status/${payload.id}`,
+                method: 'PATCH',
+                body: payload.status,
+            }),
+            invalidatesTags: [AppSubject.Order],
+        }),
         createOrder: build.mutation<OrderResponseDto, OrderRequestDto>({
             query: (payload) => ({
                 url: ApiPath.ORDERS,
@@ -31,10 +43,31 @@ const ordersApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: [AppSubject.Order],
         }),
+        updateOrder: build.mutation<
+            OrderResponseDto,
+            { id: number; item: OrderRequestDto }
+        >({
+            query: (payload) => ({
+                url: `${ApiPath.ORDERS}/${payload.id}`,
+                method: 'PUT',
+                body: payload.item,
+            }),
+        }),
     }),
 });
 
-const { useGetOrdersQuery, useGetOrderByIdQuery, useCreateOrderMutation } =
-    ordersApi;
+const {
+    useGetOrdersQuery,
+    useGetOrderByIdQuery,
+    useCreateOrderMutation,
+    useUpdateOrderStatusMutation,
+    useUpdateOrderMutation,
+} = ordersApi;
 
-export { useCreateOrderMutation, useGetOrderByIdQuery, useGetOrdersQuery };
+export {
+    useCreateOrderMutation,
+    useGetOrderByIdQuery,
+    useGetOrdersQuery,
+    useUpdateOrderMutation,
+    useUpdateOrderStatusMutation,
+};

@@ -50,24 +50,19 @@ export class UsersService {
         };
     }
 
-    async update(id: number, updateUserDetailsDto: UserDetailsDto, user: User) {
-        if (id !== user.id) {
-            throw new HttpException(
-                'You are not allowed to update this user',
-                HttpStatus.FORBIDDEN,
-            );
-        }
-
+    async update(id: number, updateUserDetailsDto: UserDetailsDto) {
         const userToUpdate = await this.getById(id);
 
+        const userAvatar = updateUserDetailsDto.avatar;
+
         const avatar = await this.publicFilesRepository.findOne({
-            id: updateUserDetailsDto.avatar.id,
+            id: userAvatar ? userAvatar.id : null,
         });
 
         wrap(userToUpdate).assign({
             details: {
                 ...updateUserDetailsDto,
-                avatar: avatar,
+                avatar: avatar ?? null,
             },
         });
 

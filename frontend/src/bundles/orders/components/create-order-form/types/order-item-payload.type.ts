@@ -5,8 +5,7 @@ type OrderItemPayload = {
     wingsType: string;
     length: number | '';
     width: number | '';
-    payloadCapacity?: number | '';
-    tankVolume?: number | '';
+    payloadCapacity: number | '';
     flightDistance: number | '';
     flightTime: number | '';
     powerSource: string;
