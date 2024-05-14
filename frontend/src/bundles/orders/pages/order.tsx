@@ -192,7 +192,7 @@ const Order: React.FC = () => {
                                     onClick={handleEnableEditing}
                                 >
                                     <Pencil className="h-4 w-4 mr-2" />
-                                    Edit order
+                                    {isEditing ? 'Cancel' : 'Edit'}
                                 </Button>
                                 <Button variant="secondary">
                                     <Download className="h-4 w-4  mr-2" />
@@ -206,6 +206,7 @@ const Order: React.FC = () => {
                                 disabled={!isEditing}
                                 defaultValues={getOrderPayload(order)}
                                 isEdit
+                                setIsEditing={setIsEditing}
                             />
                         </div>
                     </div>

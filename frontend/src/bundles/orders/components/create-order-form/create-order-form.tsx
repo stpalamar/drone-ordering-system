@@ -41,6 +41,7 @@ type Properties = {
     disabled?: boolean;
     defaultValues?: CreateOrderPayload;
     isEdit?: boolean;
+    setIsEditing?: (value: boolean) => void;
 };
 
 const CreateOrderForm: React.FC<Properties> = ({
@@ -50,6 +51,7 @@ const CreateOrderForm: React.FC<Properties> = ({
     disabled = false,
     defaultValues = DEFAULT_CREATE_ORDER_PAYLOAD,
     isEdit = false,
+    setIsEditing = (): void => {},
 }) => {
     const form = useAppForm<
         CreateOrderPayload,
@@ -75,6 +77,11 @@ const CreateOrderForm: React.FC<Properties> = ({
         },
         [form, onSubmit],
     );
+
+    const handleReset = useCallback(() => {
+        form.reset(defaultValues);
+        setIsEditing(false);
+    }, [defaultValues, form, setIsEditing]);
 
     const buttonLabel = isEdit ? 'Save changes' : 'Create order';
 
@@ -203,6 +210,15 @@ const CreateOrderForm: React.FC<Properties> = ({
                         <Plus className="h-4 w-4" />
                         <span>Add item</span>
                     </Button>
+                    {isEdit && (
+                        <Button
+                            onClick={handleReset}
+                            type="button"
+                            disabled={isLoadingMutation || disabled}
+                        >
+                            Reset
+                        </Button>
+                    )}
                 </div>
             </form>
         </Form>
