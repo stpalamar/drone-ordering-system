@@ -37,6 +37,7 @@ import {
 import {
     configureUrlString,
     formatDate,
+    formatPrice,
 } from '~/bundles/common/helpers/helpers.js';
 import {
     useAbility,
@@ -158,7 +159,7 @@ const ProductsTable: React.FC<Properties> = ({
                                 </TableCell>
                                 <TableCell>{product.wingsType}</TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    ${product.price.basePrice}
+                                    {formatPrice(product.price.basePrice)}
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
                                     {product.totalSales}
@@ -227,7 +228,10 @@ const ProductsTable: React.FC<Properties> = ({
                         />
                         <p>Product: {productToDelete?.purpose}</p>
                         <p>Wings type: {productToDelete?.wingsType}</p>
-                        <p>Base price: ${productToDelete?.price.basePrice}</p>
+                        <p>
+                            Base price: $
+                            {formatPrice(productToDelete?.price.basePrice ?? 0)}
+                        </p>
                     </div>
                     <DialogFooter>
                         <Button

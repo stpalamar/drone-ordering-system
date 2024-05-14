@@ -54,6 +54,9 @@ class Order extends BaseEntity {
     @ManyToOne(() => User, { nullable: true })
     customer!: User;
 
+    @Property({ type: 'int' })
+    totalPrice!: number;
+
     @Index()
     @Property({ nullable: true, type: 'timestamptz' })
     deletedAt?: Date;
@@ -70,6 +73,7 @@ class Order extends BaseEntity {
             manager: this.manager ? this.manager.toObject() : null,
             customer: this.customer ? this.customer.toObject() : null,
             status: this.status,
+            totalPrice: this.totalPrice,
             createdAt: this.createdAt.toISOString(),
         };
     }

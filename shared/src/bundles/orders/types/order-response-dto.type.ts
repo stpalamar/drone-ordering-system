@@ -11,6 +11,7 @@ type OrderResponseDto = {
     email: string;
     items: OrderItemDto[];
     status: ValueOf<typeof OrderStatus>;
+    totalPrice: number;
     createdAt: string;
 };
 

@@ -27,6 +27,7 @@ import { AppRoute } from '~/bundles/common/enums/enums.js';
 import {
     configureUrlString,
     formatDateWithMonth,
+    formatPrice,
 } from '~/bundles/common/helpers/helpers.js';
 import {
     useCallback,
@@ -162,7 +163,7 @@ const OrderCard: React.FC<Properties> = ({ order }) => {
                                         {item.purpose} {item.wingsType} x{' '}
                                         <span>{item.amount}</span>
                                     </span>
-                                    <span>$250.00</span>
+                                    <span>{formatPrice(item.price)}</span>
                                 </li>
                             ))}
                         </ul>

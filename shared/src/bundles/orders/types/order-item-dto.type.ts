@@ -23,6 +23,7 @@ type OrderItemDto = {
     color: string;
     coatingTexture: FileResponseDto | null;
     additionalInfo: string | null;
+    price: number;
 };
 
 export { type OrderItemDto };

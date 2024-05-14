@@ -41,16 +41,25 @@ export class OrdersService {
 
         const userEntity = await this.usersService.getById(user.id);
 
+        const manager = user.role.name === UserRole.MANAGER ? userEntity : null;
+        const customer = user.role.name === UserRole.USER ? userEntity : null;
+        const status =
+            user.role.name === UserRole.USER
+                ? OrderStatus.PENDING
+                : OrderStatus.CONFIRMED;
+        const totalPrice = orderItems.reduce(
+            (total, item) => total + item.price,
+            0,
+        );
+
         const newOrder = this.orderRepository.create({
             ...createOrderDto,
             items: orderItems,
             orderNumber: uuid,
-            manager: user.role.name === UserRole.MANAGER ? userEntity : null,
-            customer: user.role.name === UserRole.USER ? userEntity : null,
-            status:
-                user.role.name === UserRole.USER
-                    ? OrderStatus.PENDING
-                    : OrderStatus.CONFIRMED,
+            manager,
+            customer,
+            status,
+            totalPrice,
         });
         this.em.persistAndFlush(newOrder);
         return newOrder.toObject();
@@ -172,10 +181,15 @@ export class OrdersService {
     private async getOrderItems(items: OrderItemDto[]) {
         return await Promise.all(
             items.map(async (item) => {
-                const product = await this.productRepository.findOne({
-                    wingsType: item.wingsType,
-                    purpose: item.purpose,
-                });
+                const product = await this.productRepository.findOne(
+                    {
+                        wingsType: item.wingsType,
+                        purpose: item.purpose,
+                    },
+                    {
+                        populate: ['price'],
+                    },
+                );
 
                 if (!product) {
                     throw new HttpException(
@@ -194,8 +208,42 @@ export class OrdersService {
                         ? item.coatingTexture.id
                         : null,
                     product,
+                    price: this.calculateOrderItemPrice(item, product),
                 };
             }),
         );
+    }
+
+    private calculateOrderItemPrice(item: OrderItemDto, product: Product) {
+        let itemPrice = 0;
+
+        itemPrice += product.price.basePrice;
+
+        itemPrice += item.length * product.price.lengthUnitPrice;
+        itemPrice += item.width * product.price.widthUnitPrice;
+        itemPrice +=
+            item.payloadCapacity * product.price.payloadCapacityUnitPrice;
+        itemPrice +=
+            item.flightDistance * product.price.flightDistanceUnitPrice;
+        itemPrice += item.flightTime * product.price.flightTimeUnitPrice;
+
+        const additionalEquipmentPrices =
+            product.price.additionalEquipmentPrices;
+        const additionalEquipment = item.additionalEquipment;
+
+        for (const equipment in additionalEquipment) {
+            if (additionalEquipment[equipment]) {
+                itemPrice += additionalEquipmentPrices[equipment];
+            }
+        }
+
+        itemPrice += product.price.colorPrice;
+
+        if (item.coatingTexture) {
+            itemPrice += product.price.coatingTexturePrice;
+        }
+
+        itemPrice += itemPrice * item.amount;
+        return itemPrice;
     }
 }

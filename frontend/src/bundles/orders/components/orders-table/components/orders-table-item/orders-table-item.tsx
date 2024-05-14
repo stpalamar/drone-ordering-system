@@ -1,6 +1,6 @@
 import { Badge } from '~/bundles/common/components/ui/badge.js';
 import { TableCell, TableRow } from '~/bundles/common/components/ui/table.js';
-import { formatDate } from '~/bundles/common/helpers/helpers.js';
+import { formatDate, formatPrice } from '~/bundles/common/helpers/helpers.js';
 import { useCallback } from '~/bundles/common/hooks/hooks.js';
 import { cn } from '~/bundles/common/lib/utils.js';
 import { getOrderStatusString } from '~/bundles/orders/helpers/helpers.js';
@@ -17,7 +17,7 @@ const OrdersTableItem: React.FC<Properties> = ({
     isActive,
     onSelect,
 }) => {
-    const { firstName, lastName, email, status, createdAt } = item;
+    const { firstName, lastName, email, status, totalPrice, createdAt } = item;
 
     const handleSelect = useCallback(() => {
         onSelect(item);
@@ -49,8 +49,7 @@ const OrdersTableItem: React.FC<Properties> = ({
                 {formatDate(new Date(createdAt))}
             </TableCell>
             <TableCell className="text-right">
-                {/* To be implemented */}
-                $amount
+                {formatPrice(totalPrice)}
             </TableCell>
         </TableRow>
     );

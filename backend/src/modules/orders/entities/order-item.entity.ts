@@ -50,6 +50,9 @@ class OrderItem extends BaseEntity {
     @Property({ nullable: true })
     additionalInfo?: string | null;
 
+    @Property({ type: 'int' })
+    price!: number;
+
     toObject() {
         return {
             purpose: this.product.purpose,
@@ -66,6 +69,7 @@ class OrderItem extends BaseEntity {
             color: this.color,
             coatingTexture: this.coatingTexture,
             additionalInfo: this.additionalInfo,
+            price: this.price,
         };
     }
 }

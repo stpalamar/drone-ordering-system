@@ -34,7 +34,7 @@ const OrdersTable: React.FC<Properties> = ({
                         Status
                     </TableHead>
                     <TableHead className="hidden md:table-cell">Date</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    <TableHead className="text-right">Price</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
