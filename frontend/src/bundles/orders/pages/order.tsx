@@ -2,6 +2,7 @@ import { ChevronLeft, Download, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { Loader, Navigate } from '~/bundles/common/components/components.js';
+import { Alert, AlertTitle } from '~/bundles/common/components/ui/alert.js';
 import { Badge } from '~/bundles/common/components/ui/badge.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import {
@@ -187,27 +188,40 @@ const Order: React.FC = () => {
                         <Separator />
                         <div>
                             <div className="flex gap-4 mb-4">
-                                <Button
-                                    variant="secondary"
-                                    onClick={handleEnableEditing}
-                                >
-                                    <Pencil className="h-4 w-4 mr-2" />
-                                    {isEditing ? 'Cancel' : 'Edit'}
-                                </Button>
-                                <Button variant="secondary">
-                                    <Download className="h-4 w-4  mr-2" />
-                                    Get PDF
-                                </Button>
+                                {isEditing ? (
+                                    <Alert>
+                                        <Pencil className="h-4 w-4 mr-2" />
+                                        <AlertTitle>
+                                            You are currently editing the order!
+                                        </AlertTitle>
+                                    </Alert>
+                                ) : (
+                                    <>
+                                        <Button
+                                            variant="secondary"
+                                            onClick={handleEnableEditing}
+                                        >
+                                            <Pencil className="h-4 w-4 mr-2" />
+                                            Edit
+                                        </Button>
+                                        <Button variant="secondary">
+                                            <Download className="h-4 w-4  mr-2" />
+                                            Get PDF
+                                        </Button>
+                                    </>
+                                )}
                             </div>
-                            <CreateOrderForm
-                                onSubmit={handleSaveOrder}
-                                isLoadingMutation={isLoadingUpdateOrder}
-                                productTypes={productsTypes}
-                                disabled={!isEditing}
-                                defaultValues={getOrderPayload(order)}
-                                isEdit
-                                setIsEditing={setIsEditing}
-                            />
+                            <div className={cn(isEditing && 'border-blue-400')}>
+                                <CreateOrderForm
+                                    onSubmit={handleSaveOrder}
+                                    isLoadingMutation={isLoadingUpdateOrder}
+                                    productTypes={productsTypes}
+                                    disabled={!isEditing}
+                                    defaultValues={getOrderPayload(order)}
+                                    isEdit
+                                    setIsEditing={setIsEditing}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

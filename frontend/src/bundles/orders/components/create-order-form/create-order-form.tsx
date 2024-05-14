@@ -216,7 +216,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                             type="button"
                             disabled={isLoadingMutation || disabled}
                         >
-                            Reset
+                            Cancel
                         </Button>
                     )}
                 </div>
