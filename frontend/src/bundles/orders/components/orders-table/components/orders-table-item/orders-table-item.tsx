@@ -3,6 +3,7 @@ import { TableCell, TableRow } from '~/bundles/common/components/ui/table.js';
 import { formatDate } from '~/bundles/common/helpers/helpers.js';
 import { useCallback } from '~/bundles/common/hooks/hooks.js';
 import { cn } from '~/bundles/common/lib/utils.js';
+import { getOrderStatusString } from '~/bundles/orders/helpers/helpers.js';
 import { type OrderResponseDto } from '~/bundles/orders/types/types.js';
 
 type Properties = {
@@ -41,7 +42,7 @@ const OrdersTableItem: React.FC<Properties> = ({
             </TableCell>
             <TableCell className="hidden sm:table-cell">
                 <Badge className="text-xs" variant="secondary">
-                    {status.toUpperCase()}
+                    {getOrderStatusString(status)}
                 </Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">

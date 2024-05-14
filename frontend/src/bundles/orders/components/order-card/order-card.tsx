@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight, Copy, MoreVertical } from 'lucide-react';
+import { toast } from 'sonner';
 
-import { RouterOutlet } from '~/bundles/common/components/components.js';
+import { Badge } from '~/bundles/common/components/ui/badge.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import {
     Card,
@@ -14,7 +15,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '~/bundles/common/components/ui/dropdown-menu.js';
 import {
@@ -23,23 +23,57 @@ import {
     PaginationNav,
 } from '~/bundles/common/components/ui/pagination.js';
 import { Separator } from '~/bundles/common/components/ui/separator.js';
+import { AppRoute } from '~/bundles/common/enums/enums.js';
 import {
     configureUrlString,
     formatDateWithMonth,
 } from '~/bundles/common/helpers/helpers.js';
-import { useCallback, useNavigate } from '~/bundles/common/hooks/hooks.js';
-import { type OrderResponseDto } from '~/bundles/orders/types/types.js';
-
-import { AppRoute } from '../../../../../../shared/src/enums/app-route.enum.js';
+import {
+    useCallback,
+    useNavigate,
+    useState,
+} from '~/bundles/common/hooks/hooks.js';
+import { ChangeStatusDialog } from '~/bundles/orders/components/components.js';
+import { getOrderStatusString } from '~/bundles/orders/helpers/helpers.js';
+import { useUpdateOrderStatusMutation } from '~/bundles/orders/orders-api.js';
+import {
+    type OrderResponseDto,
+    type OrderStatusDto,
+} from '~/bundles/orders/types/types.js';
 
 type Properties = {
     order: OrderResponseDto;
 };
 
 const OrderCard: React.FC<Properties> = ({ order }) => {
-    const { orderNumber, createdAt, firstName, lastName, phone, email } = order;
+    const {
+        orderNumber,
+        createdAt,
+        firstName,
+        lastName,
+        phone,
+        email,
+        status,
+        id,
+    } = order;
 
     const navigate = useNavigate();
+
+    const [changeStatusOpen, setChangeStatusOpen] = useState(false);
+
+    const [updateOrderStatus, { isLoading: isLoadingUpdateStatus }] =
+        useUpdateOrderStatusMutation();
+
+    const handleChangeStatus = useCallback(
+        async (payload: OrderStatusDto) => {
+            await updateOrderStatus({
+                id,
+                status: payload,
+            });
+            setChangeStatusOpen(false);
+        },
+        [updateOrderStatus, id],
+    );
 
     const handleViewMore = useCallback(() => {
         const path = configureUrlString(AppRoute.ORDER_$ID, {
@@ -48,58 +82,71 @@ const OrderCard: React.FC<Properties> = ({ order }) => {
         navigate(path);
     }, [order.id, navigate]);
 
+    const handleCopyToClipboard = useCallback(() => {
+        void navigator.clipboard.writeText(orderNumber);
+        toast.success('Order ID copied to clipboard');
+    }, [orderNumber]);
+
     return (
         <div>
             <Card className="overflow-hidden">
-                <CardHeader className="flex flex-row items-start bg-muted/50">
-                    <div className="grid gap-0.5">
-                        <CardTitle className="group flex items-center gap-2 text-lg">
-                            Order {orderNumber}
-                            <Button
-                                size="icon"
-                                variant="outline"
-                                className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
-                            >
-                                <Copy className="h-3 w-3" />
-                                <span className="sr-only">Copy Order ID</span>
-                            </Button>
-                        </CardTitle>
-                        <CardDescription>
-                            Date: {formatDateWithMonth(new Date(createdAt))}
-                        </CardDescription>
-                    </div>
-                    <div className="ml-auto flex items-center gap-1">
+                <CardHeader className="flex flex-col items-start bg-muted/50">
+                    <CardTitle className="group flex items-center gap-2 text-lg">
+                        Order: {orderNumber.toUpperCase()}
                         <Button
-                            size="sm"
+                            size="icon"
                             variant="outline"
-                            className="h-8 gap-1"
-                            onClick={handleViewMore}
+                            className="h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
+                            onClick={handleCopyToClipboard}
                         >
-                            <ChevronRight className="h-3.5 w-3.5" />
-                            <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
-                                View more
-                            </span>
+                            <Copy className="h-3 w-3" />
+                            <span className="sr-only">Copy Order ID</span>
                         </Button>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    size="icon"
-                                    variant="outline"
-                                    className="h-8 w-8"
-                                >
-                                    <MoreVertical className="h-3.5 w-3.5" />
-                                    <span className="sr-only">More</span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem>
-                                    Change status
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>Export</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>Trash</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                    </CardTitle>
+                    <div className="flex w-full flex-col xl:flex-row justify-between items-center gap-4">
+                        <div className="flex flex-col items-center gap-2 xl:items-start">
+                            <CardDescription>
+                                Date: {formatDateWithMonth(new Date(createdAt))}
+                            </CardDescription>
+                            <Badge className="w-min whitespace-nowrap">
+                                {getOrderStatusString(status)}
+                            </Badge>
+                        </div>
+                        <div className="flex flex-row gap-1">
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-8 gap-1"
+                                onClick={handleViewMore}
+                            >
+                                <ChevronRight className="h-3.5 w-3.5" />
+                                <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">
+                                    View more
+                                </span>
+                            </Button>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        size="icon"
+                                        variant="outline"
+                                        className="h-8 w-8"
+                                    >
+                                        <MoreVertical className="h-3.5 w-3.5" />
+                                        <span className="sr-only">More</span>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem
+                                        onClick={() =>
+                                            setChangeStatusOpen(true)
+                                        }
+                                    >
+                                        Change status
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>Get PDF</DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </div>
                 </CardHeader>
                 <CardContent className="p-6 text-sm">
@@ -184,7 +231,13 @@ const OrderCard: React.FC<Properties> = ({ order }) => {
                     </PaginationNav>
                 </CardFooter>
             </Card>
-            <RouterOutlet />
+            <ChangeStatusDialog
+                open={changeStatusOpen}
+                onOpenChange={setChangeStatusOpen}
+                onSubmit={handleChangeStatus}
+                status={status}
+                isLoading={isLoadingUpdateStatus}
+            />
         </div>
     );
 };
