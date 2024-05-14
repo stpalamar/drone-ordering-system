@@ -3,6 +3,7 @@ import { Entity, ManyToOne, OneToOne, Property } from '@mikro-orm/postgresql';
 import { PublicFile } from '@modules/files/entities/public-file.entity';
 import { Product } from '@modules/products/entities/product.entity';
 
+import { OrderItemDto } from '../types/types';
 import { Order } from './order.entity';
 
 @Entity()
@@ -34,8 +35,8 @@ class OrderItem extends BaseEntity {
     @Property()
     materialType: string;
 
-    @Property()
-    additionalEquipment: string;
+    @Property({ type: 'jsonb' })
+    additionalEquipment: OrderItemDto['additionalEquipment'];
 
     @Property()
     amount!: number;
@@ -60,7 +61,7 @@ class OrderItem extends BaseEntity {
             flightTime: this.flightTime,
             powerSource: this.powerSource,
             materialType: this.materialType,
-            additionalEquipment: JSON.parse(this.additionalEquipment),
+            additionalEquipment: this.additionalEquipment,
             amount: this.amount,
             color: this.color,
             coatingTexture: this.coatingTexture,

@@ -26,6 +26,8 @@ import { ManagerSignUp } from './bundles/auth/pages/manager-sign-up.js';
 import { NotFound } from './bundles/common/pages/pages.js';
 import { Managers } from './bundles/managers/pages/managers.js';
 import { Order } from './bundles/orders/pages/order.js';
+import { CreateProduct } from './bundles/products/pages/create-product.js';
+import { Product } from './bundles/products/pages/product.js';
 import { Products } from './bundles/products/pages/products.js';
 import { ProfileSettings } from './bundles/profile/pages/profile-settings.js';
 import { ability } from './framework/casl/casl.package.js';
@@ -74,12 +76,20 @@ const routes = [
                         element: <Order />,
                     },
                     {
-                        path: AppRoute.ORDERS_CREATE,
+                        path: AppRoute.ORDER_CREATE,
                         element: <CreateOrder />,
                     },
                     {
                         path: AppRoute.PRODUCTS,
                         element: <Products />,
+                    },
+                    {
+                        path: AppRoute.PRODUCT_CREATE,
+                        element: <CreateProduct />,
+                    },
+                    {
+                        path: AppRoute.PRODUCT_$ID,
+                        element: <Product />,
                     },
                     {
                         path: AppRoute.ANALYTICS,

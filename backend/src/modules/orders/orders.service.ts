@@ -6,6 +6,7 @@ import { EntityManager, EntityRepository, wrap } from '@mikro-orm/postgresql';
 import { Product } from '@modules/products/entities/product.entity';
 import { User } from '@modules/users/entities/user.entity';
 import { UserRole } from '@modules/users/enums/enums';
+import { UsersService } from '@modules/users/users.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Order } from './entities/order.entity';
@@ -26,6 +27,7 @@ export class OrdersService {
         private readonly orderRepository: EntityRepository<Order>,
         @InjectRepository(Product)
         private readonly productRepository: EntityRepository<Product>,
+        private readonly usersService: UsersService,
         private readonly em: EntityManager,
     ) {}
 
@@ -37,10 +39,14 @@ export class OrdersService {
 
         const orderItems = await this.getOrderItems(createOrderDto.items);
 
+        const userEntity = await this.usersService.getById(user.id);
+
         const newOrder = this.orderRepository.create({
             ...createOrderDto,
             items: orderItems,
             orderNumber: uuid,
+            manager: user.role.name === UserRole.MANAGER ? userEntity : null,
+            customer: user.role.name === UserRole.USER ? userEntity : null,
             status:
                 user.role.name === UserRole.USER
                     ? OrderStatus.PENDING
@@ -63,7 +69,7 @@ export class OrdersService {
                 createdAt: periodDate ? { $gte: periodDate } : {},
             },
             {
-                populate: ['items', 'items.product'],
+                populate: ['items', 'items.product', 'customer', 'manager'],
                 offset: (page - 1) * limit,
                 limit: limit,
                 orderBy: { id: 'ASC' },
@@ -82,7 +88,15 @@ export class OrdersService {
     async findOne(id: number): Promise<OrderResponseDto> {
         const order = await this.orderRepository.findOne(
             { id },
-            { populate: ['items', 'items.product', 'items.coatingTexture'] },
+            {
+                populate: [
+                    'items',
+                    'items.product',
+                    'items.coatingTexture',
+                    'customer',
+                    'manager',
+                ],
+            },
         );
 
         if (!order) {
@@ -95,7 +109,14 @@ export class OrdersService {
     async update(id: number, updateOrderDto: OrderRequestDto) {
         const order = await this.orderRepository.findOne(
             { id },
-            { populate: ['items', 'items.coatingTexture'] },
+            {
+                populate: [
+                    'items',
+                    'items.coatingTexture',
+                    'manager',
+                    'customer',
+                ],
+            },
         );
 
         if (!order) {
@@ -118,7 +139,14 @@ export class OrdersService {
     async updateStatus(id: number, updateOrderStatusDto: OrderStatusDto) {
         const order = await this.orderRepository.findOne(
             { id },
-            { populate: ['items'] },
+            {
+                populate: [
+                    'items',
+                    'items.coatingTexture',
+                    'manager',
+                    'customer',
+                ],
+            },
         );
 
         if (!order) {
@@ -156,11 +184,12 @@ export class OrdersService {
                     );
                 }
 
+                product.totalSales += 1;
+                this.em.persistAndFlush(product);
+
                 return {
                     ...item,
-                    additionalEquipment: JSON.stringify(
-                        item.additionalEquipment,
-                    ),
+                    additionalEquipment: item.additionalEquipment,
                     coatingTexture: item.coatingTexture
                         ? item.coatingTexture.id
                         : null,

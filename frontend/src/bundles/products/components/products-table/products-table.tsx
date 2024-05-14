@@ -30,13 +30,18 @@ import {
     TableRow,
 } from '~/bundles/common/components/ui/table.js';
 import {
+    AppRoute,
     PermissionAction,
     PermissionSubject,
 } from '~/bundles/common/enums/enums.js';
-import { formatDate } from '~/bundles/common/helpers/helpers.js';
+import {
+    configureUrlString,
+    formatDate,
+} from '~/bundles/common/helpers/helpers.js';
 import {
     useAbility,
     useCallback,
+    useNavigate,
     useState,
 } from '~/bundles/common/hooks/hooks.js';
 import { type ProductResponseDto } from '~/bundles/products/types/types.js';
@@ -54,6 +59,7 @@ const ProductsTable: React.FC<Properties> = ({
     isLoadingDelete,
     onDelete,
 }) => {
+    const navigate = useNavigate();
     const ability = useAbility(AbilityContext);
 
     const [productToDelete, setProductToDelete] =
@@ -68,6 +74,16 @@ const ProductsTable: React.FC<Properties> = ({
         [setProductToDelete, setDeleteOpen],
     );
 
+    const handleClickView = useCallback(
+        (id: number) => {
+            const path = configureUrlString(AppRoute.PRODUCT_$ID, {
+                id: String(id),
+            });
+            navigate(path);
+        },
+        [navigate],
+    );
+
     const handleDelete = useCallback(() => {
         if (!productToDelete) {
             return;
@@ -80,10 +96,6 @@ const ProductsTable: React.FC<Properties> = ({
 
     const canDelete = ability.can(
         PermissionAction.DELETE,
-        PermissionSubject.PRODUCT,
-    );
-    const canEdit = ability.can(
-        PermissionAction.UPDATE,
         PermissionSubject.PRODUCT,
     );
 
@@ -146,11 +158,10 @@ const ProductsTable: React.FC<Properties> = ({
                                 </TableCell>
                                 <TableCell>{product.wingsType}</TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    {product.basePrice}
+                                    ${product.price.basePrice}
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
-                                    {/* To be implemented */}
-                                    25
+                                    {product.totalSales}
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">
                                     {formatDate(new Date(product.createdAt))}
@@ -174,9 +185,11 @@ const ProductsTable: React.FC<Properties> = ({
                                                 Actions
                                             </DropdownMenuLabel>
                                             <DropdownMenuItem
-                                                disabled={!canEdit}
+                                                onClick={() =>
+                                                    handleClickView(product.id)
+                                                }
                                             >
-                                                Edit
+                                                View
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
                                                 onClick={() =>
@@ -214,7 +227,7 @@ const ProductsTable: React.FC<Properties> = ({
                         />
                         <p>Product: {productToDelete?.purpose}</p>
                         <p>Wings type: {productToDelete?.wingsType}</p>
-                        <p>Base price: ${productToDelete?.basePrice}</p>
+                        <p>Base price: ${productToDelete?.price.basePrice}</p>
                     </div>
                     <DialogFooter>
                         <Button

@@ -41,7 +41,7 @@ const ordersApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: payload,
             }),
-            invalidatesTags: [AppSubject.Order],
+            invalidatesTags: [AppSubject.Order, AppSubject.Product],
         }),
         updateOrder: build.mutation<
             OrderResponseDto,

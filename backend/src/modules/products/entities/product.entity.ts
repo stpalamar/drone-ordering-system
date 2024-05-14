@@ -3,6 +3,8 @@ import { WithSoftDelete } from '@common/database/filters/filters';
 import { Entity, Index, OneToOne, Property } from '@mikro-orm/postgresql';
 import { PublicFile } from '@modules/files/entities/public-file.entity';
 
+import { ProductPrice } from './product-price.entity';
+
 @Entity()
 @Index({
     name: 'product_purpose_wings_type_deleted_at_null_unique',
@@ -20,8 +22,11 @@ class Product extends BaseEntity {
     @OneToOne()
     image!: PublicFile;
 
-    @Property()
-    basePrice!: number;
+    @OneToOne({ entity: () => ProductPrice, orphanRemoval: true })
+    price!: ProductPrice;
+
+    @Property({ type: 'int', default: 0 })
+    totalSales!: number;
 
     @Index()
     @Property({ nullable: true, type: 'timestamptz' })
@@ -33,7 +38,8 @@ class Product extends BaseEntity {
             purpose: this.purpose,
             wingsType: this.wingsType,
             image: this.image,
-            basePrice: this.basePrice,
+            totalSales: this.totalSales,
+            price: this.price.toObject(),
             createdAt: this.createdAt.toISOString(),
         };
     }

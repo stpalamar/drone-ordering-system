@@ -11,6 +11,7 @@ import {
     PermissionSubject,
 } from '@modules/permission/enums/enums';
 import { Product } from '@modules/products/entities/product.entity';
+import { ProductPrice } from '@modules/products/entities/product-price.entity';
 
 export class DatabaseSeeder extends Seeder {
     async run(em: EntityManager): Promise<void> {
@@ -129,64 +130,264 @@ export class DatabaseSeeder extends Seeder {
             url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
         });
 
+        const productPrice1 = em.create(ProductPrice, {
+            basePrice: 999,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice2 = em.create(ProductPrice, {
+            basePrice: 1999,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice3 = em.create(ProductPrice, {
+            basePrice: 1599,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice4 = em.create(ProductPrice, {
+            basePrice: 1299,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice5 = em.create(ProductPrice, {
+            basePrice: 2599,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice6 = em.create(ProductPrice, {
+            basePrice: 3299,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice7 = em.create(ProductPrice, {
+            basePrice: 4599,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice8 = em.create(ProductPrice, {
+            basePrice: 6599,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice9 = em.create(ProductPrice, {
+            basePrice: 5599,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
+        const productPrice10 = em.create(ProductPrice, {
+            basePrice: 6899,
+            lengthUnitPrice: 10,
+            widthUnitPrice: 10,
+            payloadCapacityUnitPrice: 10,
+            flightDistanceUnitPrice: 10,
+            flightTimeUnitPrice: 10,
+            additionalEquipmentPrices: JSON.stringify({
+                camera: 10,
+                thermographicCamera: 10,
+                nightVision: 10,
+                parachute: 10,
+                autopilot: 10,
+                targetIdentification: 10,
+                gps: 10,
+            }),
+            colorPrice: 10,
+            coatingTexturePrice: 10,
+        });
+
         em.create(Product, {
             purpose: 'Photo/video',
             wingsType: 'Quadcopter',
-            basePrice: 999,
+            price: productPrice1,
             image: photo1,
         });
         em.create(Product, {
             purpose: 'Military',
             wingsType: 'Quadcopter',
-            basePrice: 1999,
+            price: productPrice2,
             image: photo2,
         });
         em.create(Product, {
             purpose: 'Agriculture',
             wingsType: 'Quadcopter',
-            basePrice: 1599,
+            price: productPrice3,
             image: photo3,
         });
         em.create(Product, {
             purpose: 'Delivery',
             wingsType: 'Quadcopter',
-            basePrice: 1299,
+            price: productPrice4,
             image: photo4,
         });
         em.create(Product, {
             purpose: 'Military',
             wingsType: 'Hexacopter',
-            basePrice: 2599,
+            price: productPrice5,
             image: photo5,
         });
         em.create(Product, {
             purpose: 'Photo/video',
             wingsType: 'Octocopter',
-            basePrice: 3299,
+            price: productPrice6,
             image: photo6,
         });
         em.create(Product, {
             purpose: 'Agriculture',
             wingsType: 'Fixed-wing',
-            basePrice: 4599,
+            price: productPrice7,
             image: photo7,
         });
         em.create(Product, {
             purpose: 'Delivery',
             wingsType: 'Single-rotor',
-            basePrice: 6599,
+            price: productPrice8,
             image: photo8,
         });
         em.create(Product, {
             purpose: 'Military',
             wingsType: 'Fixed-wing VTOL',
-            basePrice: 5599,
+            price: productPrice9,
             image: photo9,
         });
         em.create(Product, {
             purpose: 'Military',
             wingsType: 'Fixed-wing',
-            basePrice: 6899,
+            price: productPrice10,
             image: photo10,
         });
     }

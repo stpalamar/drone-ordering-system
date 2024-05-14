@@ -117,7 +117,7 @@ const Orders: React.FC = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardFooter>
-                            <Link to={AppRoute.ORDERS_CREATE}>
+                            <Link to={AppRoute.ORDER_CREATE}>
                                 <Button>Create New Order</Button>
                             </Link>
                         </CardFooter>

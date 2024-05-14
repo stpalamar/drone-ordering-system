@@ -51,6 +51,7 @@ import {
     type UseFormReturn,
 } from '~/bundles/common/types/types.js';
 import { useUploadFileMutation } from '~/bundles/files/files-api.js';
+import { ComboboxField } from '~/bundles/orders/components/components.js';
 import {
     getPurposeTypes,
     getWingsTypes,
@@ -175,33 +176,15 @@ const OrderItemForm: React.FC<Properties> = ({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Purpose</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        disabled={disabled}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger
-                                                id="purpose"
-                                                aria-label="Select purpose"
-                                            >
-                                                <SelectValue placeholder="Select purpose" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {getPurposeTypes(
-                                                wingsTypeValue,
-                                                productTypes ?? null,
-                                            ).map((item) => (
-                                                <SelectItem
-                                                    key={item}
-                                                    value={item}
-                                                >
-                                                    {item}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <ComboboxField
+                                        field={field}
+                                        form={form}
+                                        label="Purpose"
+                                        options={getPurposeTypes(
+                                            wingsTypeValue,
+                                            productTypes ?? null,
+                                        )}
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -214,33 +197,15 @@ const OrderItemForm: React.FC<Properties> = ({
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Wings type</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        disabled={disabled}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger
-                                                id="wingsType"
-                                                aria-label="Select wings type"
-                                            >
-                                                <SelectValue placeholder="Select wings type" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {getWingsTypes(
-                                                purposeValue,
-                                                productTypes,
-                                            ).map((item) => (
-                                                <SelectItem
-                                                    key={item}
-                                                    value={item}
-                                                >
-                                                    {item}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    <ComboboxField
+                                        field={field}
+                                        form={form}
+                                        label="Wings type"
+                                        options={getWingsTypes(
+                                            purposeValue,
+                                            productTypes ?? null,
+                                        )}
+                                    />
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -664,10 +629,10 @@ const OrderItemForm: React.FC<Properties> = ({
                                 )}
                             />
                         </div>
-                        <div className="">
+                        <div>
                             <Label>Upload image</Label>
                             <Input
-                                placeholder="Upload image of product"
+                                placeholder="Upload image of coating texture"
                                 type="file"
                                 accept="image/*"
                                 onChange={handleLoadImage}

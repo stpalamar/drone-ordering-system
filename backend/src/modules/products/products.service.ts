@@ -30,12 +30,17 @@ export class ProductsService {
         const newProduct = this.productRepository.create({
             purpose: createProductDto.purpose,
             wingsType: createProductDto.wingsType,
-            basePrice: createProductDto.basePrice,
+            price: {
+                ...createProductDto.price,
+                additionalEquipmentPrices: JSON.stringify(
+                    createProductDto.price.additionalEquipmentPrices,
+                ),
+            },
             image: createProductDto.image.id,
         });
 
         await this.em.persistAndFlush(newProduct);
-        await wrap(newProduct).populate(['image']);
+        await wrap(newProduct).populate(['image', 'price']);
 
         return newProduct.toObject();
     }
@@ -54,7 +59,7 @@ export class ProductsService {
         const [products, count] = await this.productRepository.findAndCount(
             {},
             {
-                populate: ['image'],
+                populate: ['image', 'price'],
                 limit,
                 offset: (page - 1) * limit,
                 orderBy: { id: 'ASC' },
@@ -71,9 +76,14 @@ export class ProductsService {
     }
 
     async findOne(id: number) {
-        const product = await this.productRepository.findOne({
-            id,
-        });
+        const product = await this.productRepository.findOne(
+            {
+                id,
+            },
+            {
+                populate: ['image', 'price'],
+            },
+        );
 
         if (!product) {
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
@@ -91,7 +101,17 @@ export class ProductsService {
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
         }
 
-        this.productRepository.assign(product, { ...updateProductDto });
+        if (product.totalSales > 0) {
+            throw new HttpException(
+                'Product cannot be updated because it has sales',
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
+        this.productRepository.assign(product, {
+            ...updateProductDto,
+            image: updateProductDto.image.id,
+        });
         this.em.persistAndFlush(product);
         return product;
     }

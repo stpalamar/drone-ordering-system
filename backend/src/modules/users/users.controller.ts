@@ -6,10 +6,8 @@ import {
     Param,
     Patch,
     Post,
-    Req,
     UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
 
 import { UserDetailsDto } from './types/types';
 import { UsersService } from './users.service';
@@ -38,9 +36,8 @@ export class UsersController {
     update(
         @Param('id') id: string,
         @Body() updateUserDetailsDto: UserDetailsDto,
-        @Req() req: Request,
     ) {
-        return this.usersService.update(+id, updateUserDetailsDto, req.user);
+        return this.usersService.update(+id, updateUserDetailsDto);
     }
 
     // @Delete(':id')

@@ -40,7 +40,7 @@ const productsApi = baseApi.injectEndpoints({
             query: (payload) => ({
                 url: `${ApiPath.PRODUCTS}/${payload.id}`,
                 method: 'PUT',
-                body: payload,
+                body: payload.item,
             }),
             invalidatesTags: [AppSubject.Product],
         }),
@@ -60,6 +60,7 @@ const {
     useGetProductByIdQuery,
     useGetProductsQuery,
     useGetProductTypesQuery,
+    useUpdateProductMutation,
 } = productsApi;
 
 export {
@@ -69,4 +70,5 @@ export {
     useGetProductByIdQuery,
     useGetProductsQuery,
     useGetProductTypesQuery,
+    useUpdateProductMutation,
 };

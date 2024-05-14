@@ -11,14 +11,6 @@ import {
     CardTitle,
 } from '~/bundles/common/components/ui/card.js';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '~/bundles/common/components/ui/dialog.js';
-import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
@@ -34,29 +26,24 @@ import {
     TabsTrigger,
 } from '~/bundles/common/components/ui/tabs.js';
 import {
+    AppRoute,
     PermissionAction,
     PermissionSubject,
 } from '~/bundles/common/enums/enums.js';
-import { getFileForm } from '~/bundles/common/helpers/helpers.js';
 import {
     useAbility,
     useCallback,
+    useNavigate,
     useSearchParams,
-    useState,
 } from '~/bundles/common/hooks/hooks.js';
-import { useUploadFileMutation } from '~/bundles/files/files-api.js';
+import { ProductsTable } from '~/bundles/products/components/components.js';
 import {
-    CreateProductForm,
-    ProductsTable,
-} from '~/bundles/products/components/components.js';
-import {
-    useCreateProductMutation,
     useDeleteProductMutation,
     useGetProductsQuery,
 } from '~/bundles/products/products-api.js';
-import { type ProductRequestDto } from '~/bundles/products/types/types.js';
 
 const Products: React.FC = () => {
+    const navigate = useNavigate();
     const ability = useAbility(AbilityContext);
 
     const [searchParameters, setSearchParameters] = useSearchParams({
@@ -70,33 +57,12 @@ const Products: React.FC = () => {
         [setSearchParameters],
     );
 
-    const [open, setOpen] = useState(false);
-
     const { data: products, isLoading } = useGetProductsQuery(
         Number(searchParameters.get('page')),
     );
 
-    const [createProduct, { isLoading: isLoadingCreate }] =
-        useCreateProductMutation();
-    const [uploadFile, { isLoading: isLoadingImage }] = useUploadFileMutation();
-
     const [deleteProduct, { isLoading: isLoadingDelete }] =
         useDeleteProductMutation();
-
-    const handleCreateProduct = useCallback(
-        async (payload: ProductRequestDto, canvas: HTMLCanvasElement) => {
-            const form = await getFileForm(canvas);
-            const createdImage = await uploadFile(form).unwrap();
-            if (createdImage) {
-                void createProduct({
-                    ...payload,
-                    image: createdImage,
-                });
-                void setOpen(false);
-            }
-        },
-        [createProduct, uploadFile],
-    );
 
     const handleDeleteProduct = useCallback(
         (id: number) => {
@@ -104,6 +70,10 @@ const Products: React.FC = () => {
         },
         [deleteProduct],
     );
+
+    const handleClickCreateProduct = useCallback(() => {
+        navigate(AppRoute.PRODUCT_CREATE);
+    }, [navigate]);
 
     const canCreate = ability.can(
         PermissionAction.DELETE,
@@ -162,37 +132,17 @@ const Products: React.FC = () => {
                                 Export
                             </span>
                         </Button>
-                        <Dialog open={open} onOpenChange={setOpen}>
-                            <DialogTrigger asChild>
-                                <Button
-                                    size="sm"
-                                    className="h-8 gap-1"
-                                    disabled={!canCreate}
-                                >
-                                    <PlusCircle className="h-3.5 w-3.5" />
-                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                        Add Product
-                                    </span>
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>
-                                        Create new product
-                                    </DialogTitle>
-                                    <DialogDescription>
-                                        Fill in the details below to create a
-                                        new product.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <CreateProductForm
-                                    onSubmit={handleCreateProduct}
-                                    isLoading={
-                                        isLoadingCreate || isLoadingImage
-                                    }
-                                />
-                            </DialogContent>
-                        </Dialog>
+                        <Button
+                            size="sm"
+                            className="h-8 gap-1"
+                            disabled={!canCreate}
+                            onClick={handleClickCreateProduct}
+                        >
+                            <PlusCircle className="h-3.5 w-3.5" />
+                            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                Add Product
+                            </span>
+                        </Button>
                     </div>
                 </div>
                 <TabsContent value="all">

@@ -6,10 +6,12 @@ import {
     Entity,
     Enum,
     Index,
+    ManyToOne,
     OneToMany,
     Property,
     UuidType,
 } from '@mikro-orm/postgresql';
+import { User } from '@modules/users/entities/user.entity';
 
 import { OrderStatus } from '../enums/enums';
 import { OrderItem } from './order-item.entity';
@@ -46,6 +48,12 @@ class Order extends BaseEntity {
     })
     items = new Collection<OrderItem>(this);
 
+    @ManyToOne(() => User, { nullable: true })
+    manager!: User;
+
+    @ManyToOne(() => User, { nullable: true })
+    customer!: User;
+
     @Index()
     @Property({ nullable: true, type: 'timestamptz' })
     deletedAt?: Date;
@@ -59,6 +67,8 @@ class Order extends BaseEntity {
             phone: this.phone,
             email: this.email,
             items: this.items.getItems().map((item) => item.toObject()),
+            manager: this.manager ? this.manager.toObject() : null,
+            customer: this.customer ? this.customer.toObject() : null,
             status: this.status,
             createdAt: this.createdAt.toISOString(),
         };
