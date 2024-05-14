@@ -20,15 +20,10 @@ import {
 } from '~/bundles/common/components/ui/dropdown-menu.js';
 import { Pagination } from '~/bundles/common/components/ui/pagination.js';
 import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from '~/bundles/common/components/ui/tabs.js';
-import {
     AppRoute,
     PermissionAction,
     PermissionSubject,
+    SortQuery,
 } from '~/bundles/common/enums/enums.js';
 import {
     useAbility,
@@ -36,6 +31,8 @@ import {
     useNavigate,
     useSearchParams,
 } from '~/bundles/common/hooks/hooks.js';
+import { cn } from '~/bundles/common/lib/utils.js';
+import { type ValueOf } from '~/bundles/common/types/types.js';
 import { ProductsTable } from '~/bundles/products/components/components.js';
 import {
     useDeleteProductMutation,
@@ -48,18 +45,33 @@ const Products: React.FC = () => {
 
     const [searchParameters, setSearchParameters] = useSearchParams({
         page: '1',
+        isActive: 'true',
+        dateSort: SortQuery.DESC,
+        totalSalesSort: SortQuery.DESC,
     });
 
     const handlePageChange = useCallback(
         (page: number) => {
-            setSearchParameters({ page: String(page) });
+            setSearchParameters({
+                page: String(page),
+                isActive: searchParameters.get('isActive') ?? 'true',
+                dateSort: searchParameters.get('dateSort') ?? SortQuery.DESC,
+                totalSalesSort:
+                    searchParameters.get('totalSalesSort') ?? SortQuery.DESC,
+            });
         },
-        [setSearchParameters],
+        [setSearchParameters, searchParameters],
     );
 
-    const { data: products, isLoading } = useGetProductsQuery(
-        Number(searchParameters.get('page')),
-    );
+    const { data: products, isLoading } = useGetProductsQuery({
+        page: Number(searchParameters.get('page')),
+        isActive: searchParameters.get('isActive') === 'true',
+        dateSort: searchParameters.get('dateSort') as ValueOf<typeof SortQuery>,
+        totalSalesSort: searchParameters.get('totalSalesSort') as ValueOf<
+            typeof SortQuery
+        >,
+        limit: 5,
+    });
 
     const [deleteProduct, { isLoading: isLoadingDelete }] =
         useDeleteProductMutation();
@@ -79,21 +91,74 @@ const Products: React.FC = () => {
         PermissionAction.DELETE,
         PermissionSubject.PRODUCT,
     );
+
+    const handleTabChange = useCallback(
+        (isActive: boolean) => {
+            setSearchParameters({
+                page: '1',
+                isActive: String(isActive),
+                dateSort: searchParameters.get('dateSort') ?? SortQuery.DESC,
+                totalSalesSort:
+                    searchParameters.get('totalSalesSort') ?? SortQuery.DESC,
+            });
+        },
+        [searchParameters, setSearchParameters],
+    );
+
+    const handleDateSortChange = useCallback(
+        (dateSort: ValueOf<typeof SortQuery>) => {
+            setSearchParameters({
+                page: '1',
+                isActive: searchParameters.get('isActive') ?? 'true',
+                dateSort,
+                totalSalesSort:
+                    searchParameters.get('totalSalesSort') ?? SortQuery.DESC,
+            });
+        },
+        [searchParameters, setSearchParameters],
+    );
+    const handleTotalSalesSortChange = useCallback(
+        (totalSalesSort: ValueOf<typeof SortQuery>) => {
+            setSearchParameters({
+                page: '1',
+                isActive: searchParameters.get('isActive') ?? 'true',
+                dateSort: searchParameters.get('dateSort') ?? SortQuery.DESC,
+                totalSalesSort,
+            });
+        },
+        [searchParameters, setSearchParameters],
+    );
+
+    const activeTab = 'bg-background text-foreground shadow-sm';
+
     return (
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-            <Tabs defaultValue="all">
+            <div className="mx-auto grid w-full flex-1 auto-rows-max gap-4">
                 <div className="flex items-center">
-                    <TabsList>
-                        <TabsTrigger value="all">All</TabsTrigger>
-                        <TabsTrigger value="active">Active</TabsTrigger>
-                        <TabsTrigger value="draft">Draft</TabsTrigger>
-                        <TabsTrigger
-                            value="archived"
-                            className="hidden sm:flex"
+                    <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+                        <Button
+                            variant="tab"
+                            size="tab"
+                            className={cn(
+                                searchParameters.get('isActive') === 'true' &&
+                                    activeTab,
+                            )}
+                            onClick={() => handleTabChange(true)}
+                        >
+                            Active
+                        </Button>
+                        <Button
+                            variant="tab"
+                            size="tab"
+                            className={cn(
+                                searchParameters.get('isActive') === 'false' &&
+                                    activeTab,
+                            )}
+                            onClick={() => handleTabChange(false)}
                         >
                             Archived
-                        </TabsTrigger>
-                    </TabsList>
+                        </Button>
+                    </div>
                     <div className="ml-auto flex items-center gap-2">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -104,21 +169,80 @@ const Products: React.FC = () => {
                                 >
                                     <ListFilter className="h-3.5 w-3.5" />
                                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                        Filter
+                                        Date
                                     </span>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                                <DropdownMenuLabel>Sort by</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuCheckboxItem checked>
-                                    Active
+                                <DropdownMenuCheckboxItem
+                                    checked={
+                                        searchParameters.get('dateSort') ===
+                                        SortQuery.ASC
+                                    }
+                                    onClick={() =>
+                                        handleDateSortChange(SortQuery.ASC)
+                                    }
+                                >
+                                    Ascending
                                 </DropdownMenuCheckboxItem>
-                                <DropdownMenuCheckboxItem>
-                                    Draft
+                                <DropdownMenuCheckboxItem
+                                    checked={
+                                        searchParameters.get('dateSort') ===
+                                        SortQuery.DESC
+                                    }
+                                    onClick={() =>
+                                        handleDateSortChange(SortQuery.DESC)
+                                    }
+                                >
+                                    Descending
                                 </DropdownMenuCheckboxItem>
-                                <DropdownMenuCheckboxItem>
-                                    Archived
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-8 gap-1"
+                                >
+                                    <ListFilter className="h-3.5 w-3.5" />
+                                    <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                                        Sales
+                                    </span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuCheckboxItem
+                                    checked={
+                                        searchParameters.get(
+                                            'totalSalesSort',
+                                        ) === SortQuery.ASC
+                                    }
+                                    onClick={() =>
+                                        handleTotalSalesSortChange(
+                                            SortQuery.ASC,
+                                        )
+                                    }
+                                >
+                                    Ascending
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem
+                                    checked={
+                                        searchParameters.get(
+                                            'totalSalesSort',
+                                        ) === SortQuery.DESC
+                                    }
+                                    onClick={() =>
+                                        handleTotalSalesSortChange(
+                                            SortQuery.DESC,
+                                        )
+                                    }
+                                >
+                                    Descending
                                 </DropdownMenuCheckboxItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -145,35 +269,33 @@ const Products: React.FC = () => {
                         </Button>
                     </div>
                 </div>
-                <TabsContent value="all">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Products</CardTitle>
-                            <CardDescription>
-                                Manage your products and view their sales
-                                performance.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ProductsTable
-                                products={products ? products.items : null}
-                                isLoading={isLoading}
-                                isLoadingDelete={isLoadingDelete}
-                                onDelete={handleDeleteProduct}
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Products</CardTitle>
+                        <CardDescription>
+                            Manage your products and view their sales
+                            performance.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ProductsTable
+                            products={products ? products.items : null}
+                            isLoading={isLoading}
+                            isLoadingDelete={isLoadingDelete}
+                            onDelete={handleDeleteProduct}
+                        />
+                    </CardContent>
+                    <CardFooter className="flex justify-end">
+                        {products && (
+                            <Pagination
+                                currentPage={products.page}
+                                totalPages={products.totalPages}
+                                setCurrentPage={handlePageChange}
                             />
-                        </CardContent>
-                        <CardFooter className="flex justify-end">
-                            {products && (
-                                <Pagination
-                                    currentPage={products.page}
-                                    totalPages={products.totalPages}
-                                    setCurrentPage={handlePageChange}
-                                />
-                            )}
-                        </CardFooter>
-                    </Card>
-                </TabsContent>
-            </Tabs>
+                        )}
+                    </CardFooter>
+                </Card>
+            </div>
         </main>
     );
 };

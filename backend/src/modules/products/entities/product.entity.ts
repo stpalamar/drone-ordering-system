@@ -30,7 +30,7 @@ class Product extends BaseEntity {
 
     @Index()
     @Property({ nullable: true, type: 'timestamptz' })
-    deletedAt?: Date;
+    deletedAt!: Date;
 
     toObject() {
         return {

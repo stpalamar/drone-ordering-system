@@ -1,1 +1,5 @@
-export { type ProductRequestDto, type ProductResponseDto } from 'shared';
+export {
+    type ProductQueryDto,
+    type ProductRequestDto,
+    type ProductResponseDto,
+} from 'shared';

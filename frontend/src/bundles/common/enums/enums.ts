@@ -5,4 +5,5 @@ export {
     AppSubject,
     PermissionAction,
     PermissionSubject,
+    SortQuery,
 } from 'shared';

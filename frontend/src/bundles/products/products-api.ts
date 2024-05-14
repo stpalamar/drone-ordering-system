@@ -3,6 +3,7 @@ import { type PagedResponse } from '~/bundles/common/types/types.js';
 import { baseApi } from '~/framework/base-api/base-api.js';
 
 import {
+    type ProductQueryDto,
     type ProductRequestDto,
     type ProductResponseDto,
     type ProductTypesDto,
@@ -12,9 +13,10 @@ const productsApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getProducts: build.query<
             PagedResponse<ProductResponseDto>,
-            number | void
+            ProductQueryDto
         >({
-            query: (page = 1) => `${ApiPath.PRODUCTS}?page=${page}&limit=5`,
+            query: ({ page, limit, dateSort, isActive, totalSalesSort }) =>
+                `${ApiPath.PRODUCTS}?page=${page}&limit=${limit}&dateSort=${dateSort}&isActive=${isActive}&totalSalesSort=${totalSalesSort}`,
             providesTags: [AppSubject.Product],
         }),
         getProductById: build.query<ProductResponseDto, number>({

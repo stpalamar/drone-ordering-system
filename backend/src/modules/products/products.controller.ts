@@ -1,6 +1,4 @@
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from '@common/constants/constants';
 import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
-import { PaginationQueryDto } from '@common/types/types';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
 import { CheckPermissions } from '@modules/permission/decorators/permissions.decorator';
 import {
@@ -21,8 +19,11 @@ import {
 } from '@nestjs/common';
 
 import { ProductsService } from './products.service';
-import { ProductRequestDto } from './types/types';
-import { productValidationSchema } from './validation-schemas/validation-schemas';
+import { ProductQueryDto, ProductRequestDto } from './types/types';
+import {
+    productQueryValidationSchema,
+    productValidationSchema,
+} from './validation-schemas/validation-schemas';
 
 @Controller('products')
 @UseGuards(JwtAuthGuard)
@@ -42,9 +43,11 @@ export class ProductsController {
     @Get()
     @UseGuards(PermissionsGuard)
     @CheckPermissions([PermissionAction.READ, PermissionSubject.PRODUCT])
-    findAll(@Query() pagination: PaginationQueryDto) {
-        const { page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = pagination;
-        return this.productsService.findAll(+page, +limit);
+    findAll(
+        @Query(new ZodValidationPipe(productQueryValidationSchema))
+        query: ProductQueryDto,
+    ) {
+        return this.productsService.findAll(query);
     }
 
     @Get('types')

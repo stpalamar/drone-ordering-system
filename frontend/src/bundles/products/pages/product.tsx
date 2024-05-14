@@ -53,11 +53,11 @@ const Product: React.FC = () => {
         PermissionSubject.PRODUCT,
     );
 
-    if (isLoading || !product) {
+    if (isLoading) {
         return <Loader size="medium" isOverflow />;
     }
 
-    if (isError) {
+    if (isError || !product) {
         return <Navigate to={AppRoute.PRODUCTS} />;
     }
 

@@ -24,6 +24,8 @@ export {
     PermissionSubject,
 } from './bundles/permission/permission.js';
 export {
+    type ProductQueryDto,
+    productQueryValidationSchema,
     type ProductRequestDto,
     type ProductResponseDto,
     type ProductTypesDto,
@@ -48,6 +50,7 @@ export {
     AppRoute,
     AppSubject,
     Period,
+    SortQuery,
 } from './enums/enums.js';
 export {
     type PagedResponse,

@@ -4,7 +4,11 @@ import { EntityManager, EntityRepository, wrap } from '@mikro-orm/postgresql';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Product } from './entities/product.entity';
-import { type ProductRequestDto, type ProductResponseDto } from './types/types';
+import {
+    ProductQueryDto,
+    type ProductRequestDto,
+    type ProductResponseDto,
+} from './types/types';
 
 @Injectable()
 export class ProductsService {
@@ -46,15 +50,11 @@ export class ProductsService {
     }
 
     async findAll(
-        page: number,
-        limit: number,
+        query: ProductQueryDto,
     ): Promise<PagedResponse<ProductResponseDto>> {
-        if (page < 1 || limit < 1) {
-            throw new HttpException(
-                'Invalid query parameters',
-                HttpStatus.BAD_REQUEST,
-            );
-        }
+        const { page, limit, dateSort, isActive, totalSalesSort } = query;
+
+        console.log(isActive);
 
         const [products, count] = await this.productRepository.findAndCount(
             {},
@@ -62,7 +62,12 @@ export class ProductsService {
                 populate: ['image', 'price'],
                 limit,
                 offset: (page - 1) * limit,
-                orderBy: { id: 'ASC' },
+                orderBy: { createdAt: dateSort, totalSales: totalSalesSort },
+                filters: {
+                    softDelete: {
+                        getOnlyDeleted: !isActive,
+                    },
+                },
             },
         );
 

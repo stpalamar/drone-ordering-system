@@ -1,1 +1,1 @@
-export { productValidationSchema } from 'shared';
+export { productQueryValidationSchema, productValidationSchema } from 'shared';

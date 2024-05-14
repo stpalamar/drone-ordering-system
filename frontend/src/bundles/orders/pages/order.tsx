@@ -96,11 +96,11 @@ const Order: React.FC = () => {
         [updateOrderStatus, id],
     );
 
-    if (isLoading || !order || !productsTypes || isLoadingTypes) {
+    if (isLoading || isLoadingTypes) {
         return <Loader size="medium" isOverflow />;
     }
 
-    if (isError) {
+    if (isError || !order || !productsTypes) {
         return <Navigate to={AppRoute.ORDERS} />;
     }
 
