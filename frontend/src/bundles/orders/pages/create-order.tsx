@@ -21,13 +21,13 @@ const CreateOrder: React.FC = () => {
     const handleCreateOrder = useCallback(
         async (payload: OrderRequestDto): Promise<void> => {
             await createOrder(payload);
-            void navigate(AppRoute.ORDERS);
+            void navigate(AppRoute.ADMIN_ORDERS);
         },
         [navigate, createOrder],
     );
 
     const handleBack = useCallback(() => {
-        navigate(AppRoute.ORDERS);
+        navigate(AppRoute.ADMIN_ORDERS);
     }, [navigate]);
 
     return (

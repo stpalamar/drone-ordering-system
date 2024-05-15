@@ -84,7 +84,7 @@ const Products: React.FC = () => {
     );
 
     const handleClickCreateProduct = useCallback(() => {
-        navigate(AppRoute.PRODUCT_CREATE);
+        navigate(AppRoute.ADMIN_PRODUCT_CREATE);
     }, [navigate]);
 
     const canCreate = ability.can(

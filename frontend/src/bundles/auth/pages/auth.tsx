@@ -11,7 +11,11 @@ import {
 } from '~/bundles/users/users.js';
 
 import { useSignInMutation, useSignUpMutation } from '../auth-api.js';
-import { SignInForm, SignUpForm } from '../components/components.js';
+import {
+    EmailSentScreen,
+    SignInForm,
+    SignUpForm,
+} from '../components/components.js';
 
 const Auth: React.FC = () => {
     const { pathname } = useLocation();
@@ -20,7 +24,8 @@ const Auth: React.FC = () => {
 
     const [signIn, { isLoading: isLoadingSignIn }] = useSignInMutation();
 
-    const [signUp, { isLoading: isLoadingSignUp }] = useSignUpMutation();
+    const [signUp, { isLoading: isLoadingSignUp, isSuccess: isSignUpSuccess }] =
+        useSignUpMutation();
 
     const handleSignInSubmit = useCallback(
         (payload: UserSignInRequestDto): void => {
@@ -61,6 +66,14 @@ const Auth: React.FC = () => {
 
     if (user) {
         return <Navigate to={AppRoute.ROOT} />;
+    }
+
+    if (isSignUpSuccess) {
+        return (
+            <div className="flex h-screen justify-center items-center">
+                <EmailSentScreen />;
+            </div>
+        );
     }
 
     return (

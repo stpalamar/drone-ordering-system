@@ -84,7 +84,7 @@ const CreateProductForm: React.FC<Properties> = ({
     });
 
     const handleBack = useCallback(() => {
-        navigate(AppRoute.PRODUCTS);
+        navigate(AppRoute.ADMIN_PRODUCTS);
     }, [navigate]);
 
     const handleSubmit = useCallback(

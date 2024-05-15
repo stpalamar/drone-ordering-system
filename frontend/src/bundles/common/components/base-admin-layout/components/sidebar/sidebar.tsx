@@ -8,8 +8,8 @@ import {
     PermissionAction,
     PermissionSubject,
 } from '~/bundles/common/enums/enums.js';
+import { type NavItem } from '~/bundles/common/types/types.js';
 
-import { type NavItem } from '../../types/types.js';
 import { SidebarNav } from './components/components.js';
 
 type Properties = {
@@ -22,7 +22,7 @@ const Sidebar: React.FC<Properties> = ({ navItems }) => {
             <div className="flex h-full max-h-screen flex-col gap-2">
                 <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                     <Link
-                        to={AppRoute.DASHBOARD}
+                        to={AppRoute.ADMIN_DASHBOARD}
                         className="flex items-center gap-2 font-semibold"
                     >
                         <DroneIcon className="h-6 w-6" />
@@ -47,7 +47,7 @@ const Sidebar: React.FC<Properties> = ({ navItems }) => {
                             a={PermissionSubject.USER}
                         >
                             <SidebarNav
-                                to={AppRoute.MANAGERS}
+                                to={AppRoute.ADMIN_MANAGERS}
                                 icon={Users}
                                 label="Managers"
                                 isActive={false}

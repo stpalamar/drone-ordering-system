@@ -21,6 +21,11 @@ const orderQueryValidationSchema = z.object({
         .nullable()
         .default(null),
     period: z.nativeEnum(Period).default(Period.ALL),
+    assigned: z
+        .string()
+        .toLowerCase()
+        .transform((value) => value === 'true')
+        .pipe(z.boolean()),
 });
 
 export { orderQueryValidationSchema };

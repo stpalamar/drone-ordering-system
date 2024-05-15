@@ -35,6 +35,7 @@ type Properties = {
     >;
     options: string[];
     label: string;
+    disabled?: boolean;
 };
 
 const ComboboxField: React.FC<Properties> = ({
@@ -42,6 +43,7 @@ const ComboboxField: React.FC<Properties> = ({
     form,
     options,
     label,
+    disabled = false,
 }) => {
     const [open, setOpen] = useState(false);
 
@@ -53,9 +55,10 @@ const ComboboxField: React.FC<Properties> = ({
                         variant="outline"
                         role="combobox"
                         className={cn(
-                            'w-[200px] justify-between font-normal',
+                            'w-full justify-between font-normal flex',
                             !field.value && 'text-muted-foreground',
                         )}
+                        disabled={disabled}
                     >
                         {field.value
                             ? options.find((option) => option === field.value)
@@ -64,7 +67,7 @@ const ComboboxField: React.FC<Properties> = ({
                     </Button>
                 </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
+            <PopoverContent className="w-[12.5rem] p-0">
                 <Command>
                     <CommandInput placeholder={`Search ${label}...`} />
                     <CommandEmpty>No {label} found.</CommandEmpty>

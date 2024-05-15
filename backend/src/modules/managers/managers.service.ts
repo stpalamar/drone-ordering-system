@@ -16,9 +16,7 @@ export class ManagersService {
         @InjectRepository(Role)
         private readonly rolesRepository: EntityRepository<Role>,
     ) {}
-    // create(createManagerDto: CreateManagerDto) {
-    //   return 'This action adds a new manager';
-    // }
+
     async findAll(page: number, limit: number) {
         if (page < 1 || limit < 1) {
             throw new HttpException(

@@ -1,4 +1,5 @@
 import { type ValueOf } from '../../../types/value-of.type.js';
+import { type UserResponseDto } from '../../users/users.js';
 import { type OrderStatus } from '../enums/enums.js';
 import { type OrderItemDto } from './order-item-dto.type.js';
 
@@ -9,8 +10,10 @@ type OrderResponseDto = {
     lastName: string;
     phone: string;
     email: string;
-    items: OrderItemDto[];
     status: ValueOf<typeof OrderStatus>;
+    items: OrderItemDto[];
+    manager: UserResponseDto | null;
+    customer: UserResponseDto | null;
     totalPrice: number;
     createdAt: string;
 };

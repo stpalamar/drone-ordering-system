@@ -58,7 +58,7 @@ const Product: React.FC = () => {
     }
 
     if (isError || !product) {
-        return <Navigate to={AppRoute.PRODUCTS} />;
+        return <Navigate to={AppRoute.ADMIN_PRODUCTS} />;
     }
 
     return (

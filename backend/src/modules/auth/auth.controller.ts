@@ -1,7 +1,6 @@
 import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
 import { ManagerSignUpRequestDto } from '@modules/managers/types/types';
 import { managerSignUpValidationSchema } from '@modules/managers/validation-schemas/validation-schemas';
-import { UserRole } from '@modules/users/enums/enums';
 import {
     UserConfirmEmailRequestDto,
     type UserSignInRequestDto,
@@ -56,15 +55,10 @@ export class AuthController {
     async signUp(
         @Body(new ZodValidationPipe(userSignUpValidationSchema))
         userSignUpRequestDto: UserSignUpRequestDto,
-        @Res({ passthrough: true }) res: Response,
+        @Headers('origin')
+        host: string,
     ) {
-        const user = await this.authService.signUp(
-            userSignUpRequestDto,
-            UserRole.USER,
-        );
-        const cookie = await this.authService.getCookieWithJwtToken(user.id);
-        res.setHeader('Set-Cookie', cookie);
-        return user;
+        return await this.authService.signUpUser(userSignUpRequestDto, host);
     }
 
     @Post('sign-up-manager')

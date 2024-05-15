@@ -27,7 +27,7 @@ const CreateProduct: React.FC = () => {
         async (payload: ProductRequestDto) => {
             const result = await createProduct(payload).unwrap();
             if (result) {
-                navigate(AppRoute.PRODUCTS);
+                navigate(AppRoute.ADMIN_PRODUCTS);
             }
         },
         [createProduct, navigate],
@@ -40,7 +40,7 @@ const CreateProduct: React.FC = () => {
 
     if (cannotEdit) {
         toast.error('You do not have permission to create a product');
-        return <Navigate to={AppRoute.PRODUCTS} />;
+        return <Navigate to={AppRoute.ADMIN_PRODUCTS} />;
     }
 
     return (

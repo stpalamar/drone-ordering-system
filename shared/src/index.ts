@@ -17,6 +17,7 @@ export {
 } from './bundles/orders/orders.js';
 export {
     type AppAbility,
+    type PermissionCondition,
     type RequiredPermission,
 } from './bundles/permission/permission.js';
 export {

@@ -16,6 +16,7 @@ import { Separator } from '~/bundles/common/components/ui/separator.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
 import { formatDateWithMonth } from '~/bundles/common/helpers/helpers.js';
 import {
+    useAppSelector,
     useCallback,
     useNavigate,
     useParams,
@@ -24,6 +25,7 @@ import {
 import { cn } from '~/bundles/common/lib/utils.js';
 import { OrderStatus } from '~/bundles/orders/enums/enums.js';
 import { useGetProductTypesQuery } from '~/bundles/products/products-api.js';
+import { UserRole } from '~/bundles/users/enums/enums.js';
 
 import {
     ChangeStatusDialog,
@@ -35,6 +37,7 @@ import {
     getOrderStatusString,
 } from '../helpers/helpers.js';
 import {
+    useAssignOrderMutation,
     useGetOrderByIdQuery,
     useUpdateOrderMutation,
     useUpdateOrderStatusMutation,
@@ -42,6 +45,7 @@ import {
 import { type OrderRequestDto, type OrderStatusDto } from '../types/types.js';
 
 const Order: React.FC = () => {
+    const { user } = useAppSelector(({ auth }) => auth);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -63,6 +67,9 @@ const Order: React.FC = () => {
     const [updateOrder, { isLoading: isLoadingUpdateOrder }] =
         useUpdateOrderMutation();
 
+    const [assignOrder, { isLoading: isLoadingAssignOrder }] =
+        useAssignOrderMutation();
+
     const handleSaveOrder = useCallback(
         async (payload: OrderRequestDto) => {
             const result = await updateOrder({
@@ -78,7 +85,7 @@ const Order: React.FC = () => {
     );
 
     const handleBack = useCallback(() => {
-        navigate(AppRoute.ORDERS);
+        navigate(AppRoute.ADMIN_ORDERS);
     }, [navigate]);
 
     const handleEnableEditing = useCallback(() => {
@@ -96,15 +103,25 @@ const Order: React.FC = () => {
         [updateOrderStatus, id],
     );
 
+    const handleAssignOrder = useCallback(() => {
+        void assignOrder(Number(id));
+    }, [id, assignOrder]);
+
     if (isLoading || isLoadingTypes) {
         return <Loader size="medium" isOverflow />;
     }
 
     if (isError || !order || !productsTypes) {
-        return <Navigate to={AppRoute.ORDERS} />;
+        return <Navigate to={AppRoute.ADMIN_ORDERS} />;
     }
 
     const orderProgress = getOrderProgressValue(order.status);
+
+    const isUnassigned = order.manager === null;
+
+    const isAssignedToMe = order.manager?.id === user?.id;
+
+    const isAdmin = user?.role === UserRole.ADMIN;
 
     return (
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -139,6 +156,7 @@ const Order: React.FC = () => {
                                             onClick={() =>
                                                 setChangeStatusOpen(true)
                                             }
+                                            disabled={isUnassigned}
                                         >
                                             Change
                                         </Button>
@@ -187,30 +205,63 @@ const Order: React.FC = () => {
                         </Card>
                         <Separator />
                         <div>
-                            <div className="flex gap-4 mb-4">
-                                {isEditing ? (
-                                    <Alert>
-                                        <Pencil className="h-4 w-4 mr-2" />
+                            <div className="flex flex-col gap-4 mb-4">
+                                {isAdmin &&
+                                    !isUnassigned &&
+                                    !isAssignedToMe && (
+                                        <Alert>
+                                            <AlertTitle>
+                                                Manager:{' '}
+                                                {
+                                                    order.manager?.details
+                                                        ?.firstName
+                                                }{' '}
+                                                {
+                                                    order.manager?.details
+                                                        ?.lastName
+                                                }
+                                            </AlertTitle>
+                                        </Alert>
+                                    )}
+                                {isAssignedToMe && (
+                                    <Alert className="flex flex-row items-center justify-between">
                                         <AlertTitle>
-                                            You are currently editing the order!
+                                            You are manager of this order
                                         </AlertTitle>
                                     </Alert>
-                                ) : (
-                                    <>
-                                        <Button
-                                            variant="secondary"
-                                            onClick={handleEnableEditing}
-                                        >
-                                            <Pencil className="h-4 w-4 mr-2" />
-                                            Edit
-                                        </Button>
-                                        <Button variant="secondary">
-                                            <Download className="h-4 w-4  mr-2" />
-                                            Get PDF
-                                        </Button>
-                                    </>
                                 )}
+                                {isUnassigned && (
+                                    <Button
+                                        onClick={handleAssignOrder}
+                                        className="max-w-36"
+                                        disabled={isLoadingAssignOrder}
+                                    >
+                                        {isLoadingAssignOrder ? (
+                                            <Loader variant="secondary" />
+                                        ) : (
+                                            'Assign to me'
+                                        )}
+                                    </Button>
+                                )}
+                                <div className="grid gap-2 grid-cols-2 max-w-[20rem]">
+                                    <Button
+                                        variant="secondary"
+                                        onClick={handleEnableEditing}
+                                        disabled={isUnassigned || isEditing}
+                                    >
+                                        <Pencil className="h-4 w-4 mr-2" />
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        disabled={isUnassigned || isEditing}
+                                    >
+                                        <Download className="h-4 w-4  mr-2" />
+                                        Get PDF
+                                    </Button>
+                                </div>
                             </div>
+
                             <div className={cn(isEditing && 'border-blue-400')}>
                                 <CreateOrderForm
                                     onSubmit={handleSaveOrder}

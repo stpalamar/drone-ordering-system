@@ -16,6 +16,7 @@ export class CaslAbilityFactory {
         const caslPermissions = dbPermissions.map((permission) => ({
             action: permission.action,
             subject: permission.subject.name,
+            conditions: Permission.parseCondition(permission.condition, user),
         }));
 
         return createMongoAbility<AppAbility>(caslPermissions);

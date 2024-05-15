@@ -18,13 +18,13 @@ export class EmailService {
         } as MailDataRequired);
     }
 
-    public async sendManagerConfirmationEmail(
+    public async sendConfirmationEmail(
         to: string,
         link: string,
     ): Promise<void> {
         const message = {
             to,
-            subject: 'Manager registration',
+            subject: 'Confirm registration on Drone Ordering System',
             html: `<a href="${link}">Confirm registration</a>`,
         };
 

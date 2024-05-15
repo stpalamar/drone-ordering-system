@@ -26,6 +26,7 @@ import {
     getFiltersArray,
 } from '~/bundles/common/helpers/helpers.js';
 import {
+    useAppSelector,
     useCallback,
     useEffect,
     useSearchParams,
@@ -41,10 +42,15 @@ import { OrderStatus, Period } from '~/bundles/orders/enums/enums.js';
 import { useGetOrdersQuery } from '~/bundles/orders/orders-api.js';
 import { type OrderResponseDto } from '~/bundles/orders/types/types.js';
 
+import { UserRole } from '../../../../../shared/src/bundles/users/users.js';
+
 const Orders: React.FC = () => {
+    const { user } = useAppSelector(({ auth }) => auth);
+
     const [searchParameters, setSearchParameters] = useSearchParams({
         page: '1',
         period: 'all',
+        assigned: 'true',
     });
 
     const [selectedOrder, setSelectedOrder] = useState<OrderResponseDto | null>(
@@ -59,6 +65,7 @@ const Orders: React.FC = () => {
         status: getFiltersArray(searchParameters.get('status')) as
             | ValueOf<typeof OrderStatus>[]
             | null,
+        assigned: searchParameters.get('assigned') === 'true',
         limit: 10,
     });
 
@@ -79,9 +86,21 @@ const Orders: React.FC = () => {
     const handleStatusChange = useCallback(
         (status: ValueOf<typeof OrderStatus>) => {
             setSearchParameters({
-                status: status,
                 page: '1',
                 period: searchParameters.get('period') ?? Period.ALL,
+                status: status,
+            });
+        },
+        [searchParameters, setSearchParameters],
+    );
+
+    const handleUnassignedChange = useCallback(
+        (assigned: boolean) => {
+            setSearchParameters({
+                page: '1',
+                period: searchParameters.get('period') ?? Period.ALL,
+                // status: searchParameters.get('status'),
+                assigned: String(assigned),
             });
         },
         [searchParameters, setSearchParameters],
@@ -117,7 +136,7 @@ const Orders: React.FC = () => {
                             </CardDescription>
                         </CardHeader>
                         <CardFooter>
-                            <Link to={AppRoute.ORDER_CREATE}>
+                            <Link to={AppRoute.ADMIN_ORDER_CREATE}>
                                 <Button>Create New Order</Button>
                             </Link>
                         </CardFooter>
@@ -153,53 +172,100 @@ const Orders: React.FC = () => {
                 </div>
                 <div>
                     <div className="flex items-center">
-                        <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
-                            <Button
-                                variant="tab"
-                                size="tab"
-                                className={cn(
-                                    searchParameters.get('period') ===
-                                        Period.ALL && activeTab,
-                                )}
-                                onClick={() => handlePeriodChange(Period.ALL)}
-                            >
-                                All
-                            </Button>
-                            <Button
-                                variant="tab"
-                                size="tab"
-                                className={cn(
-                                    searchParameters.get('period') ===
-                                        Period.WEEK && activeTab,
-                                )}
-                                onClick={() => handlePeriodChange(Period.WEEK)}
-                            >
-                                Week
-                            </Button>
-                            <Button
-                                variant="tab"
-                                size="tab"
-                                className={cn(
-                                    searchParameters.get('period') ===
-                                        Period.MONTH && activeTab,
-                                )}
-                                onClick={() => handlePeriodChange(Period.MONTH)}
-                            >
-                                Month
-                            </Button>
-                            <Button
-                                variant="tab"
-                                size="tab"
-                                className={cn(
-                                    searchParameters.get('period') ===
-                                        Period.YEAR && activeTab,
-                                )}
-                                onClick={() => handlePeriodChange(Period.YEAR)}
-                            >
-                                Year
-                            </Button>
-                        </div>
+                        {user && user.role === UserRole.MANAGER && (
+                            <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+                                <Button
+                                    variant="tab"
+                                    size="tab"
+                                    className={cn(
+                                        searchParameters.get('assigned') ===
+                                            'true' && activeTab,
+                                    )}
+                                    onClick={() => handleUnassignedChange(true)}
+                                >
+                                    Yours
+                                </Button>
+                                <Button
+                                    variant="tab"
+                                    size="tab"
+                                    className={cn(
+                                        searchParameters.get('assigned') ===
+                                            'false' && activeTab,
+                                    )}
+                                    onClick={() =>
+                                        handleUnassignedChange(false)
+                                    }
+                                >
+                                    Unassigned
+                                </Button>
+                            </div>
+                        )}
+
                         <div className="ml-auto flex items-center gap-2">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 gap-1 text-sm"
+                                    >
+                                        <ListFilter className="h-3.5 w-3.5" />
+                                        <span className="sr-only sm:not-sr-only">
+                                            Period
+                                        </span>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>
+                                        Filter by
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuCheckboxItem
+                                        onClick={() =>
+                                            handlePeriodChange(Period.ALL)
+                                        }
+                                        checked={
+                                            searchParameters.get('period') ===
+                                                Period.ALL ?? false
+                                        }
+                                    >
+                                        {capitalizeFirstLetter(Period.ALL)}
+                                    </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem
+                                        onClick={() =>
+                                            handlePeriodChange(Period.WEEK)
+                                        }
+                                        checked={
+                                            searchParameters.get('period') ===
+                                                Period.WEEK ?? false
+                                        }
+                                    >
+                                        {capitalizeFirstLetter(Period.WEEK)}
+                                    </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem
+                                        onClick={() =>
+                                            handlePeriodChange(Period.MONTH)
+                                        }
+                                        checked={
+                                            searchParameters.get('period') ===
+                                                Period.MONTH ?? false
+                                        }
+                                    >
+                                        {capitalizeFirstLetter(Period.MONTH)}
+                                    </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem
+                                        onClick={() =>
+                                            handlePeriodChange(Period.YEAR)
+                                        }
+                                        checked={
+                                            searchParameters.get('period') ===
+                                                Period.YEAR ?? false
+                                        }
+                                    >
+                                        {capitalizeFirstLetter(Period.YEAR)}
+                                    </DropdownMenuCheckboxItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button
@@ -351,6 +417,7 @@ const Orders: React.FC = () => {
                                 selectedOrder={selectedOrder}
                                 onSelect={handleSelectOrder}
                                 isLoading={isLoading}
+                                isAdmin={user?.role === UserRole.ADMIN}
                             />
                         </CardContent>
                         <CardFooter>

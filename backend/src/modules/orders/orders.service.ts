@@ -39,10 +39,12 @@ export class OrdersService {
 
         const orderItems = await this.getOrderItems(createOrderDto.items);
 
-        const userEntity = await this.usersService.getById(user.id);
-
-        const manager = user.role.name === UserRole.MANAGER ? userEntity : null;
-        const customer = user.role.name === UserRole.USER ? userEntity : null;
+        const manager =
+            user.role.name === UserRole.MANAGER ||
+            user.role.name === UserRole.ADMIN
+                ? user
+                : null;
+        const customer = user.role.name === UserRole.USER ? user : null;
         const status =
             user.role.name === UserRole.USER
                 ? OrderStatus.PENDING
@@ -67,18 +69,45 @@ export class OrdersService {
 
     async findAll(
         query: OrderQueryDto,
+        user: User,
     ): Promise<PagedResponse<OrderResponseDto>> {
-        const { page, limit, status, period } = query;
+        const { page, limit, status, period, assigned } = query;
 
         const periodDate = getPeriodDate(period);
+
+        const allForCustomer = {
+            customer: user.id,
+        };
+
+        const allForManager = {
+            manager: user.id,
+        };
+
+        const role = user.role.name;
 
         const [orders, count] = await this.orderRepository.findAndCount(
             {
                 status: status ? { $in: status } : {},
                 createdAt: periodDate ? { $gte: periodDate } : {},
+                ...(role === UserRole.MANAGER && assigned ? allForManager : {}),
+                ...(role === UserRole.MANAGER && !assigned
+                    ? { manager: null }
+                    : {}),
+                ...(role === UserRole.USER ? allForCustomer : {}),
             },
             {
-                populate: ['items', 'items.product', 'customer', 'manager'],
+                populate: [
+                    'items',
+                    'items.product',
+                    'customer',
+                    'manager',
+                    'customer.role',
+                    'manager.role',
+                    'customer.details',
+                    'manager.details',
+                    'customer.role.permissions',
+                    'manager.role.permissions',
+                ],
                 offset: (page - 1) * limit,
                 limit: limit,
                 orderBy: { id: 'ASC' },
@@ -101,9 +130,14 @@ export class OrdersService {
                 populate: [
                     'items',
                     'items.product',
-                    'items.coatingTexture',
                     'customer',
                     'manager',
+                    'customer.role',
+                    'manager.role',
+                    'customer.details',
+                    'manager.details',
+                    'customer.role.permissions',
+                    'manager.role.permissions',
                 ],
             },
         );
@@ -151,9 +185,15 @@ export class OrdersService {
             {
                 populate: [
                     'items',
-                    'items.coatingTexture',
-                    'manager',
+                    'items.product',
                     'customer',
+                    'manager',
+                    'customer.role',
+                    'manager.role',
+                    'customer.details',
+                    'manager.details',
+                    'customer.role.permissions',
+                    'manager.role.permissions',
                 ],
             },
         );
@@ -163,6 +203,34 @@ export class OrdersService {
         }
 
         wrap(order).assign({ status: updateOrderStatusDto.status });
+        this.em.persistAndFlush(order);
+        return order.toObject();
+    }
+
+    async assignOrder(id: number, user: User) {
+        const order = await this.orderRepository.findOne(
+            { id },
+            {
+                populate: [
+                    'items',
+                    'items.product',
+                    'customer',
+                    'manager',
+                    'customer.role',
+                    'manager.role',
+                    'customer.details',
+                    'manager.details',
+                    'customer.role.permissions',
+                    'manager.role.permissions',
+                ],
+            },
+        );
+
+        if (!order) {
+            throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+        }
+
+        wrap(order).assign({ manager: user });
         this.em.persistAndFlush(order);
         return order.toObject();
     }

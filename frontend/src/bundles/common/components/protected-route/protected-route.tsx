@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<Properties> = ({ children }) => {
 
     useEffect(() => {
         if (!user && !isRefreshing) {
-            navigate(AppRoute.SIGN_IN, { replace: true });
+            navigate(AppRoute.ROOT, { replace: true });
         }
     }, [user, isRefreshing, navigate]);
 

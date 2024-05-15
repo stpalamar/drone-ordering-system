@@ -168,124 +168,128 @@ const OrderItemForm: React.FC<Properties> = ({
                 <CardDescription>Details of the item</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="grid gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.purpose`}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Purpose</FormLabel>
-                                    <ComboboxField
-                                        field={field}
-                                        form={form}
-                                        label="Purpose"
-                                        options={getPurposeTypes(
-                                            wingsTypeValue,
-                                            productTypes ?? null,
-                                        )}
-                                    />
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                <div className="flex flex-col gap-4 lg:gap-8">
+                    <div className="grid lg:grid-cols-4 gap-8 col-span-4">
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.purpose`}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Purpose</FormLabel>
+                                        <ComboboxField
+                                            field={field}
+                                            form={form}
+                                            label="Purpose"
+                                            options={getPurposeTypes(
+                                                wingsTypeValue,
+                                                productTypes ?? null,
+                                            )}
+                                            disabled={disabled}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.wingsType`}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Wings type</FormLabel>
+                                        <ComboboxField
+                                            field={field}
+                                            form={form}
+                                            label="Wings type"
+                                            options={getWingsTypes(
+                                                purposeValue,
+                                                productTypes ?? null,
+                                            )}
+                                            disabled={disabled}
+                                        />
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.powerSource`}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Power source</FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                            disabled={disabled}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger
+                                                    id="powerSource"
+                                                    aria-label="Select power source"
+                                                >
+                                                    <SelectValue placeholder="Select power source" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="battery">
+                                                    Battery
+                                                </SelectItem>
+                                                <SelectItem value="gasoline">
+                                                    Gasoline
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.materialType`}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Material type</FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                            disabled={disabled}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger
+                                                    id="materialType"
+                                                    aria-label="Select material type"
+                                                >
+                                                    <SelectValue placeholder="Select material type" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="carbon">
+                                                    Carbon
+                                                </SelectItem>
+                                                <SelectItem value="aluminum">
+                                                    Aluminum
+                                                </SelectItem>
+                                                <SelectItem value="plastic">
+                                                    Plastic
+                                                </SelectItem>
+                                                <SelectItem value="Titanium">
+                                                    Titanium
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                     </div>
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.wingsType`}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Wings type</FormLabel>
-                                    <ComboboxField
-                                        field={field}
-                                        form={form}
-                                        label="Wings type"
-                                        options={getWingsTypes(
-                                            purposeValue,
-                                            productTypes ?? null,
-                                        )}
-                                    />
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.powerSource`}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Power source</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        disabled={disabled}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger
-                                                id="powerSource"
-                                                aria-label="Select power source"
-                                            >
-                                                <SelectValue placeholder="Select power source" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="battery">
-                                                Battery
-                                            </SelectItem>
-                                            <SelectItem value="gasoline">
-                                                Gasoline
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.materialType`}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Material type</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                        disabled={disabled}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger
-                                                id="materialType"
-                                                aria-label="Select material type"
-                                            >
-                                                <SelectValue placeholder="Select material type" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="carbon">
-                                                Carbon
-                                            </SelectItem>
-                                            <SelectItem value="aluminum">
-                                                Aluminum
-                                            </SelectItem>
-                                            <SelectItem value="plastic">
-                                                Plastic
-                                            </SelectItem>
-                                            <SelectItem value="Titanium">
-                                                Titanium
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="grid gap-2 xl:col-span-4">
+                    <div className="grid gap-2 col-span-4">
                         <h2 className="text-xl font-bold">Dimensions</h2>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
@@ -331,279 +335,304 @@ const OrderItemForm: React.FC<Properties> = ({
                             </div>
                         </div>
                     </div>
+                    <div className="grid gap-4 col-span-4 md:grid-cols-3">
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.payloadCapacity`}
+                                disabled={disabled}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Payload capacity (kg)
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                placeholder="Enter payload capacity"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.flightDistance`}
+                                disabled={disabled}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Flight distance (km)
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                placeholder="Enter flight distance"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.flightTime`}
+                                disabled={disabled}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Flight time (minutes)
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                placeholder="Enter flight time"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
 
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.payloadCapacity`}
-                            disabled={disabled}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Payload capacity (kg)</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            placeholder="Enter payload capacity"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.flightDistance`}
-                            disabled={disabled}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Flight distance (km)</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            placeholder="Enter flight distance"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.flightTime`}
-                            disabled={disabled}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Flight time (minutes)</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            placeholder="Enter flight time"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-
-                    <div className="grid col-span-4 xl:grid-cols-4">
+                    <div className="grid col-span-4">
                         <div className="mb-2 col-span-4">
                             <h2 className="text-xl font-bold">
                                 Additional features
                             </h2>
                         </div>
-                        <div className="grid gap-2">
-                            <FormField
-                                control={form.control}
-                                name={`items.${index}.additionalEquipment.camera`}
-                                disabled={disabled}
-                                render={({ field }) => (
-                                    <FormItem className="space-x-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                                disabled={disabled}
-                                            />
-                                        </FormControl>
-                                        <FormLabel>Camera</FormLabel>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <FormField
-                                control={form.control}
-                                name={`items.${index}.additionalEquipment.thermographicCamera`}
-                                disabled={disabled}
-                                render={({ field }) => (
-                                    <FormItem className="space-x-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                                disabled={disabled}
-                                            />
-                                        </FormControl>
-                                        <FormLabel>
-                                            Thermographic camera
-                                        </FormLabel>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <FormField
-                                control={form.control}
-                                name={`items.${index}.additionalEquipment.nightVision`}
-                                disabled={disabled}
-                                render={({ field }) => (
-                                    <FormItem className="space-x-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                                disabled={disabled}
-                                            />
-                                        </FormControl>
-                                        <FormLabel>Night vision</FormLabel>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <FormField
-                                control={form.control}
-                                name={`items.${index}.additionalEquipment.parachute`}
-                                disabled={disabled}
-                                render={({ field }) => (
-                                    <FormItem className="space-x-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                                disabled={disabled}
-                                            />
-                                        </FormControl>
-                                        <FormLabel>Parachute</FormLabel>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <FormField
-                                control={form.control}
-                                name={`items.${index}.additionalEquipment.autopilot`}
-                                disabled={disabled}
-                                render={({ field }) => (
-                                    <FormItem className="space-x-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                                disabled={disabled}
-                                            />
-                                        </FormControl>
-                                        <FormLabel>Autopilot</FormLabel>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <FormField
-                                control={form.control}
-                                name={`items.${index}.additionalEquipment.targetIdentification`}
-                                render={({ field }) => (
-                                    <FormItem className="space-x-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                                disabled={disabled}
-                                            />
-                                        </FormControl>
-                                        <FormLabel>
-                                            AI target identification
-                                        </FormLabel>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <FormField
-                                control={form.control}
-                                name={`items.${index}.additionalEquipment.gps`}
-                                render={({ field }) => (
-                                    <FormItem className="space-x-2">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                                disabled={disabled}
-                                            />
-                                        </FormControl>
-                                        <FormLabel>GPS</FormLabel>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                        <div className="grid gap-y-2 gap-x-4 md:grid-cols-3 lg:grid-cols-4">
+                            <div className="grid gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.additionalEquipment.camera`}
+                                    disabled={disabled}
+                                    render={({ field }) => (
+                                        <FormItem className="space-x-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    disabled={disabled}
+                                                />
+                                            </FormControl>
+                                            <FormLabel>Camera</FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.additionalEquipment.thermographicCamera`}
+                                    disabled={disabled}
+                                    render={({ field }) => (
+                                        <FormItem className="space-x-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    disabled={disabled}
+                                                />
+                                            </FormControl>
+                                            <FormLabel>
+                                                Thermographic camera
+                                            </FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.additionalEquipment.nightVision`}
+                                    disabled={disabled}
+                                    render={({ field }) => (
+                                        <FormItem className="space-x-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    disabled={disabled}
+                                                />
+                                            </FormControl>
+                                            <FormLabel>Night vision</FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.additionalEquipment.parachute`}
+                                    disabled={disabled}
+                                    render={({ field }) => (
+                                        <FormItem className="space-x-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    disabled={disabled}
+                                                />
+                                            </FormControl>
+                                            <FormLabel>Parachute</FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.additionalEquipment.autopilot`}
+                                    disabled={disabled}
+                                    render={({ field }) => (
+                                        <FormItem className="space-x-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    disabled={disabled}
+                                                />
+                                            </FormControl>
+                                            <FormLabel>Autopilot</FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.additionalEquipment.targetIdentification`}
+                                    render={({ field }) => (
+                                        <FormItem className="space-x-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    disabled={disabled}
+                                                />
+                                            </FormControl>
+                                            <FormLabel>
+                                                AI target identification
+                                            </FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <FormField
+                                    control={form.control}
+                                    name={`items.${index}.additionalEquipment.gps`}
+                                    render={({ field }) => (
+                                        <FormItem className="space-x-2">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    disabled={disabled}
+                                                />
+                                            </FormControl>
+                                            <FormLabel>GPS</FormLabel>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.amount`}
-                            disabled={disabled}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Amount</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            placeholder="Enter amount"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="grid gap-2">
-                        <FormField
-                            control={form.control}
-                            name={`items.${index}.color`}
-                            disabled={disabled}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Color</FormLabel>
-                                    <FormControl>
-                                        <div className="relative w-10 h-10">
-                                            <Popover>
-                                                <PopoverTrigger
-                                                    disabled={disabled}
-                                                    className={cn(
-                                                        disabled &&
-                                                            'cursor-not-allowed',
-                                                    )}
-                                                >
-                                                    <ColorBox
-                                                        color={field.value}
-                                                    />
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-min">
-                                                    <HexColorPicker
-                                                        color={field.value}
-                                                        onChange={(
-                                                            newColor: string,
-                                                        ) =>
-                                                            field.onChange(
-                                                                newColor,
-                                                            )
-                                                        }
-                                                    />
-                                                </PopoverContent>
-                                            </Popover>
-                                        </div>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <div className="grid gap-4 grid-cols-2">
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.amount`}
+                                disabled={disabled}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Amount</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="text"
+                                                placeholder="Enter amount"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name={`items.${index}.color`}
+                                disabled={disabled}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Color</FormLabel>
+                                        <FormControl>
+                                            <div className="relative w-10 h-10">
+                                                <Popover>
+                                                    <PopoverTrigger
+                                                        disabled={disabled}
+                                                        className={cn(
+                                                            disabled &&
+                                                                'cursor-not-allowed',
+                                                        )}
+                                                    >
+                                                        <ColorBox
+                                                            color={field.value}
+                                                        />
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-min">
+                                                        <HexColorPicker
+                                                            color={field.value}
+                                                            onChange={(
+                                                                newColor: string,
+                                                            ) =>
+                                                                field.onChange(
+                                                                    newColor,
+                                                                )
+                                                            }
+                                                        />
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                     </div>
                     <div className="grid gap-2 col-span-4 justify-items-start">
                         <div>

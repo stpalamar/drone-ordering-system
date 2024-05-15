@@ -77,7 +77,7 @@ const ProductsTable: React.FC<Properties> = ({
 
     const handleClickView = useCallback(
         (id: number) => {
-            const path = configureUrlString(AppRoute.PRODUCT_$ID, {
+            const path = configureUrlString(AppRoute.ADMIN_PRODUCT_$ID, {
                 id: String(id),
             });
             navigate(path);

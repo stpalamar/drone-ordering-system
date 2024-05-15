@@ -77,7 +77,7 @@ const OrderCard: React.FC<Properties> = ({ order }) => {
     );
 
     const handleViewMore = useCallback(() => {
-        const path = configureUrlString(AppRoute.ORDER_$ID, {
+        const path = configureUrlString(AppRoute.ADMIN_ORDER_$ID, {
             id: String(order.id),
         });
         navigate(path);
@@ -113,6 +113,7 @@ const OrderCard: React.FC<Properties> = ({ order }) => {
                                 {getOrderStatusString(status)}
                             </Badge>
                         </div>
+                        {}
                         <div className="flex flex-row gap-1">
                             <Button
                                 size="sm"

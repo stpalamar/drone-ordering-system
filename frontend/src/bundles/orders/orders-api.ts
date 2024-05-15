@@ -12,9 +12,9 @@ import {
 const ordersApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         getOrders: build.query<PagedResponse<OrderResponseDto>, OrderQueryDto>({
-            query: ({ page, limit, period, status }) => {
+            query: ({ page, limit, period, status, assigned }) => {
                 const statusQuery = status ? `&status=${status}` : '';
-                return `${ApiPath.ORDERS}?page=${page}&limit=${limit}&period=${period}${statusQuery}`;
+                return `${ApiPath.ORDERS}?page=${page}&limit=${limit}&period=${period}${statusQuery}&assigned=${assigned}`;
             },
             providesTags: [AppSubject.Order],
         }),
@@ -53,6 +53,13 @@ const ordersApi = baseApi.injectEndpoints({
                 body: payload.item,
             }),
         }),
+        assignOrder: build.mutation<OrderResponseDto, number>({
+            query: (id) => ({
+                url: `${ApiPath.ORDERS}/assign/${id}`,
+                method: 'PATCH',
+            }),
+            invalidatesTags: [AppSubject.Order],
+        }),
     }),
 });
 
@@ -62,9 +69,11 @@ const {
     useCreateOrderMutation,
     useUpdateOrderStatusMutation,
     useUpdateOrderMutation,
+    useAssignOrderMutation,
 } = ordersApi;
 
 export {
+    useAssignOrderMutation,
     useCreateOrderMutation,
     useGetOrderByIdQuery,
     useGetOrdersQuery,

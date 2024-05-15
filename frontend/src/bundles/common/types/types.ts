@@ -1,3 +1,4 @@
+export { type NavItem } from './nav-item.type.js';
 export { type RouteObject } from './route-object.js';
 export { type LucideIcon } from 'lucide-react';
 export { type ReactNode } from 'react';

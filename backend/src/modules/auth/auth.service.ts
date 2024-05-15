@@ -93,7 +93,7 @@ export class AuthService {
         ).toObject();
     }
 
-    public async signUp(
+    private async signUp(
         userSignUpRequestDto: UserSignInRequestDto,
         userRole: ValueOf<typeof UserRole>,
     ): Promise<UserResponseDto> {
@@ -122,6 +122,27 @@ export class AuthService {
         ).toObject();
     }
 
+    public async signUpUser(
+        userSignUpRequestDto: UserSignInRequestDto,
+        origin: string,
+    ) {
+        const newUser = await this.signUp(userSignUpRequestDto, UserRole.USER);
+
+        const confirmationToken = this.jwtService.sign(
+            {
+                email: newUser.email,
+            },
+            { expiresIn: '10m' },
+        );
+
+        const confirmationUrl = `${origin}/confirm-email?token=${confirmationToken}`;
+
+        await this.emailService.sendConfirmationEmail(
+            newUser.email,
+            confirmationUrl,
+        );
+    }
+
     public async signUpManager(
         managerSignUpRequestDto: ManagerSignUpRequestDto,
         origin: string,
@@ -145,7 +166,7 @@ export class AuthService {
 
         const confirmationUrl = `${origin}/confirm-email?token=${confirmationToken}`;
 
-        await this.emailService.sendManagerConfirmationEmail(
+        await this.emailService.sendConfirmationEmail(
             newUser.email,
             confirmationUrl,
         );

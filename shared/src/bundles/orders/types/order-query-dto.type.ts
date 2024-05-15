@@ -5,6 +5,7 @@ import { type OrderStatus } from '../enums/enums.js';
 type OrderQueryDto = PaginationQueryDto & {
     status: ValueOf<typeof OrderStatus>[] | null;
     period: ValueOf<typeof Period>;
+    assigned: boolean;
 };
 
 export { type OrderQueryDto };

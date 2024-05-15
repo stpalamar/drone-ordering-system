@@ -10,12 +10,14 @@ type Properties = {
     item: OrderResponseDto;
     isActive: boolean;
     onSelect: (item: OrderResponseDto) => void;
+    isAdmin: boolean;
 };
 
 const OrdersTableItem: React.FC<Properties> = ({
     item,
     isActive,
     onSelect,
+    isAdmin,
 }) => {
     const { firstName, lastName, email, status, totalPrice, createdAt } = item;
 
@@ -36,10 +38,21 @@ const OrdersTableItem: React.FC<Properties> = ({
                     {email}
                 </div>
             </TableCell>
-            <TableCell className="hidden sm:table-cell">
-                {/* To be implemented */}
-                type
-            </TableCell>
+            {isAdmin && (
+                <TableCell className="hidden sm:table-cell">
+                    <div className="text-sm text-muted-foreground">
+                        {item.manager ? (
+                            <span>
+                                {item.manager.details?.firstName}{' '}
+                                {item.manager.details?.lastName}
+                            </span>
+                        ) : (
+                            'Not assigned'
+                        )}
+                    </div>
+                </TableCell>
+            )}
+
             <TableCell className="hidden sm:table-cell">
                 <Badge className="text-xs" variant="secondary">
                     {getOrderStatusString(status)}

@@ -1,6 +1,7 @@
 import { RequestUser } from '@common/decorators/user.decorator';
 import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
+import { CaslAbilityFactory } from '@modules/permission/casl-ability.factory';
 import { CheckPermissions } from '@modules/permission/decorators/permissions.decorator';
 import {
     PermissionAction,
@@ -32,7 +33,10 @@ import {
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
-    constructor(private readonly ordersService: OrdersService) {}
+    constructor(
+        private readonly ordersService: OrdersService,
+        private abilityFactory: CaslAbilityFactory,
+    ) {}
 
     @Post()
     @UseGuards(PermissionsGuard)
@@ -51,8 +55,9 @@ export class OrdersController {
     findAll(
         @Query(new ZodValidationPipe(orderQueryValidationSchema))
         query: OrderQueryDto,
+        @RequestUser() user: User,
     ) {
-        return this.ordersService.findAll(query);
+        return this.ordersService.findAll(query, user);
     }
 
     @Get(':id')
@@ -82,6 +87,13 @@ export class OrdersController {
         updateOrderStatusDto: OrderStatusDto,
     ) {
         return this.ordersService.updateStatus(+id, updateOrderStatusDto);
+    }
+
+    @Patch('assign/:id')
+    @UseGuards(PermissionsGuard)
+    @CheckPermissions([PermissionAction.UPDATE, PermissionSubject.ORDER])
+    assignOrder(@Param('id') id: string, @RequestUser() user: User) {
+        return this.ordersService.assignOrder(+id, user);
     }
 
     @Delete(':id')

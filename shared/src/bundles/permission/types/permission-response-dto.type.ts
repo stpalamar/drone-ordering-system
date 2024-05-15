@@ -8,7 +8,7 @@ type PermissionResponseDto = {
     id: number;
     action: ValueOf<typeof PermissionAction>;
     subject: ValueOf<typeof PermissionSubject>;
-    condition: string | null;
+    condition: Record<string, unknown> | null;
 };
 
 export { type PermissionResponseDto };

@@ -14,7 +14,7 @@ export default defineConfig({
     dbName: process.env.DB_NAME,
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
-    debug: true,
+    debug: false,
     extensions: [Migrator, SeedManager],
     seeder: {
         path: 'src/common/database/seeder',

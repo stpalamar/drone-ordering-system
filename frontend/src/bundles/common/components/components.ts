@@ -1,4 +1,5 @@
 export { AbilityContext, Can } from './ability/ability.js';
+export { AvatarMenu } from './avatar-menu/avatar-menu.js';
 export { BaseAdminLayout } from './base-admin-layout/base-admin-layout.js';
 export { BaseUserLayout } from './base-user-layout/base-user-layout.js';
 export { ColorBox } from './color-box/color-box.js';

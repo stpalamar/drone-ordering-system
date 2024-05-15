@@ -16,6 +16,7 @@ type Properties = {
     selectedOrder: OrderResponseDto | null;
     onSelect: (item: OrderResponseDto) => void;
     isLoading: boolean;
+    isAdmin: boolean;
 };
 
 const OrdersTable: React.FC<Properties> = ({
@@ -23,13 +24,19 @@ const OrdersTable: React.FC<Properties> = ({
     onSelect,
     selectedOrder,
     isLoading,
+    isAdmin,
 }) => {
     return (
         <Table>
             <TableHeader>
                 <TableRow>
                     <TableHead>Customer</TableHead>
-                    <TableHead className="hidden sm:table-cell">Type</TableHead>
+                    {isAdmin && (
+                        <TableHead className="hidden sm:table-cell">
+                            Manager
+                        </TableHead>
+                    )}
+
                     <TableHead className="hidden sm:table-cell">
                         Status
                     </TableHead>
@@ -67,6 +74,7 @@ const OrdersTable: React.FC<Properties> = ({
                                     : false
                             }
                             onSelect={onSelect}
+                            isAdmin={isAdmin}
                         />
                     ))}
             </TableBody>

@@ -8,7 +8,7 @@ const errorMiddleware: Middleware = () => {
                 data: { message: string; statusCode: number };
             };
             if (data) {
-                if (data.statusCode === 401) {
+                if (data.message === 'Unauthorized') {
                     next(action);
                 } else {
                     toast.error(data.message);

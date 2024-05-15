@@ -12,6 +12,8 @@ import {
 } from '@modules/permission/enums/enums';
 import { Product } from '@modules/products/entities/product.entity';
 import { ProductPrice } from '@modules/products/entities/product-price.entity';
+import { User } from '@modules/users/entities/user.entity';
+import { UserDetails } from '@modules/users/entities/user-details.entity';
 
 export class DatabaseSeeder extends Seeder {
     async run(em: EntityManager): Promise<void> {
@@ -21,7 +23,7 @@ export class DatabaseSeeder extends Seeder {
         const managerRole = em.create(Role, {
             name: 'manager',
         });
-        em.create(Role, {
+        const userRole = em.create(Role, {
             name: 'user',
         });
 
@@ -77,6 +79,14 @@ export class DatabaseSeeder extends Seeder {
             subject: fileSubject,
         });
 
+        const readOwnOrder = em.create(Permission, {
+            action: PermissionAction.READ,
+            subject: orderSubject,
+            condition: {
+                'customerId': '${id}',
+            },
+        });
+
         managerRole.permissions.add([
             readProduct,
             createOrder,
@@ -88,6 +98,56 @@ export class DatabaseSeeder extends Seeder {
         ]);
 
         adminRole.permissions.add(manageAll);
+
+        userRole.permissions.add(readOwnOrder, readProduct, createOrder);
+
+        const adminUserDetails = em.create(UserDetails, {
+            firstName: 'John',
+            lastName: 'Wick',
+            phone: '0123456789',
+            dateOfBirth: new Date('2000-01-01'),
+            avatar: null,
+        });
+
+        const managerUserDetails = em.create(UserDetails, {
+            firstName: 'Jack',
+            lastName: 'Doe',
+            phone: '0123456789',
+            dateOfBirth: new Date('2001-01-01'),
+            avatar: null,
+        });
+
+        const userDetails = em.create(UserDetails, {
+            firstName: 'Michael',
+            lastName: 'Doe',
+            phone: '0123456789',
+            dateOfBirth: new Date('2002-01-01'),
+            avatar: null,
+        });
+
+        em.create(User, {
+            email: 'admin@drone.com',
+            password: 'admin123',
+            role: adminRole,
+            details: adminUserDetails,
+            isEmailConfirmed: true,
+        });
+
+        em.create(User, {
+            email: 'manager@mail.com',
+            password: 'test123',
+            role: managerRole,
+            details: managerUserDetails,
+            isEmailConfirmed: true,
+        });
+
+        em.create(User, {
+            email: 'michael@mail.com',
+            password: 'test123',
+            role: userRole,
+            details: userDetails,
+            isEmailConfirmed: true,
+        });
 
         const photo1 = em.create(PublicFile, {
             key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
