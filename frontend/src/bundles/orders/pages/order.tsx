@@ -38,6 +38,7 @@ import {
 } from '../helpers/helpers.js';
 import {
     useAssignOrderMutation,
+    useGenerateOrderPdfMutation,
     useGetOrderByIdQuery,
     useUpdateOrderMutation,
     useUpdateOrderStatusMutation,
@@ -69,6 +70,9 @@ const Order: React.FC = () => {
 
     const [assignOrder, { isLoading: isLoadingAssignOrder }] =
         useAssignOrderMutation();
+
+    const [generateOrderPdf, { isLoading: isLoadingGeneratePdf }] =
+        useGenerateOrderPdfMutation();
 
     const handleSaveOrder = useCallback(
         async (payload: OrderRequestDto) => {
@@ -106,6 +110,10 @@ const Order: React.FC = () => {
     const handleAssignOrder = useCallback(() => {
         void assignOrder(Number(id));
     }, [id, assignOrder]);
+
+    const handleGeneratePdf = useCallback(() => {
+        void generateOrderPdf(Number(id));
+    }, [generateOrderPdf, id]);
 
     if (isLoading || isLoadingTypes) {
         return <Loader size="medium" isOverflow />;
@@ -254,10 +262,21 @@ const Order: React.FC = () => {
                                     </Button>
                                     <Button
                                         variant="secondary"
-                                        disabled={isUnassigned || isEditing}
+                                        onClick={handleGeneratePdf}
+                                        disabled={
+                                            isUnassigned ||
+                                            isEditing ||
+                                            isLoadingGeneratePdf
+                                        }
                                     >
-                                        <Download className="h-4 w-4  mr-2" />
-                                        Get PDF
+                                        {isLoadingGeneratePdf ? (
+                                            <Loader />
+                                        ) : (
+                                            <>
+                                                <Download className="h-4 w-4  mr-2" />
+                                                Download PDF
+                                            </>
+                                        )}
                                     </Button>
                                 </div>
                             </div>

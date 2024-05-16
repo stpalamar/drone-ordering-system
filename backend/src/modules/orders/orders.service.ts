@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { PagedResponse } from '@common/types/types';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository, wrap } from '@mikro-orm/postgresql';
+import { PdfService } from '@modules/pdf/pdf.service';
 import { Product } from '@modules/products/entities/product.entity';
 import { User } from '@modules/users/entities/user.entity';
 import { UserRole } from '@modules/users/enums/enums';
@@ -29,6 +30,7 @@ export class OrdersService {
         private readonly productRepository: EntityRepository<Product>,
         private readonly usersService: UsersService,
         private readonly em: EntityManager,
+        private readonly pdfService: PdfService,
     ) {}
 
     async create(
@@ -99,6 +101,8 @@ export class OrdersService {
                 populate: [
                     'items',
                     'items.product',
+                    'items.product.image',
+                    'items.coatingTexture',
                     'customer',
                     'manager',
                     'customer.role',
@@ -130,6 +134,8 @@ export class OrdersService {
                 populate: [
                     'items',
                     'items.product',
+                    'items.product.image',
+                    'items.coatingTexture',
                     'customer',
                     'manager',
                     'customer.role',
@@ -149,15 +155,51 @@ export class OrdersService {
         return order.toObject();
     }
 
+    async generatePdf(id: number) {
+        const order = await this.orderRepository.findOne(
+            { id },
+            {
+                populate: [
+                    'items',
+                    'items.product',
+                    'items.product.image',
+                    'items.coatingTexture',
+                    'customer',
+                    'manager',
+                    'customer.role',
+                    'manager.role',
+                    'customer.details',
+                    'manager.details',
+                    'customer.role.permissions',
+                    'manager.role.permissions',
+                ],
+            },
+        );
+
+        if (!order) {
+            throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
+        }
+
+        return await this.pdfService.generateOrderPdf(order);
+    }
+
     async update(id: number, updateOrderDto: OrderRequestDto) {
         const order = await this.orderRepository.findOne(
             { id },
             {
                 populate: [
                     'items',
+                    'items.product',
+                    'items.product.image',
                     'items.coatingTexture',
-                    'manager',
                     'customer',
+                    'manager',
+                    'customer.role',
+                    'manager.role',
+                    'customer.details',
+                    'manager.details',
+                    'customer.role.permissions',
+                    'manager.role.permissions',
                 ],
             },
         );
@@ -186,6 +228,8 @@ export class OrdersService {
                 populate: [
                     'items',
                     'items.product',
+                    'items.product.image',
+                    'items.coatingTexture',
                     'customer',
                     'manager',
                     'customer.role',
@@ -214,6 +258,8 @@ export class OrdersService {
                 populate: [
                     'items',
                     'items.product',
+                    'items.product.image',
+                    'items.coatingTexture',
                     'customer',
                     'manager',
                     'customer.role',

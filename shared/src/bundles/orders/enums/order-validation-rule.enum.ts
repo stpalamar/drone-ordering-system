@@ -23,6 +23,9 @@ const OrderValidationRule = {
         MIN: 1,
         MAX: 100,
     },
+    additionalInfo: {
+        MAX: 200,
+    },
 } as const;
 
 export { OrderValidationRule };

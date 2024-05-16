@@ -53,6 +53,7 @@ export {
     Period,
     SortQuery,
 } from './enums/enums.js';
+export { formatDate } from './helpers/helpers.js';
 export {
     type PagedResponse,
     type PaginationQueryDto,

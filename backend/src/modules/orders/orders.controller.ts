@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+
 import { RequestUser } from '@common/decorators/user.decorator';
 import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
@@ -19,8 +21,10 @@ import {
     Post,
     Put,
     Query,
+    Res,
     UseGuards,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { OrdersService } from './orders.service';
 import { OrderQueryDto, OrderRequestDto, OrderStatusDto } from './types/types';
@@ -65,6 +69,31 @@ export class OrdersController {
     @CheckPermissions([PermissionAction.READ, PermissionSubject.ORDER])
     findOne(@Param('id') id: string) {
         return this.ordersService.findOne(+id);
+    }
+
+    @Get('/generate-pdf/:id')
+    @UseGuards(PermissionsGuard)
+    @CheckPermissions([PermissionAction.READ, PermissionSubject.ORDER])
+    async generatePdf(@Param('id') id: string, @Res() res: Response) {
+        try {
+            const pdfFilePath = await this.ordersService.generatePdf(+id);
+            const filename = pdfFilePath.toUpperCase();
+            res.setHeader(
+                'Content-disposition',
+                `attachment; filename=${filename}`,
+            );
+            res.setHeader('Content-type', 'application/pdf');
+
+            res.sendFile(pdfFilePath, { root: process.cwd() }, (error) => {
+                if (error) {
+                    console.error(error);
+                }
+                fs.unlinkSync(pdfFilePath);
+            });
+        } catch (error) {
+            console.log('Error while generating pdf', error);
+            throw error;
+        }
     }
 
     @Put(':id')

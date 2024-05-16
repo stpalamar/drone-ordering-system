@@ -60,6 +60,27 @@ const ordersApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: [AppSubject.Order],
         }),
+        generateOrderPdf: build.mutation<null, number>({
+            query: (id) => ({
+                url: `${ApiPath.ORDERS}/generate-pdf/${id}`,
+                method: 'GET',
+                responseType: 'blob',
+                cache: 'no-cache',
+                responseHandler: async (response): Promise<null> => {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const filename = response.headers
+                        .get('Content-Disposition')
+                        ?.split('filename=')[1];
+                    a.download = filename || 'order.pdf';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    return null;
+                },
+            }),
+        }),
     }),
 });
 
@@ -70,11 +91,13 @@ const {
     useUpdateOrderStatusMutation,
     useUpdateOrderMutation,
     useAssignOrderMutation,
+    useGenerateOrderPdfMutation,
 } = ordersApi;
 
 export {
     useAssignOrderMutation,
     useCreateOrderMutation,
+    useGenerateOrderPdfMutation,
     useGetOrderByIdQuery,
     useGetOrdersQuery,
     useUpdateOrderMutation,

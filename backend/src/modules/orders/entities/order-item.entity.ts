@@ -45,10 +45,10 @@ class OrderItem extends BaseEntity {
     color!: string;
 
     @OneToOne({ nullable: true })
-    coatingTexture?: PublicFile | null;
+    coatingTexture!: PublicFile | null;
 
     @Property({ nullable: true })
-    additionalInfo?: string | null;
+    additionalInfo!: string | null;
 
     @Property({ type: 'int' })
     price!: number;

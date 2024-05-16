@@ -1,5 +1,9 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { PublicFile } from '@modules/files/entities/public-file.entity';
+import { FilesModule } from '@modules/files/files.module';
+import { FilesService } from '@modules/files/files.service';
+import { PdfModule } from '@modules/pdf/pdf.module';
+import { PdfService } from '@modules/pdf/pdf.service';
 import { Product } from '@modules/products/entities/product.entity';
 import { User } from '@modules/users/entities/user.entity';
 import { UsersModule } from '@modules/users/users.module';
@@ -29,8 +33,10 @@ import { OrdersService } from './orders.service';
             }),
         }),
         UsersModule,
+        FilesModule,
+        PdfModule,
     ],
     controllers: [OrdersController],
-    providers: [OrdersService, UsersService],
+    providers: [OrdersService, UsersService, PdfService, FilesService],
 })
 export class OrdersModule {}

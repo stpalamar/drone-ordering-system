@@ -110,7 +110,16 @@ const orderItemValidationSchema = z.object({
         .literal('')
         .transform(() => null)
         .nullable()
-        .or(z.string().trim().min(1)),
+        .or(
+            z
+                .string()
+                .trim()
+                .min(1)
+                .max(
+                    OrderValidationRule.additionalInfo.MAX,
+                    OrderValidationMessage.additionalInfo.FIELD_MAX,
+                ),
+        ),
 });
 
 const orderValidationSchema = z.object({

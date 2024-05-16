@@ -150,7 +150,7 @@ const OrderItemForm: React.FC<Properties> = ({
             <CardHeader>
                 <CardTitle>
                     <div className="flex flex-row justify-between items-center">
-                        Position #{index + 1}
+                        Drone #{index + 1}
                         {index > 0 && (
                             <Button
                                 variant="secondary"

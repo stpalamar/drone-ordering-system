@@ -56,4 +56,15 @@ export class FilesService {
 
         return newFile.toObject();
     }
+
+    async getPublicFileBuffer(publicFile: PublicFile) {
+        const file = await this.s3
+            .getObject({
+                Bucket: this.configService.get('S3_BUCKET_NAME'),
+                Key: publicFile.key,
+            })
+            .promise();
+
+        return file.Body as Buffer;
+    }
 }

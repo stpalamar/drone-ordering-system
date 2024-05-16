@@ -63,6 +63,7 @@ const OrderValidationMessage = {
     },
     additionalInfo: {
         INVALID: 'Invalid additional info',
+        FIELD_MAX: `Additional info must be less than ${OrderValidationRule.additionalInfo.MAX} characters`,
     },
     status: {
         FIELD_REQUIRED: 'Status is required',
