@@ -19,7 +19,7 @@ export class UsersService {
         private readonly em: EntityManager,
     ) {}
 
-    async getById(id: number) {
+    async getById(id: number): Promise<User> {
         const user = await this.usersRepository.findOne(
             { id },
             {
@@ -28,6 +28,7 @@ export class UsersService {
                     'role.permissions',
                     'role.permissions.subject',
                     'details',
+                    'details.avatar',
                 ],
             },
         );

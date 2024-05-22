@@ -7,7 +7,10 @@ import {
 } from '~/bundles/common/components/ui/card.js';
 import { Progress } from '~/bundles/common/components/ui/progress.js';
 import { Separator } from '~/bundles/common/components/ui/separator.js';
-import { capitalizeFirstLetter } from '~/bundles/common/helpers/helpers.js';
+import {
+    capitalizeFirstLetter,
+    formatPrice,
+} from '~/bundles/common/helpers/helpers.js';
 import { cn } from '~/bundles/common/lib/utils.js';
 import { OrderStatus } from '~/bundles/orders/enums/enums.js';
 import {
@@ -177,7 +180,7 @@ const MyOrderDetails: React.FC<Properties> = ({ order }) => {
                         <Separator className="my-4" />
                         <div className="flex items-center justify-between">
                             <span className="text-muted-foreground">Price</span>
-                            <span>{item.price} $</span>
+                            <span>{formatPrice(item.price)}</span>
                         </div>
                     </CardContent>
                 </Card>

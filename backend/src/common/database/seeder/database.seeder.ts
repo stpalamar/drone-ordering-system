@@ -99,7 +99,13 @@ export class DatabaseSeeder extends Seeder {
 
         adminRole.permissions.add(manageAll);
 
-        userRole.permissions.add(readOwnOrder, readProduct, createOrder);
+        userRole.permissions.add(
+            readOwnOrder,
+            readProduct,
+            createOrder,
+            createFile,
+            readFile,
+        );
 
         const adminUserDetails = em.create(UserDetails, {
             firstName: 'John',

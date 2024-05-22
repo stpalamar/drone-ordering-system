@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { PagedResponse } from '@common/types/types';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository, wrap } from '@mikro-orm/postgresql';
+import { Chat } from '@modules/chats/entities/chat.entity';
 import { PdfService } from '@modules/pdf/pdf.service';
 import { Product } from '@modules/products/entities/product.entity';
 import { User } from '@modules/users/entities/user.entity';
@@ -29,6 +30,8 @@ export class OrdersService {
         @InjectRepository(Product)
         private readonly productRepository: EntityRepository<Product>,
         private readonly usersService: UsersService,
+        @InjectRepository(Chat)
+        private readonly chatsRepository: EntityRepository<Chat>,
         private readonly em: EntityManager,
         private readonly pdfService: PdfService,
     ) {}
@@ -56,6 +59,11 @@ export class OrdersService {
             0,
         );
 
+        const chat = this.chatsRepository.create({
+            users: [user],
+        });
+        this.em.persistAndFlush(chat);
+
         const newOrder = this.orderRepository.create({
             ...createOrderDto,
             items: orderItems,
@@ -64,6 +72,7 @@ export class OrdersService {
             customer,
             status,
             totalPrice,
+            chat,
         });
         this.em.persistAndFlush(newOrder);
         return newOrder.toObject();
@@ -144,6 +153,8 @@ export class OrdersService {
                     'manager.details',
                     'customer.role.permissions',
                     'manager.role.permissions',
+                    'customer.details.avatar',
+                    'manager.details.avatar',
                 ],
             },
         );
@@ -268,6 +279,7 @@ export class OrdersService {
                     'manager.details',
                     'customer.role.permissions',
                     'manager.role.permissions',
+                    'chat',
                 ],
             },
         );
@@ -275,6 +287,8 @@ export class OrdersService {
         if (!order) {
             throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
         }
+
+        order.chat.users.add(user);
 
         wrap(order).assign({ manager: user });
         this.em.persistAndFlush(order);

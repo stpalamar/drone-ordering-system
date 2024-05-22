@@ -1,6 +1,7 @@
 import { ChevronLeft, Download, Pencil } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { Chat } from '~/bundles/chats/components/components.js';
 import { Loader, Navigate } from '~/bundles/common/components/components.js';
 import { Alert, AlertTitle } from '~/bundles/common/components/ui/alert.js';
 import { Badge } from '~/bundles/common/components/ui/badge.js';
@@ -294,12 +295,26 @@ const Order: React.FC = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex items-center justify-center gap-2 md:hidden">
-                    <Button variant="outline" size="sm">
-                        Discard
-                    </Button>
-                    <Button size="sm">Save Product</Button>
+                    {order.customer && order.chatId && order.manager && (
+                        <Card className="h-[40rem] col-span-2 lg:col-span-1">
+                            {order.customer.details && (
+                                <Chat
+                                    chatId={order.chatId}
+                                    selectedUser={{
+                                        id: order.customer.id,
+                                        avatarUrl: order.customer.details.avatar
+                                            ? order.customer.details.avatar.url
+                                            : null,
+                                        email: order.customer.email,
+                                        firstName:
+                                            order.customer.details.firstName,
+                                        lastName:
+                                            order.customer.details.lastName,
+                                    }}
+                                />
+                            )}
+                        </Card>
+                    )}
                 </div>
             </div>
         </main>

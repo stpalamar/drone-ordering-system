@@ -9,7 +9,7 @@ import { Button } from '~/bundles/common/components/ui/button.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
 import {
     capitalizeFirstLetter,
-    getFirstLetter,
+    getAvatarFallback,
 } from '~/bundles/common/helpers/helpers.js';
 import { useCallback, useNavigate } from '~/bundles/common/hooks/hooks.js';
 import { type UserResponseDto } from '~/bundles/users/types/types.js';
@@ -42,8 +42,7 @@ const AvatarMenu: React.FC<Properties> = ({ user, isAdmin = false }) => {
 
     const avatarFallback =
         user.details &&
-        getFirstLetter(user?.details.firstName) +
-            getFirstLetter(user?.details.lastName);
+        getAvatarFallback(user.details.firstName, user.details.lastName);
 
     return (
         <div className="flex gap-2 items-center">

@@ -14,6 +14,7 @@ type OrderResponseDto = {
     items: OrderItemDto[];
     manager: UserResponseDto | null;
     customer: UserResponseDto | null;
+    chatId: number | null;
     totalPrice: number;
     createdAt: string;
 };

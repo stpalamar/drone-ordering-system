@@ -1,8 +1,10 @@
 import { ChevronLeft } from 'lucide-react';
 
+import { Chat } from '~/bundles/chats/components/components.js';
 import { Loader, Navigate } from '~/bundles/common/components/components.js';
 import { Badge } from '~/bundles/common/components/ui/badge.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
+import { Card } from '~/bundles/common/components/ui/card.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
 import { formatDateWithMonth } from '~/bundles/common/helpers/helpers.js';
 import {
@@ -58,6 +60,22 @@ const CustomerOrder: React.FC = () => {
                 </div>
                 <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
                     <MyOrderDetails order={order} />
+                    {order.manager && order.manager.details && order.chatId && (
+                        <Card className="h-[40rem] col-span-2 lg:col-span-1">
+                            <Chat
+                                chatId={order.chatId}
+                                selectedUser={{
+                                    id: order.manager.id,
+                                    email: order.manager.email,
+                                    firstName: order.manager.details.firstName,
+                                    lastName: order.manager.details.lastName,
+                                    avatarUrl: order.manager.details.avatar
+                                        ? order.manager.details.avatar.url
+                                        : null,
+                                }}
+                            />
+                        </Card>
+                    )}
                 </div>
             </div>
         </main>

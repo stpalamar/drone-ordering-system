@@ -4,7 +4,7 @@ import {
     AvatarImage,
 } from '~/bundles/common/components/ui/avatar.js';
 import { Card } from '~/bundles/common/components/ui/card.js';
-import { getFirstLetter } from '~/bundles/common/helpers/helpers.js';
+import { getAvatarFallback } from '~/bundles/common/helpers/helpers.js';
 import { type UserResponseDto } from '~/bundles/users/users.js';
 
 type Properties = {
@@ -15,8 +15,7 @@ const ManagerCard: React.FC<Properties> = ({ manager }) => {
     const details = manager.details;
 
     const avatarFallback =
-        details &&
-        getFirstLetter(details.firstName) + getFirstLetter(details.lastName);
+        details && getAvatarFallback(details.firstName, details.lastName);
 
     return (
         <Card className="flex flex-1 flex-col items-center justify-center p-8">

@@ -1,9 +1,17 @@
+export {
+    type ChatResponseDto,
+    type ChatUserResponseDto,
+} from './bundles/chats/chats.js';
 export { type FileResponseDto } from './bundles/files/files.js';
 export {
     type ManagerSignUpRequestDto,
     managerSignUpValidationSchema,
     type RegistrationUrlResponseDto,
 } from './bundles/managers/managers.js';
+export {
+    type MessageRequestDto,
+    type MessageResponseDto,
+} from './bundles/messages/messages.js';
 export {
     type OrderItemDto,
     type OrderQueryDto,
@@ -53,6 +61,7 @@ export {
     Period,
     SortQuery,
 } from './enums/enums.js';
+export { SocketEvent, SocketNamespace } from './framework/socket/socket.js';
 export { formatDate } from './helpers/helpers.js';
 export {
     type PagedResponse,

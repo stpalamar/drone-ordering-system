@@ -1,4 +1,5 @@
 import { AuthModule } from '@modules/auth/auth.module';
+import { ChatsModule } from '@modules/chats/chats.module';
 import { EmailModule } from '@modules/email/email.module';
 import { FilesModule } from '@modules/files/files.module';
 import { ManagersModule } from '@modules/managers/managers.module';
@@ -43,6 +44,7 @@ import { PermissionModule } from './modules/permission/permission.module';
         OrdersModule,
         ManagersModule,
         EmailModule,
+        ChatsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -687,7 +687,7 @@ const OrderItemForm: React.FC<Properties> = ({
                                     <FormControl>
                                         <Textarea
                                             placeholder="Enter additional info"
-                                            className="resize-none"
+                                            className="resize-none min-h-[6rem]"
                                             {...field}
                                         />
                                     </FormControl>

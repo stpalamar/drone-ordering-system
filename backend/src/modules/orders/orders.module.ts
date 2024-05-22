@@ -1,4 +1,5 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Chat } from '@modules/chats/entities/chat.entity';
 import { PublicFile } from '@modules/files/entities/public-file.entity';
 import { FilesModule } from '@modules/files/files.module';
 import { FilesService } from '@modules/files/files.service';
@@ -20,7 +21,7 @@ import { OrdersService } from './orders.service';
     imports: [
         ConfigModule,
         MikroOrmModule.forFeature({
-            entities: [Order, Product, User, PublicFile],
+            entities: [Order, Product, User, PublicFile, Chat],
         }),
         JwtModule.registerAsync({
             imports: [ConfigModule],

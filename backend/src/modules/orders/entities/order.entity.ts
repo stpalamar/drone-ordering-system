@@ -8,9 +8,11 @@ import {
     Index,
     ManyToOne,
     OneToMany,
+    OneToOne,
     Property,
     UuidType,
 } from '@mikro-orm/postgresql';
+import { Chat } from '@modules/chats/entities/chat.entity';
 import { User } from '@modules/users/entities/user.entity';
 
 import { OrderStatus } from '../enums/enums';
@@ -57,6 +59,9 @@ class Order extends BaseEntity {
     @Property({ type: 'int' })
     totalPrice!: number;
 
+    @OneToOne(() => Chat, (chat) => chat.order, { owner: true, nullable: true })
+    chat!: Chat;
+
     @Index()
     @Property({ nullable: true, type: 'timestamptz' })
     deletedAt?: Date;
@@ -74,6 +79,7 @@ class Order extends BaseEntity {
             customer: this.customer ? this.customer.toObject() : null,
             status: this.status,
             totalPrice: this.totalPrice,
+            chatId: this.chat ? this.chat.id : null,
             createdAt: this.createdAt.toISOString(),
         };
     }

@@ -54,8 +54,6 @@ export class ProductsService {
     ): Promise<PagedResponse<ProductResponseDto>> {
         const { page, limit, dateSort, isActive, totalSalesSort } = query;
 
-        console.log(isActive);
-
         const [products, count] = await this.productRepository.findAndCount(
             {},
             {

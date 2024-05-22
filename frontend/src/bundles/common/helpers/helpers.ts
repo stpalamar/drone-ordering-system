@@ -2,6 +2,7 @@ export { capitalizeFirstLetter } from './capitalize-first-letter/capitalize-firs
 export { configureUrlString } from './configure-url-string/configure-url-string.helper.js';
 export { formatDateWithMonth } from './format-date-with-month/format-date-with-month.helper.js';
 export { formatPrice } from './format-price/format-price.helper.js';
+export { getAvatarFallback } from './get-avatar-fallback/get-avatar-fallback.helper.js';
 export { getFileForm } from './get-file-form/get-file-form.helper.js';
 export { getFiltersArray } from './get-filters-array/get-filters-array.helper.js';
 export { getFirstLetter } from './get-first-letter/get-first-letter.helper.js';

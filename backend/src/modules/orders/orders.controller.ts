@@ -16,6 +16,8 @@ import {
     Controller,
     Delete,
     Get,
+    HttpException,
+    HttpStatus,
     Param,
     Patch,
     Post,
@@ -91,8 +93,10 @@ export class OrdersController {
                 fs.unlinkSync(pdfFilePath);
             });
         } catch (error) {
-            console.log('Error while generating pdf', error);
-            throw error;
+            throw new HttpException(
+                'Error while generating pdf',
+                HttpStatus.BAD_REQUEST,
+            );
         }
     }
 

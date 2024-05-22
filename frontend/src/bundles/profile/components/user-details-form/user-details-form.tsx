@@ -30,8 +30,8 @@ import {
 } from '~/bundles/common/components/ui/popover.js';
 import {
     formatDate,
+    getAvatarFallback,
     getFileForm,
-    getFirstLetter,
     getISODate,
     zodResolver,
 } from '~/bundles/common/helpers/helpers.js';
@@ -126,9 +126,10 @@ const UserDetailsForm: React.FC<Properties> = ({
         };
     }, [avatarToCrop]);
 
-    const avatarFallback =
-        getFirstLetter(userDetails.firstName) +
-        getFirstLetter(userDetails.lastName);
+    const avatarFallback = getAvatarFallback(
+        userDetails.firstName,
+        userDetails.lastName,
+    );
 
     return (
         <Form {...form}>
