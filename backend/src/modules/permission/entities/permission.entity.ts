@@ -46,11 +46,12 @@ class Permission {
                 continue;
             }
             // find placeholder "${}""
-            const matches = /^\\${([a-zA-Z0-9]+)}$/.exec(rawValue);
+            const matches = /^\${([a-zA-Z0-9]+)}$/.exec(rawValue);
             if (!matches) {
                 parsedCondition[key] = rawValue;
                 continue;
             }
+
             const value = variables[matches[1]];
             if (typeof value === 'undefined') {
                 throw new ReferenceError(`Variable ${name} is not defined`);
