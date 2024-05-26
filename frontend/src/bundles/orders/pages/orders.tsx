@@ -1,4 +1,4 @@
-import { File, ListFilter } from 'lucide-react';
+import { ListFilter, RefreshCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { Button } from '~/bundles/common/components/ui/button.js';
@@ -19,7 +19,6 @@ import {
     DropdownMenuTrigger,
 } from '~/bundles/common/components/ui/dropdown-menu.js';
 import { Pagination } from '~/bundles/common/components/ui/pagination.js';
-import { Progress } from '~/bundles/common/components/ui/progress.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
 import {
     capitalizeFirstLetter,
@@ -37,6 +36,7 @@ import { type ValueOf } from '~/bundles/common/types/types.js';
 import {
     OrderCard,
     OrdersTable,
+    RevenueCards,
 } from '~/bundles/orders/components/components.js';
 import { OrderStatus, Period } from '~/bundles/orders/enums/enums.js';
 import { useGetOrdersQuery } from '~/bundles/orders/orders-api.js';
@@ -57,7 +57,11 @@ const Orders: React.FC = () => {
         null,
     );
 
-    const { data: orders, isLoading } = useGetOrdersQuery({
+    const {
+        data: orders,
+        isLoading,
+        refetch,
+    } = useGetOrdersQuery({
         page: Number(searchParameters.get('page')),
         period:
             (searchParameters.get('period') as ValueOf<typeof Period>) ??
@@ -110,6 +114,10 @@ const Orders: React.FC = () => {
         setSelectedOrder(order);
     }, []);
 
+    const handleRefresh = useCallback(() => {
+        void refetch();
+    }, [refetch]);
+
     useEffect(() => {
         if (orders && orders.items[0]) {
             setSelectedOrder(orders.items[0]);
@@ -141,37 +149,10 @@ const Orders: React.FC = () => {
                             </Link>
                         </CardFooter>
                     </Card>
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardDescription>This Week</CardDescription>
-                            <CardTitle className="text-4xl">$1,329</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-xs text-muted-foreground">
-                                +25% from last week
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <Progress value={25} aria-label="25% increase" />
-                        </CardFooter>
-                    </Card>
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardDescription>This Month</CardDescription>
-                            <CardTitle className="text-4xl">$5,329</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-xs text-muted-foreground">
-                                +10% from last month
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <Progress value={12} aria-label="12% increase" />
-                        </CardFooter>
-                    </Card>
+                    <RevenueCards />
                 </div>
                 <div>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-4">
                         {user && user.role === UserRole.MANAGER && (
                             <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
                                 <Button
@@ -392,24 +373,23 @@ const Orders: React.FC = () => {
                                     </DropdownMenuCheckboxItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                className="h-7 gap-1 text-sm"
-                            >
-                                <File className="h-3.5 w-3.5" />
-                                <span className="sr-only sm:not-sr-only">
-                                    Export
-                                </span>
-                            </Button>
                         </div>
                     </div>
                     <Card className="mt-2">
-                        <CardHeader className="px-7">
-                            <CardTitle>Orders</CardTitle>
-                            <CardDescription>
-                                Recent orders from your store.
-                            </CardDescription>
+                        <CardHeader className="px-7 flex flex-row justify-between">
+                            <div>
+                                <CardTitle>Orders</CardTitle>
+                                <CardDescription>
+                                    Recent orders from your customers
+                                </CardDescription>
+                            </div>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                onClick={handleRefresh}
+                            >
+                                <RefreshCcw className="h-4 w-4" />
+                            </Button>
                         </CardHeader>
                         <CardContent>
                             <OrdersTable

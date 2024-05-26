@@ -7,6 +7,7 @@ const ApiPath = {
     ORDERS: '/orders',
     FILES: '/files',
     CHATS: '/chats',
+    ANALYTICS: '/analytics',
 } as const;
 
 export { ApiPath };

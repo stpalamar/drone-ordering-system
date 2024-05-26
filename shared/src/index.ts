@@ -1,4 +1,11 @@
 export {
+    type AnalyticsResponseDto,
+    type NewUsersForPeriod,
+    type RevenueForPeriod,
+    type RevenueResponseDto,
+    type TopManagerForPeriod,
+} from './bundles/analytics/analytics.js';
+export {
     type ChatResponseDto,
     type ChatUserResponseDto,
 } from './bundles/chats/chats.js';

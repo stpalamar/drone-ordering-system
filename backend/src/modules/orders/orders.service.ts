@@ -8,7 +8,6 @@ import { PdfService } from '@modules/pdf/pdf.service';
 import { Product } from '@modules/products/entities/product.entity';
 import { User } from '@modules/users/entities/user.entity';
 import { UserRole } from '@modules/users/enums/enums';
-import { UsersService } from '@modules/users/users.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Order } from './entities/order.entity';
@@ -29,7 +28,6 @@ export class OrdersService {
         private readonly orderRepository: EntityRepository<Order>,
         @InjectRepository(Product)
         private readonly productRepository: EntityRepository<Product>,
-        private readonly usersService: UsersService,
         @InjectRepository(Chat)
         private readonly chatsRepository: EntityRepository<Chat>,
         private readonly em: EntityManager,

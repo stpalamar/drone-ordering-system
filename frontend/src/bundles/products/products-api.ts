@@ -17,15 +17,15 @@ const productsApi = baseApi.injectEndpoints({
         >({
             query: ({ page, limit, dateSort, isActive, totalSalesSort }) =>
                 `${ApiPath.PRODUCTS}?page=${page}&limit=${limit}&dateSort=${dateSort}&isActive=${isActive}&totalSalesSort=${totalSalesSort}`,
-            providesTags: [AppSubject.Product],
+            providesTags: [AppSubject.PRODUCT],
         }),
         getProductById: build.query<ProductResponseDto, number>({
             query: (id) => `${ApiPath.PRODUCTS}/${id}`,
-            providesTags: [AppSubject.Product],
+            providesTags: [AppSubject.PRODUCT],
         }),
         getProductTypes: build.query<ProductTypesDto, void>({
             query: () => `${ApiPath.PRODUCTS}/types`,
-            providesTags: [AppSubject.Product],
+            providesTags: [AppSubject.PRODUCT],
         }),
         createProduct: build.mutation<ProductResponseDto, ProductRequestDto>({
             query: (payload) => ({
@@ -33,7 +33,7 @@ const productsApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: payload,
             }),
-            invalidatesTags: [AppSubject.Product],
+            invalidatesTags: [AppSubject.PRODUCT],
         }),
         updateProduct: build.mutation<
             ProductResponseDto,
@@ -44,14 +44,14 @@ const productsApi = baseApi.injectEndpoints({
                 method: 'PUT',
                 body: payload.item,
             }),
-            invalidatesTags: [AppSubject.Product],
+            invalidatesTags: [AppSubject.PRODUCT],
         }),
         deleteProduct: build.mutation<void, number>({
             query: (id) => ({
                 url: `${ApiPath.PRODUCTS}/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: [AppSubject.Product],
+            invalidatesTags: [AppSubject.PRODUCT],
         }),
     }),
 });

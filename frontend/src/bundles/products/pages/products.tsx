@@ -1,4 +1,4 @@
-import { File, ListFilter, PlusCircle } from 'lucide-react';
+import { ListFilter, PlusCircle } from 'lucide-react';
 
 import { AbilityContext } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
@@ -246,16 +246,6 @@ const Products: React.FC = () => {
                                 </DropdownMenuCheckboxItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-8 gap-1"
-                        >
-                            <File className="h-3.5 w-3.5" />
-                            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                Export
-                            </span>
-                        </Button>
                         <Button
                             size="sm"
                             className="h-8 gap-1"

@@ -149,9 +149,9 @@ export class AuthService {
     ) {
         const { token, ...userSignUp } = managerSignUpRequestDto;
 
-        const isValidToken = this.jwtService.verify(token);
-
-        if (!isValidToken) {
+        try {
+            this.jwtService.verify(token);
+        } catch (error) {
             throw new HttpException('Token is invalid', HttpStatus.BAD_REQUEST);
         }
 

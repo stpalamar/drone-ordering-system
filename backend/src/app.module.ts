@@ -1,3 +1,4 @@
+import { AnalyticsModule } from '@modules/analytics/analytics.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { ChatsModule } from '@modules/chats/chats.module';
 import { EmailModule } from '@modules/email/email.module';
@@ -45,6 +46,7 @@ import { PermissionModule } from './modules/permission/permission.module';
         ManagersModule,
         EmailModule,
         ChatsModule,
+        AnalyticsModule,
     ],
     controllers: [AppController],
     providers: [AppService],

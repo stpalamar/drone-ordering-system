@@ -16,13 +16,13 @@ const ordersApi = baseApi.injectEndpoints({
                 const statusQuery = status ? `&status=${status}` : '';
                 return `${ApiPath.ORDERS}?page=${page}&limit=${limit}&period=${period}${statusQuery}&assigned=${assigned}`;
             },
-            providesTags: [AppSubject.Order],
+            providesTags: [AppSubject.ORDER],
         }),
         getOrderById: build.query<OrderResponseDto, number>({
             query: (id) => ({
                 url: `${ApiPath.ORDERS}/${id}`,
             }),
-            providesTags: [AppSubject.Order],
+            providesTags: [AppSubject.ORDER],
         }),
         updateOrderStatus: build.mutation<
             OrderResponseDto,
@@ -33,7 +33,7 @@ const ordersApi = baseApi.injectEndpoints({
                 method: 'PATCH',
                 body: payload.status,
             }),
-            invalidatesTags: [AppSubject.Order],
+            invalidatesTags: [AppSubject.ORDER],
         }),
         createOrder: build.mutation<OrderResponseDto, OrderRequestDto>({
             query: (payload) => ({
@@ -41,7 +41,7 @@ const ordersApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: payload,
             }),
-            invalidatesTags: [AppSubject.Order, AppSubject.Product],
+            invalidatesTags: [AppSubject.ORDER, AppSubject.PRODUCT],
         }),
         updateOrder: build.mutation<
             OrderResponseDto,
@@ -58,7 +58,7 @@ const ordersApi = baseApi.injectEndpoints({
                 url: `${ApiPath.ORDERS}/assign/${id}`,
                 method: 'PATCH',
             }),
-            invalidatesTags: [AppSubject.Order],
+            invalidatesTags: [AppSubject.ORDER],
         }),
         generateOrderPdf: build.mutation<null, number>({
             query: (id) => ({

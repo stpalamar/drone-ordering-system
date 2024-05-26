@@ -21,6 +21,7 @@ import {
 import { CreateOrder } from '~/bundles/orders/pages/create-order.js';
 import { Orders } from '~/bundles/orders/pages/orders.js';
 
+import { Analytics } from './bundles/analytics/pages/analytics.js';
 import { ConfirmEmail } from './bundles/auth/pages/confirm-email.js';
 import { ManagerSignUp } from './bundles/auth/pages/manager-sign-up.js';
 import { NotFound } from './bundles/common/pages/pages.js';
@@ -129,7 +130,7 @@ const routes = [
                     },
                     {
                         path: AppRoute.ADMIN_ANALYTICS,
-                        element: <div>Analytics</div>,
+                        element: <Analytics />,
                     },
                     {
                         path: AppRoute.ADMIN_PROFILE,

@@ -24,21 +24,21 @@ const managersApi = baseApi.injectEndpoints({
         >({
             query: ({ page, limit, isActive }) =>
                 `${ApiPath.MANAGERS}?page=${page}&limit=${limit}&isActive=${isActive}`,
-            providesTags: [AppSubject.User],
+            providesTags: [AppSubject.USER],
         }),
         deactivateManager: build.mutation<void, number>({
             query: (id) => ({
                 url: `${ApiPath.MANAGERS}/${id}/deactivate`,
                 method: 'PATCH',
             }),
-            invalidatesTags: [AppSubject.User],
+            invalidatesTags: [AppSubject.USER],
         }),
         activateManager: build.mutation<void, number>({
             query: (id) => ({
                 url: `${ApiPath.MANAGERS}/${id}/activate`,
                 method: 'PATCH',
             }),
-            invalidatesTags: [AppSubject.User],
+            invalidatesTags: [AppSubject.USER],
         }),
     }),
 });

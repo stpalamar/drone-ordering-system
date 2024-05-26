@@ -5,6 +5,7 @@ const PermissionSubject = {
     ORDER: 'order',
     FILE: 'file',
     MANAGER: 'manager',
+    ANALYTICS: 'analytics',
 } as const;
 
 export { PermissionSubject };

@@ -1,7 +1,8 @@
 const AppSubject = {
-    User: 'user',
-    Product: 'product',
-    Order: 'order',
+    USER: 'user',
+    PRODUCT: 'product',
+    ORDER: 'order',
+    ANALYTICS: 'analytics',
 } as const;
 
 export { AppSubject };
