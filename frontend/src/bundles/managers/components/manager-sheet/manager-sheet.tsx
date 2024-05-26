@@ -119,7 +119,7 @@ const ManagerSheet: React.FC<Properties> = ({ manager }) => {
                         {manager.deletedAt ? (
                             <Button
                                 onClick={handleActivate}
-                                className="w-24 bg-green-600"
+                                className="w-24 bg-green-600 hover:bg-green-500"
                             >
                                 {isActivating ? (
                                     <Loader variant="secondary" />
