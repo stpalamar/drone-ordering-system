@@ -18,7 +18,7 @@ const ManagerCard: React.FC<Properties> = ({ manager }) => {
         details && getAvatarFallback(details.firstName, details.lastName);
 
     return (
-        <Card className="flex flex-1 flex-col items-center justify-center p-8">
+        <Card className="flex flex-1 flex-col items-center justify-center p-8 max-w-[24rem]">
             <Avatar className="size-40 mb-4">
                 <AvatarImage
                     src={

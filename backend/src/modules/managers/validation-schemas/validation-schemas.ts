@@ -1,1 +1,4 @@
-export { managerSignUpValidationSchema } from 'shared';
+export {
+    managerQueryValidationSchema,
+    managerSignUpValidationSchema,
+} from 'shared';

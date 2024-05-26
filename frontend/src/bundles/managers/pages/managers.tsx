@@ -1,4 +1,4 @@
-import { ClipboardPlus, File, Search } from 'lucide-react';
+import { ClipboardPlus } from 'lucide-react';
 
 import { Loader } from '~/bundles/common/components/components.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
@@ -12,35 +12,47 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '~/bundles/common/components/ui/dialog.js';
-import { Input } from '~/bundles/common/components/ui/input.js';
-import { Pagination } from '~/bundles/common/components/ui/pagination.js';
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from '~/bundles/common/components/ui/tabs.js';
 import { useCallback, useSearchParams } from '~/bundles/common/hooks/hooks.js';
-import { CreateRegistrationUrl } from '~/bundles/managers/components/components.js';
+import { cn } from '~/bundles/common/lib/utils.js';
+import {
+    CreateRegistrationUrl,
+    ManagersList,
+} from '~/bundles/managers/components/components.js';
 import { useGetManagersQuery } from '~/bundles/managers/managers-api.js';
-
-import { ManagerCard } from '../components/manager-card/manager-card.js';
 
 const Managers: React.FC = () => {
     const [searchParameters, setSearchParameters] = useSearchParams({
         page: '1',
+        isActive: 'true',
     });
 
     const handlePageChange = useCallback(
         (page: number) => {
-            setSearchParameters({ page: String(page) });
+            setSearchParameters({
+                page: String(page),
+                isActive: searchParameters.get('isActive') ?? 'true',
+            });
+        },
+        [searchParameters, setSearchParameters],
+    );
+
+    const handleTabChange = useCallback(
+        (isActive: boolean) => {
+            setSearchParameters({
+                page: '1',
+                isActive: String(isActive),
+            });
         },
         [setSearchParameters],
     );
 
-    const { data: managers, isLoading } = useGetManagersQuery(
-        Number(searchParameters.get('page')),
-    );
+    const { data: managers, isLoading } = useGetManagersQuery({
+        page: Number(searchParameters.get('page')),
+        limit: 10,
+        isActive: searchParameters.get('isActive') === 'true',
+    });
+
+    const activeTab = 'bg-background text-foreground shadow-sm';
 
     return (
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -53,25 +65,33 @@ const Managers: React.FC = () => {
                         Manage your employees and their permissions
                     </p>
                 </div>
-                <Tabs defaultValue="active">
+                <div>
                     <div className="flex items-center">
-                        <TabsList>
-                            <TabsTrigger value="active">Active</TabsTrigger>
-                            <TabsTrigger value="deactivated">
-                                Deactivated
-                            </TabsTrigger>
-                        </TabsList>
-                        <div className="flex items-center gap-2 ml-auto">
+                        <div className="inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
                             <Button
-                                size="sm"
-                                variant="outline"
-                                className="h-8 gap-1"
+                                variant="tab"
+                                size="tab"
+                                className={cn(
+                                    searchParameters.get('isActive') ===
+                                        'true' && activeTab,
+                                )}
+                                onClick={() => handleTabChange(true)}
                             >
-                                <File className="h-3.5 w-3.5" />
-                                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                                    Export
-                                </span>
+                                Active
                             </Button>
+                            <Button
+                                variant="tab"
+                                size="tab"
+                                className={cn(
+                                    searchParameters.get('isActive') ===
+                                        'false' && activeTab,
+                                )}
+                                onClick={() => handleTabChange(false)}
+                            >
+                                Deactivated
+                            </Button>
+                        </div>
+                        <div className="flex items-center gap-2 ml-auto">
                             <Dialog>
                                 <DialogTrigger asChild>
                                     <Button size="sm" className="h-8 gap-1">
@@ -106,42 +126,15 @@ const Managers: React.FC = () => {
                             </Dialog>
                         </div>
                     </div>
-                    <div className="mt-4 w-full flex-1">
-                        <form>
-                            <div className="relative">
-                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                                <Input
-                                    type="search"
-                                    placeholder="Search managers..."
-                                    className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                                />
-                            </div>
-                        </form>
-                    </div>
-                    {isLoading ? (
+                    {isLoading || !managers ? (
                         <Loader size="medium" isOverflow />
                     ) : (
-                        <TabsContent value="active" className="mt-8">
-                            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2">
-                                {managers?.items.map((manager) => (
-                                    <ManagerCard
-                                        key={manager.id}
-                                        manager={manager}
-                                    />
-                                ))}
-                            </div>
-                            <div className="mt-4">
-                                {managers && (
-                                    <Pagination
-                                        currentPage={managers.page}
-                                        totalPages={managers.totalPages}
-                                        setCurrentPage={handlePageChange}
-                                    />
-                                )}
-                            </div>
-                        </TabsContent>
+                        <ManagersList
+                            managers={managers}
+                            handlePageChange={handlePageChange}
+                        />
                     )}
-                </Tabs>
+                </div>
             </div>
         </main>
     );

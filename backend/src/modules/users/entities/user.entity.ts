@@ -1,4 +1,5 @@
 import { BaseEntity } from '@common/database/base.entity';
+import { WithSoftDelete } from '@common/database/filters/with-soft-delete';
 import { HelperService } from '@common/helpers/helpers';
 import {
     BeforeCreate,
@@ -6,6 +7,7 @@ import {
     BeforeUpsert,
     Entity,
     EventArgs,
+    Index,
     ManyToOne,
     OneToOne,
     Property,
@@ -15,6 +17,7 @@ import { Role } from '@modules/permission/entities/role.entity';
 import { UserDetails } from './user-details.entity';
 
 @Entity()
+@WithSoftDelete()
 class User extends BaseEntity {
     @Property({ unique: true })
     email!: string;
@@ -35,6 +38,10 @@ class User extends BaseEntity {
     @Property({ default: false })
     isEmailConfirmed!: boolean;
 
+    @Index()
+    @Property({ nullable: true, type: 'timestamptz' })
+    deletedAt!: Date;
+
     @BeforeCreate()
     @BeforeUpdate()
     @BeforeUpsert()
@@ -53,6 +60,7 @@ class User extends BaseEntity {
                 subject: permission.subject.name,
             })),
             details: this.details ? this.details.toObject() : null,
+            deletedAt: this.deletedAt ? this.deletedAt.toISOString() : null,
         };
     }
 }

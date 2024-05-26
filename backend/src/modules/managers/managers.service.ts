@@ -1,11 +1,13 @@
 import { AppRoute } from '@common/enums/enums';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Role } from '@modules/permission/entities/role.entity';
 import { User } from '@modules/users/entities/user.entity';
 import { UserRole } from '@modules/users/enums/enums';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
+import { ManagerQueryDto } from './types/types';
 
 @Injectable()
 export class ManagersService {
@@ -15,15 +17,11 @@ export class ManagersService {
         private readonly usersRepository: EntityRepository<User>,
         @InjectRepository(Role)
         private readonly rolesRepository: EntityRepository<Role>,
+        private readonly em: EntityManager,
     ) {}
 
-    async findAll(page: number, limit: number) {
-        if (page < 1 || limit < 1) {
-            throw new HttpException(
-                'Invalid query parameters',
-                HttpStatus.BAD_REQUEST,
-            );
-        }
+    async findAll(query: ManagerQueryDto) {
+        const { page, limit, isActive } = query;
 
         const role = await this.rolesRepository.findOne({
             name: UserRole.MANAGER,
@@ -42,6 +40,11 @@ export class ManagersService {
                 limit,
                 offset: (page - 1) * limit,
                 orderBy: { id: 'ASC' },
+                filters: {
+                    softDelete: {
+                        getOnlyDeleted: !isActive,
+                    },
+                },
             },
         );
 
@@ -53,15 +56,7 @@ export class ManagersService {
             totalPages: Math.ceil(count / (limit ?? count)),
         };
     }
-    // findOne(id: number) {
-    //   return `This action returns a #${id} manager`;
-    // }
-    // update(id: number, updateManagerDto: UpdateManagerDto) {
-    //   return `This action updates a #${id} manager`;
-    // }
-    // remove(id: number) {
-    //   return `This action removes a #${id} manager`;
-    // }
+
     async generateRegistrationUrl(origin: string) {
         const token = this.jwtService.sign({}, { expiresIn: '1h' });
 
@@ -70,5 +65,33 @@ export class ManagersService {
         return {
             url,
         };
+    }
+
+    async softDelete(id: number) {
+        const manager = await this.usersRepository.findOne(id);
+
+        if (!manager) {
+            throw new HttpException('Manager not found', HttpStatus.NOT_FOUND);
+        }
+
+        manager.deletedAt = new Date();
+        this.em.persistAndFlush(manager);
+    }
+
+    async restore(id: number) {
+        const manager = await this.usersRepository.findOne(id, {
+            filters: {
+                softDelete: {
+                    getOnlyDeleted: true,
+                },
+            },
+        });
+
+        if (!manager) {
+            throw new HttpException('Manager not found', HttpStatus.NOT_FOUND);
+        }
+
+        manager.deletedAt = null;
+        this.em.persistAndFlush(manager);
     }
 }

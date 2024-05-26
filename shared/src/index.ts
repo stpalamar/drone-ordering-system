@@ -4,6 +4,8 @@ export {
 } from './bundles/chats/chats.js';
 export { type FileResponseDto } from './bundles/files/files.js';
 export {
+    type ManagerQueryDto,
+    managerQueryValidationSchema,
     type ManagerSignUpRequestDto,
     managerSignUpValidationSchema,
     type RegistrationUrlResponseDto,

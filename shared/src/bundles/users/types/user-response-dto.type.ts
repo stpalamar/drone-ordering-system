@@ -7,6 +7,7 @@ type UserResponseDto = {
     role: string;
     details: UserDetailsDto | null;
     permissions: PermissionResponseDto[];
+    deletedAt: string | null;
 };
 
 export { type UserResponseDto };

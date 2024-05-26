@@ -1,1 +1,1 @@
-export { type ManagerSignUpRequestDto } from 'shared';
+export { type ManagerQueryDto, type ManagerSignUpRequestDto } from 'shared';

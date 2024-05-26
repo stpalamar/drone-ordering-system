@@ -1,1 +1,1 @@
-export { ManagerSignUpRequestDto } from 'shared';
+export { ManagerQueryDto, ManagerSignUpRequestDto } from 'shared';

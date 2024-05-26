@@ -1,8 +1,7 @@
-import { Bell, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 
 import DroneIcon from '~/assets/img/icons/drone-icon.svg?react';
 import { Can, Link } from '~/bundles/common/components/components.js';
-import { Button } from '~/bundles/common/components/ui/button.js';
 import {
     AppRoute,
     PermissionAction,
@@ -28,14 +27,6 @@ const Sidebar: React.FC<Properties> = ({ navItems }) => {
                         <DroneIcon className="h-6 w-6" />
                         <span className="">Drone Ordering</span>
                     </Link>
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        className="ml-auto h-8 w-8"
-                    >
-                        <Bell className="h-4 w-4" />
-                        <span className="sr-only">Toggle notifications</span>
-                    </Button>
                 </div>
                 <div className="flex-1">
                     <nav className="grid items-start px-2 text-sm font-medium lg:px-4">

@@ -41,16 +41,6 @@ export class UsersService {
         return user;
     }
 
-    async generateManagerRegistrationUrl(origin: string) {
-        const token = this.jwtService.sign({}, { expiresIn: '1h' });
-
-        const url = `${origin}/auth/manager-registration?token=${token}`;
-
-        return {
-            url,
-        };
-    }
-
     async update(id: number, updateUserDetailsDto: UserDetailsDto) {
         const userToUpdate = await this.getById(id);
 
@@ -62,6 +52,7 @@ export class UsersService {
 
         wrap(userToUpdate).assign({
             details: {
+                id: userToUpdate.details.id,
                 ...updateUserDetailsDto,
                 avatar: avatar ?? null,
             },
