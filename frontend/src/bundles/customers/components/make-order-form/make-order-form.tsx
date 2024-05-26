@@ -69,9 +69,9 @@ const MakeOrderForm: React.FC<Properties> = ({
     return (
         <Form {...form}>
             <form onSubmit={handleSubmit}>
-                <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 my-4">
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-4">
                     Make your custom drones
-                </h2>
+                </h3>
                 <div className="grid items-start gap-4 lg:col-span-2 lg:gap-8">
                     {fields.map((field, index) => (
                         <OrderItemForm

@@ -25,6 +25,7 @@ import { ConfirmEmail } from './bundles/auth/pages/confirm-email.js';
 import { ManagerSignUp } from './bundles/auth/pages/manager-sign-up.js';
 import { NotFound } from './bundles/common/pages/pages.js';
 import { CustomerOrder } from './bundles/customers/pages/customer-order.js';
+import { Drones } from './bundles/customers/pages/drones.js';
 import { MakeOrder } from './bundles/customers/pages/make-order.js';
 import { MyOrders } from './bundles/customers/pages/my-orders.js';
 import { Landing } from './bundles/landing/pages/landing.js';
@@ -84,6 +85,11 @@ const routes = [
                     {
                         path: AppRoute.PROFILE,
                         element: <ProfileSettings />,
+                        isPrivate: true,
+                    },
+                    {
+                        path: AppRoute.DRONES,
+                        element: <Drones />,
                         isPrivate: true,
                     },
                 ],

@@ -1,4 +1,3 @@
-import { Loader } from '~/bundles/common/components/components.js';
 import {
     useCallback,
     useEffect,
@@ -42,24 +41,20 @@ const MyOrders: React.FC = () => {
     return (
         <main className="grid flex-1 items-start justify-center gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
             <div className="flex flex-col gap-4 lg:gap-8">
-                <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-4">
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                     Your orders
-                </h2>
-                {orders ? (
-                    <div className="flex flex-col-reverse md:flex-row gap-8">
-                        <MyOrdersTable
-                            items={orders ? orders.items : null}
-                            selectedOrder={selectedOrder}
-                            onSelect={handleSelectOrder}
-                            isLoading={isLoading}
-                        />
-                        {selectedOrder && (
-                            <CustomerOrderCard order={selectedOrder} />
-                        )}
-                    </div>
-                ) : (
-                    <Loader size="large" isOverflow />
-                )}
+                </h3>
+                <div className="flex flex-col-reverse md:flex-row gap-8">
+                    <MyOrdersTable
+                        items={orders ? orders.items : null}
+                        selectedOrder={selectedOrder}
+                        onSelect={handleSelectOrder}
+                        isLoading={isLoading}
+                    />
+                    {selectedOrder && (
+                        <CustomerOrderCard order={selectedOrder} />
+                    )}
+                </div>
             </div>
         </main>
     );

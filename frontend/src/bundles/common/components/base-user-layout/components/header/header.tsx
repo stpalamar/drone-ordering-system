@@ -1,4 +1,4 @@
-import { Folders, Menu, ShoppingCart } from 'lucide-react';
+import { Folders, LayoutList, Menu, ShoppingCart } from 'lucide-react';
 
 import DroneIcon from '~/assets/img/icons/drone-icon.svg?react';
 import { AvatarMenu, Link } from '~/bundles/common/components/components.js';
@@ -38,6 +38,12 @@ const Header: React.FC = () => {
             label: 'Create order',
             isActive: pathname === AppRoute.MY_ORDER_CREATE,
         },
+        {
+            to: AppRoute.DRONES,
+            icon: LayoutList,
+            label: 'Drones',
+            isActive: pathname === AppRoute.DRONES,
+        },
     ];
 
     const isEmployee =
@@ -71,7 +77,7 @@ const Header: React.FC = () => {
                                         Drone Ordering
                                     </SheetTitle>
                                 </SheetHeader>
-                                <nav className="flex flex-col justify-center items-center gap-2 mt-4">
+                                <nav className="flex flex-col justify-center items-start gap-2 mt-4">
                                     {user ? (
                                         <>
                                             {navItems.map((route: NavItem) => {
@@ -92,7 +98,20 @@ const Header: React.FC = () => {
                                                     </Link>
                                                 );
                                             })}
-                                            <div className="flex flex-row-reverse items-center gap-3">
+                                            {isEmployee && (
+                                                <Link
+                                                    to={AppRoute.ADMIN_ROOT}
+                                                    className={`text-[17px] ${buttonVariants(
+                                                        {
+                                                            variant: 'ghost',
+                                                        },
+                                                    )}`}
+                                                >
+                                                    <DroneIcon className="size-4 mr-1" />
+                                                    Dashboard
+                                                </Link>
+                                            )}
+                                            <div className="flex flex-row justify-center w-full items-center gap-3">
                                                 <span className="font-semibold">
                                                     Hello,{' '}
                                                     {user.details?.firstName}

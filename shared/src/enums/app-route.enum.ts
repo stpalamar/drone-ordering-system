@@ -19,6 +19,7 @@ const AppRoute = {
     MY_ORDERS: '/my-orders',
     MY_ORDER_$ID: '/my-orders/:id',
     MY_ORDER_CREATE: '/my-orders/create',
+    DRONES: '/drones',
     NOT_FOUND: '*',
 } as const;
 
