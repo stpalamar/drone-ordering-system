@@ -30,7 +30,7 @@ export class DatabaseSeeder extends Seeder {
         const allSubject = em.create(Subject, {
             name: PermissionSubject.ALL,
         });
-        em.create(Subject, {
+        const userSubject = em.create(Subject, {
             name: PermissionSubject.USER,
         });
         const productSubject = em.create(Subject, {
@@ -82,6 +82,14 @@ export class DatabaseSeeder extends Seeder {
             subject: fileSubject,
         });
 
+        const updateUser = em.create(Permission, {
+            action: PermissionAction.UPDATE,
+            subject: userSubject,
+            condition: {
+                'id': '${id}',
+            },
+        });
+
         const readOwnOrder = em.create(Permission, {
             action: PermissionAction.READ,
             subject: orderSubject,
@@ -114,6 +122,7 @@ export class DatabaseSeeder extends Seeder {
             createOrder,
             createFile,
             readFile,
+            updateUser,
         );
 
         const adminDetails = em.create(UserDetails, {
