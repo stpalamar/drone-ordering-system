@@ -89,6 +89,7 @@ export class AuthService {
                 'role.permissions',
                 'role.permissions.subject',
                 'details',
+                'details.avatar',
             ])
         ).toObject();
     }
@@ -118,6 +119,7 @@ export class AuthService {
                 'role.permissions',
                 'role.permissions.subject',
                 'details',
+                'details.avatar',
             ])
         ).toObject();
     }
