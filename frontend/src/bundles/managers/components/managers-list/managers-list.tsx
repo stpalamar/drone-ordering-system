@@ -18,7 +18,7 @@ const ManagersList: React.FC<Properties> = ({ managers, handlePageChange }) => {
                 </div>
             ) : (
                 <>
-                    <div className="grid gap-6">
+                    <div className="grid gap-4 place-items-stretch md:grid-cols-2 lg:grid-cols-3">
                         {managers?.items.map((manager) => (
                             <ManagerSheet key={manager.id} manager={manager} />
                         ))}

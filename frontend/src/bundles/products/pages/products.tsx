@@ -273,6 +273,9 @@ const Products: React.FC = () => {
                             isLoading={isLoading}
                             isLoadingDelete={isLoadingDelete}
                             onDelete={handleDeleteProduct}
+                            isActive={
+                                searchParameters.get('isActive') === 'true'
+                            }
                         />
                     </CardContent>
                     <CardFooter className="flex justify-end">

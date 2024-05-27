@@ -1,17 +1,27 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { SendHorizontal } from 'lucide-react';
 
-import { type MessageRequestDto } from '~/bundles/chats/types/types.js';
+import {
+    type ChatResponseDto,
+    type MessageRequestDto,
+} from '~/bundles/chats/types/types.js';
 import { Button } from '~/bundles/common/components/ui/button.js';
 import { Textarea } from '~/bundles/common/components/ui/textarea.js';
-import { useCallback, useRef, useState } from '~/bundles/common/hooks/hooks.js';
+import {
+    useAppSelector,
+    useCallback,
+    useRef,
+    useState,
+} from '~/bundles/common/hooks/hooks.js';
 
 type Propeties = {
-    chatId: number;
+    chat: ChatResponseDto;
     sendMessage: (newMessage: MessageRequestDto) => void;
 };
 
-const ChatBottombar: React.FC<Propeties> = ({ sendMessage, chatId }) => {
+const ChatBottombar: React.FC<Propeties> = ({ sendMessage, chat }) => {
+    const { user } = useAppSelector(({ auth }) => auth);
+
     const [message, setMessage] = useState('');
     const inputReference = useRef<HTMLTextAreaElement>(null);
 
@@ -26,7 +36,7 @@ const ChatBottombar: React.FC<Propeties> = ({ sendMessage, chatId }) => {
         if (message.trim()) {
             const newMessage: MessageRequestDto = {
                 text: message.trim(),
-                chatId: chatId,
+                chatId: chat.id,
             };
             sendMessage(newMessage);
             setMessage('');
@@ -35,7 +45,7 @@ const ChatBottombar: React.FC<Propeties> = ({ sendMessage, chatId }) => {
                 inputReference.current.focus();
             }
         }
-    }, [chatId, message, sendMessage]);
+    }, [chat.id, message, sendMessage]);
 
     const handleKeyPress = useCallback(
         (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -51,6 +61,11 @@ const ChatBottombar: React.FC<Propeties> = ({ sendMessage, chatId }) => {
         },
         [setMessage, handleSend],
     );
+
+    const disabled =
+        user && chat.users.map((user) => user.id).includes(user.id)
+            ? false
+            : true;
 
     return (
         <div className="p-2 flex justify-between w-full items-center gap-2">
@@ -80,9 +95,15 @@ const ChatBottombar: React.FC<Propeties> = ({ sendMessage, chatId }) => {
                         name="message"
                         placeholder="Message"
                         className="w-full border rounded-full flex items-center h-9 resize-none overflow-hidden bg-background"
+                        disabled={disabled}
                     ></Textarea>
                 </motion.div>
-                <Button variant="ghost" size="icon" onClick={handleSend}>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleSend}
+                    disabled={disabled}
+                >
                     <SendHorizontal
                         size={20}
                         className="text-muted-foreground"

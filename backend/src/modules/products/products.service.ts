@@ -138,10 +138,10 @@ export class ProductsService {
             .getConnection();
 
         const aggregatedPurposes = await connection.execute(
-            'SELECT purpose, ARRAY_AGG(DISTINCT wings_type) AS wings_types FROM Product GROUP BY purpose',
+            'SELECT purpose, ARRAY_AGG(DISTINCT wings_type) AS wings_types FROM Product WHERE deleted_at IS NULL GROUP BY purpose',
         );
         const aggregatedWingsTypes = await connection.execute(
-            'SELECT wings_type, ARRAY_AGG(DISTINCT purpose) AS purposes FROM Product GROUP BY wings_type',
+            'SELECT wings_type, ARRAY_AGG(DISTINCT purpose) AS purposes FROM Product WHERE deleted_at IS NULL GROUP BY wings_type',
         );
 
         const formattedPurposes = aggregatedPurposes.map((item) => ({

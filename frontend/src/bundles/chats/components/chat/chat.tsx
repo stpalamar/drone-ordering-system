@@ -37,7 +37,7 @@ const Chat: React.FC<Properties> = ({ chatId, selectedUser }) => {
             ) : (
                 chat && (
                     <ChatList
-                        chatId={chat.id}
+                        chat={chat}
                         messages={chat.messages}
                         selectedUser={selectedUser}
                         sendMessage={handleSendMessage}

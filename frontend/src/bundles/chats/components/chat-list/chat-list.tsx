@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { ChatBottombar } from '~/bundles/chats/components/components.js';
 import {
+    type ChatResponseDto,
     type ChatUserResponseDto,
     type MessageRequestDto,
     type MessageResponseDto,
@@ -16,14 +17,14 @@ import { useEffect, useRef } from '~/bundles/common/hooks/hooks.js';
 import { cn } from '~/bundles/common/lib/utils.js';
 
 type Properties = {
-    chatId: number;
+    chat: ChatResponseDto;
     messages: MessageResponseDto[];
     selectedUser: ChatUserResponseDto;
     sendMessage: (newMessage: MessageRequestDto) => void;
 };
 
 const ChatList: React.FC<Properties> = ({
-    chatId,
+    chat,
     messages,
     selectedUser,
     sendMessage,
@@ -133,7 +134,7 @@ const ChatList: React.FC<Properties> = ({
                     </AnimatePresence>
                 )}
             </div>
-            <ChatBottombar sendMessage={sendMessage} chatId={chatId} />
+            <ChatBottombar sendMessage={sendMessage} chat={chat} />
         </div>
     );
 };

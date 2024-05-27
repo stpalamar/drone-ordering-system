@@ -52,6 +52,7 @@ type Properties = {
     isLoading: boolean;
     isLoadingDelete: boolean;
     onDelete: (id: number) => void;
+    isActive: boolean;
 };
 
 const ProductsTable: React.FC<Properties> = ({
@@ -59,6 +60,7 @@ const ProductsTable: React.FC<Properties> = ({
     isLoading,
     isLoadingDelete,
     onDelete,
+    isActive,
 }) => {
     const navigate = useNavigate();
     const ability = useAbility(AbilityContext);
@@ -192,16 +194,18 @@ const ProductsTable: React.FC<Properties> = ({
                                             >
                                                 View
                                             </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                onClick={() =>
-                                                    handleOpenDeleteDialog(
-                                                        product,
-                                                    )
-                                                }
-                                                disabled={!canDelete}
-                                            >
-                                                Delete
-                                            </DropdownMenuItem>
+                                            {isActive && (
+                                                <DropdownMenuItem
+                                                    onClick={() =>
+                                                        handleOpenDeleteDialog(
+                                                            product,
+                                                        )
+                                                    }
+                                                    disabled={!canDelete}
+                                                >
+                                                    Delete
+                                                </DropdownMenuItem>
+                                            )}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>
@@ -229,7 +233,7 @@ const ProductsTable: React.FC<Properties> = ({
                         <p>Product: {productToDelete?.purpose}</p>
                         <p>Wings type: {productToDelete?.wingsType}</p>
                         <p>
-                            Base price: $
+                            Base price:{' '}
                             {formatPrice(productToDelete?.price.basePrice ?? 0)}
                         </p>
                     </div>

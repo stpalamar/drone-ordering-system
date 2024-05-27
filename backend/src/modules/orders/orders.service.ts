@@ -40,7 +40,7 @@ export class OrdersService {
     ): Promise<OrderResponseDto> {
         const uuid = randomUUID();
 
-        const orderItems = await this.getOrderItems(createOrderDto.items);
+        const orderItems = await this.getOrderItems(createOrderDto.items, true);
 
         const manager =
             user.role.name === UserRole.MANAGER ||
@@ -122,6 +122,11 @@ export class OrdersService {
                     'customer.role.permissions',
                     'manager.role.permissions',
                 ],
+                filters: {
+                    softDelete: {
+                        getAll: true,
+                    },
+                },
                 offset: (page - 1) * limit,
                 limit: limit,
                 orderBy: { createdAt: 'DESC' },
@@ -157,6 +162,11 @@ export class OrdersService {
                     'customer.details.avatar',
                     'manager.details.avatar',
                 ],
+                filters: {
+                    softDelete: {
+                        getAll: true,
+                    },
+                },
             },
         );
 
@@ -185,6 +195,11 @@ export class OrdersService {
                     'customer.role.permissions',
                     'manager.role.permissions',
                 ],
+                filters: {
+                    softDelete: {
+                        getAll: true,
+                    },
+                },
             },
         );
 
@@ -213,6 +228,11 @@ export class OrdersService {
                     'customer.role.permissions',
                     'manager.role.permissions',
                 ],
+                filters: {
+                    softDelete: {
+                        getAll: true,
+                    },
+                },
             },
         );
 
@@ -220,7 +240,10 @@ export class OrdersService {
             throw new HttpException('Order not found', HttpStatus.NOT_FOUND);
         }
 
-        const orderItems = await this.getOrderItems(updateOrderDto.items);
+        const orderItems = await this.getOrderItems(
+            updateOrderDto.items,
+            false,
+        );
 
         wrap(order).assign({
             email: updateOrderDto.email,
@@ -251,6 +274,11 @@ export class OrdersService {
                     'customer.role.permissions',
                     'manager.role.permissions',
                 ],
+                filters: {
+                    softDelete: {
+                        getAll: true,
+                    },
+                },
             },
         );
 
@@ -282,6 +310,11 @@ export class OrdersService {
                     'manager.role.permissions',
                     'chat',
                 ],
+                filters: {
+                    softDelete: {
+                        getAll: true,
+                    },
+                },
             },
         );
 
@@ -307,7 +340,7 @@ export class OrdersService {
         this.em.persistAndFlush(order);
     }
 
-    private async getOrderItems(items: OrderItemDto[]) {
+    private async getOrderItems(items: OrderItemDto[], isCreate: boolean) {
         return await Promise.all(
             items.map(async (item) => {
                 const product = await this.productRepository.findOne(
@@ -317,6 +350,11 @@ export class OrdersService {
                     },
                     {
                         populate: ['price'],
+                        filters: {
+                            softDelete: {
+                                getAll: true,
+                            },
+                        },
                     },
                 );
 
@@ -327,8 +365,10 @@ export class OrdersService {
                     );
                 }
 
-                product.totalSales += 1;
-                this.em.persistAndFlush(product);
+                if (isCreate) {
+                    product.totalSales += 1;
+                    await this.em.persistAndFlush(product);
+                }
 
                 return {
                     ...item,
