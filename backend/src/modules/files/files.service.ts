@@ -1,4 +1,4 @@
-// import { randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
@@ -27,30 +27,29 @@ export class FilesService {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async uploadPublicFile(file: Express.Multer.File) {
-        // const uploadResult = await this.s3
-        //     .upload({
-        //         Bucket: this.configService.get('S3_BUCKET_NAME'),
-        //         Body: file.buffer,
-        //         Key: randomUUID(),
-        //         ContentType: file.mimetype,
-        //         ACL: 'public-read',
-        //     })
-        //     .promise();
+        const uploadResult = await this.s3
+            .upload({
+                Bucket: this.configService.get('S3_BUCKET_NAME'),
+                Body: file.buffer,
+                Key: randomUUID(),
+                ContentType: file.mimetype,
+                ACL: 'public-read',
+            })
+            .promise();
 
-        // const newFile = this.publicFilesRepository.create(
-        //     {
-        //         key: uploadResult.Key,
-        //         url: uploadResult.Location,
-        //     },
-        //     { persist: true },
-        // );
+        const newFile = this.publicFilesRepository.create(
+            {
+                key: uploadResult.Key,
+                url: uploadResult.Location,
+            },
+            { persist: true },
+        );
 
         // Hardcoded for development purposes
-
-        const newFile = this.publicFilesRepository.create({
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
+        // const newFile = this.publicFilesRepository.create({
+        //     key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
+        //     url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
+        // });
 
         await this.em.persistAndFlush(newFile);
 

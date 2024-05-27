@@ -20,16 +20,13 @@ import {
     FormMessage,
 } from '~/bundles/common/components/ui/form.js';
 import { Input } from '~/bundles/common/components/ui/input.js';
+import { PhoneInput } from '~/bundles/common/components/ui/phone-input.js';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from '~/bundles/common/components/ui/popover.js';
-import {
-    formatDate,
-    getISODate,
-    zodResolver,
-} from '~/bundles/common/helpers/helpers.js';
+import { getISODate, zodResolver } from '~/bundles/common/helpers/helpers.js';
 import { useAppForm, useCallback } from '~/bundles/common/hooks/hooks.js';
 import { cn } from '~/bundles/common/lib/utils.js';
 import { type UserDetailsDto } from '~/bundles/users/types/types.js';
@@ -109,9 +106,11 @@ const ConfirmEmailForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
                                 <FormItem>
                                     <FormLabel>Phone</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Enter your phone"
+                                        <PhoneInput
+                                            defaultCountry="UA"
+                                            placeholder="Enter your phone number"
                                             {...field}
+                                            className="w-full"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -122,32 +121,31 @@ const ConfirmEmailForm: React.FC<Properties> = ({ onSubmit, isLoading }) => {
                             control={form.control}
                             name="dateOfBirth"
                             render={({ field }) => (
-                                <FormItem className="flex flex-col">
-                                    <FormLabel>Date of birth</FormLabel>
+                                <FormItem className="flex flex-col justify-end">
+                                    <FormLabel>
+                                        Date of birth (YYYY-MM-DD)
+                                    </FormLabel>
                                     <Popover>
-                                        <PopoverTrigger asChild>
+                                        <div className="flex">
                                             <FormControl>
+                                                <Input
+                                                    placeholder="Enter your date of birth"
+                                                    className="rounded-e-none"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <PopoverTrigger asChild>
                                                 <Button
-                                                    variant={'outline'}
+                                                    type="button"
+                                                    variant="outline"
                                                     className={cn(
-                                                        'pl-3 text-left font-normal',
-                                                        !field.value &&
-                                                            'text-muted-foreground',
+                                                        'flex gap-1 rounded-s-none rounded-e-lg px-3 bg-transparent',
                                                     )}
                                                 >
-                                                    {field.value ? (
-                                                        formatDate(
-                                                            new Date(
-                                                                field.value,
-                                                            ),
-                                                        )
-                                                    ) : (
-                                                        <span>Pick a date</span>
-                                                    )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                    <CalendarIcon className="h-4 w-4 opacity-50" />
                                                 </Button>
-                                            </FormControl>
-                                        </PopoverTrigger>
+                                            </PopoverTrigger>
+                                        </div>
                                         <PopoverContent
                                             className="w-auto p-0"
                                             align="start"

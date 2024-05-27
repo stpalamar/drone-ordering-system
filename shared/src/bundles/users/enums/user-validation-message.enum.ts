@@ -30,7 +30,7 @@ const UserValidationMessage = {
     },
     DATE_OF_BIRTH: {
         REQUIRED: 'Date of birth is required',
-        INVALID: 'Date of birth is invalid',
+        INVALID: 'Date of birth should be YYYY-MM-DD',
     },
 } as const;
 

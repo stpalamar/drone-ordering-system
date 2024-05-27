@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
+// @ts-ignore
+import { isValidPhoneNumber } from 'react-phone-number-input';
 import { z } from 'zod';
 
 import { OrderValidationMessage, OrderValidationRule } from '../enums/enums.js';
@@ -131,10 +134,9 @@ const orderValidationSchema = z.object({
         .string()
         .trim()
         .min(1, OrderValidationMessage.lastName.FIELD_REQUIRED),
-    phone: z
-        .string()
-        .trim()
-        .min(1, OrderValidationMessage.phone.FIELD_REQUIRED),
+    phone: z.string().refine(isValidPhoneNumber, {
+        message: OrderValidationMessage.phone.INVALID_PHONE,
+    }),
     email: z
         .string()
         .trim()

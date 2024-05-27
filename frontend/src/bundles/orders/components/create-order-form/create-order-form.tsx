@@ -17,6 +17,7 @@ import {
     FormMessage,
 } from '~/bundles/common/components/ui/form.js';
 import { Input } from '~/bundles/common/components/ui/input.js';
+import { PhoneInput } from '~/bundles/common/components/ui/phone-input.js';
 import { zodResolver } from '~/bundles/common/helpers/helpers.js';
 import {
     useAppForm,
@@ -107,7 +108,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Enter your email address"
+                                                        placeholder="Enter first name"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -126,7 +127,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                                                 <FormLabel>Last name</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Enter your email address"
+                                                        placeholder="Enter last name"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -144,9 +145,11 @@ const CreateOrderForm: React.FC<Properties> = ({
                                             <FormItem>
                                                 <FormLabel>Phone</FormLabel>
                                                 <FormControl>
-                                                    <Input
-                                                        placeholder="Enter your email address"
+                                                    <PhoneInput
+                                                        defaultCountry="UA"
+                                                        placeholder="Enter phone number"
                                                         {...field}
+                                                        className="w-full"
                                                     />
                                                 </FormControl>
                                                 <FormMessage />
@@ -164,7 +167,7 @@ const CreateOrderForm: React.FC<Properties> = ({
                                                 <FormLabel>Email</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Enter your email address"
+                                                        placeholder="Enter email address"
                                                         {...field}
                                                     />
                                                 </FormControl>

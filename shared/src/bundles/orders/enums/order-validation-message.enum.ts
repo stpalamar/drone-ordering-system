@@ -9,6 +9,7 @@ const OrderValidationMessage = {
     },
     phone: {
         FIELD_REQUIRED: 'Phone is required',
+        INVALID_PHONE: 'Invalid phone',
     },
     email: {
         FIELD_REQUIRED: 'Email is required',

@@ -241,7 +241,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('period') ===
-                                                Period.ALL ?? false
+                                            Period.ALL
                                         }
                                     >
                                         {capitalizeFirstLetter(Period.ALL)}
@@ -252,7 +252,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('period') ===
-                                                Period.WEEK ?? false
+                                            Period.WEEK
                                         }
                                     >
                                         {capitalizeFirstLetter(Period.WEEK)}
@@ -263,7 +263,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('period') ===
-                                                Period.MONTH ?? false
+                                            Period.MONTH
                                         }
                                     >
                                         {capitalizeFirstLetter(Period.MONTH)}
@@ -274,7 +274,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('period') ===
-                                                Period.YEAR ?? false
+                                            Period.YEAR
                                         }
                                     >
                                         {capitalizeFirstLetter(Period.YEAR)}
