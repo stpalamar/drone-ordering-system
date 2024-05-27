@@ -3,6 +3,7 @@ import { type FileResponseDto } from '../../files/files.js';
 type OrderItemDto = {
     purpose: string;
     wingsType: string;
+    imageUrl: string;
     length: number;
     width: number;
     payloadCapacity: number;

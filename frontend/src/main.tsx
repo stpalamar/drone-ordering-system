@@ -29,6 +29,7 @@ import { CustomerOrder } from './bundles/customers/pages/customer-order.js';
 import { Drones } from './bundles/customers/pages/drones.js';
 import { MakeOrder } from './bundles/customers/pages/make-order.js';
 import { MyOrders } from './bundles/customers/pages/my-orders.js';
+import { Dashboard } from './bundles/dashboard/pages/dashboard.js';
 import { Landing } from './bundles/landing/pages/landing.js';
 import { Managers } from './bundles/managers/pages/managers.js';
 import { Order } from './bundles/orders/pages/order.js';
@@ -102,7 +103,7 @@ const routes = [
                 children: [
                     {
                         path: AppRoute.ADMIN_DASHBOARD,
-                        element: <div>Dashboard</div>,
+                        element: <Dashboard />,
                     },
                     {
                         path: AppRoute.ADMIN_ORDERS,

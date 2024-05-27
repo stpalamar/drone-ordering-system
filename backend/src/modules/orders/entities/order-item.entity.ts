@@ -57,6 +57,7 @@ class OrderItem extends BaseEntity {
         return {
             purpose: this.product.purpose,
             wingsType: this.product.wingsType,
+            imageUrl: this.product.image.url,
             length: this.length,
             width: this.width,
             payloadCapacity: this.payloadCapacity,

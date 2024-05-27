@@ -1,7 +1,8 @@
 type RevenueForPeriod = {
     amountOfOrders: number;
     revenue: number;
-    increaseFromLastPeriod: number;
+    increaseAmountPercentage: number;
+    increaseRevenuePercentage: number;
 };
 
 export { type RevenueForPeriod };

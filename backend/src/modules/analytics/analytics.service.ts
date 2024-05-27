@@ -9,15 +9,18 @@ import { User } from '@modules/users/entities/user.entity';
 import { UserRole } from '@modules/users/enums/enums';
 import { Injectable } from '@nestjs/common';
 import {
+    startOfDay,
     startOfMonth,
     startOfWeek,
     startOfYear,
+    subDays,
     subMonths,
     subWeeks,
     subYears,
 } from 'date-fns';
 
 import {
+    DashboardResponseDto,
     RevenueForPeriod,
     RevenueResponseDto,
     TopManagerForPeriod,
@@ -34,6 +37,16 @@ export class AnalyticsService {
         @InjectRepository(Role)
         private readonly roleRepository: EntityRepository<Role>,
     ) {}
+
+    async getTodayDashboard(): Promise<DashboardResponseDto> {
+        const revenueForToday = await this.getRevenueForPeriod(Period.DAY);
+        const newUsers = await this.getNewUsersForPeriod(Period.DAY);
+
+        return {
+            todayRevenue: revenueForToday,
+            newUsers,
+        };
+    }
 
     async getFullAnalytics() {
         const topThreeProducts = await this.getTopThreeProducts();
@@ -100,24 +113,36 @@ export class AnalyticsService {
             .count('id')
             .select();
 
-        const [{ sum: previousSumString }] = await knex('order')
-            .whereBetween('created_at', [previousPeriod, currentPeriod])
-            .whereNotIn('status', [OrderStatus.CANCELLED])
-            .sum('total_price')
-            .select();
+        const [{ sum: previousSumString, count: previousCountString }] =
+            await knex('order')
+                .whereBetween('created_at', [previousPeriod, currentPeriod])
+                .whereNotIn('status', [OrderStatus.CANCELLED])
+                .sum('total_price')
+                .count('id')
+                .select();
 
         const sum = Number(sumString);
         const count = Number(countString);
         const previousSum = Number(previousSumString);
+        const previousCount = Number(previousCountString);
 
-        const increasePercentage = previousSum
+        const increaseRevenuePercentage = previousSum
             ? ((sum - previousSum) / previousSum) * 100
+            : 100;
+
+        const increaseCountPercentage = previousCount
+            ? ((count - previousCount) / previousCount) * 100
             : 100;
 
         return {
             revenue: sum,
             amountOfOrders: count,
-            increaseFromLastPeriod: parseFloat(increasePercentage.toFixed(2)),
+            increaseAmountPercentage: parseFloat(
+                increaseCountPercentage.toFixed(2),
+            ),
+            increaseRevenuePercentage: parseFloat(
+                increaseRevenuePercentage.toFixed(2),
+            ),
         };
     }
 
@@ -186,6 +211,10 @@ export class AnalyticsService {
         let previousPeriod = today;
 
         switch (period) {
+            case Period.DAY:
+                currentPeriod = startOfDay(today);
+                previousPeriod = subDays(currentPeriod, 1);
+                break;
             case Period.WEEK:
                 currentPeriod = startOfWeek(today, { weekStartsOn: 1 });
                 previousPeriod = subWeeks(currentPeriod, 1);

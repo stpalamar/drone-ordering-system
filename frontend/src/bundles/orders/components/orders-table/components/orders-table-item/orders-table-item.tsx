@@ -50,7 +50,7 @@ const OrdersTableItem: React.FC<Properties> = ({
             </TableCell>
 
             <TableCell className="hidden sm:table-cell">
-                <Badge className="text-xs" variant="secondary">
+                <Badge className="text-xs" variant="outline">
                     {getOrderStatusString(status)}
                 </Badge>
             </TableCell>

@@ -49,13 +49,13 @@ const RevenueCards: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                     <div className="text-xs text-muted-foreground">
-                        {revenue.week.increaseFromLastPeriod}% from last week
+                        {revenue.week.increaseRevenuePercentage}% from last week
                     </div>
                 </CardContent>
                 <CardFooter>
                     <Progress
-                        value={revenue.week.increaseFromLastPeriod}
-                        aria-label={`${revenue.week.increaseFromLastPeriod}% increase`}
+                        value={revenue.week.increaseRevenuePercentage}
+                        aria-label={`${revenue.week.increaseRevenuePercentage}% increase`}
                     />
                 </CardFooter>
             </Card>
@@ -68,13 +68,14 @@ const RevenueCards: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                     <div className="text-xs text-muted-foreground">
-                        {revenue.month.increaseFromLastPeriod}% from last month
+                        {revenue.month.increaseRevenuePercentage}% from last
+                        month
                     </div>
                 </CardContent>
                 <CardFooter>
                     <Progress
-                        value={revenue.month.increaseFromLastPeriod}
-                        aria-label={`${revenue.month.increaseFromLastPeriod}% increase`}
+                        value={revenue.month.increaseRevenuePercentage}
+                        aria-label={`${revenue.month.increaseRevenuePercentage}% increase`}
                     />
                 </CardFooter>
             </Card>

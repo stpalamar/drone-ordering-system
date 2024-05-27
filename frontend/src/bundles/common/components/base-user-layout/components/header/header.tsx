@@ -100,7 +100,9 @@ const Header: React.FC = () => {
                                             })}
                                             {isEmployee && (
                                                 <Link
-                                                    to={AppRoute.ADMIN_ROOT}
+                                                    to={
+                                                        AppRoute.ADMIN_DASHBOARD
+                                                    }
                                                     className={`text-[17px] ${buttonVariants(
                                                         {
                                                             variant: 'ghost',
@@ -153,7 +155,7 @@ const Header: React.FC = () => {
                                 })}
                                 {isEmployee && (
                                     <Link
-                                        to={AppRoute.ADMIN_ROOT}
+                                        to={AppRoute.ADMIN_DASHBOARD}
                                         className={`text-[17px] ${buttonVariants(
                                             {
                                                 variant: 'ghost',

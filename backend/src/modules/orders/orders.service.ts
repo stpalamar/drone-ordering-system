@@ -124,7 +124,7 @@ export class OrdersService {
                 ],
                 offset: (page - 1) * limit,
                 limit: limit,
-                orderBy: { id: 'ASC' },
+                orderBy: { createdAt: 'DESC' },
             },
         );
 

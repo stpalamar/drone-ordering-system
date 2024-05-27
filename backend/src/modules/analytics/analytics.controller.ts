@@ -27,4 +27,11 @@ export class AnalyticsController {
     getAnalytics() {
         return this.analyticsService.getFullAnalytics();
     }
+
+    @Get('/today')
+    @UseGuards(PermissionsGuard)
+    @CheckPermissions([PermissionAction.READ, PermissionSubject.ANALYTICS])
+    getTodayDashboard() {
+        return this.analyticsService.getTodayDashboard();
+    }
 }

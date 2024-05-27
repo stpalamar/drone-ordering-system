@@ -151,7 +151,8 @@ const Orders: React.FC = () => {
                             <CardTitle>Your Orders</CardTitle>
                             <CardDescription className="max-w-lg text-balance leading-relaxed">
                                 Keep track of your orders and manage them
-                                efficiently. You can see only your orders here.
+                                efficiently. You can filter orders by status,
+                                period and assigned
                             </CardDescription>
                         </CardHeader>
                         <CardFooter>
@@ -302,7 +303,7 @@ const Orders: React.FC = () => {
                                         onClick={() => handleStatusChange(null)}
                                         checked={
                                             searchParameters.get('status') ===
-                                                null ?? false
+                                            null
                                         }
                                     >
                                         All
@@ -315,7 +316,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('status') ===
-                                                OrderStatus.PENDING ?? false
+                                            OrderStatus.PENDING
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -330,7 +331,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('status') ===
-                                                OrderStatus.CONFIRMED ?? false
+                                            OrderStatus.CONFIRMED
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -345,7 +346,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('status') ===
-                                                OrderStatus.IN_PROGRESS ?? false
+                                            OrderStatus.IN_PROGRESS
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -360,7 +361,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('status') ===
-                                                OrderStatus.READY ?? false
+                                            OrderStatus.READY
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -375,7 +376,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('status') ===
-                                                OrderStatus.DELIVERED ?? false
+                                            OrderStatus.DELIVERED
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -390,7 +391,7 @@ const Orders: React.FC = () => {
                                         }
                                         checked={
                                             searchParameters.get('status') ===
-                                                OrderStatus.CANCELLED ?? false
+                                            OrderStatus.CANCELLED
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -406,7 +407,7 @@ const Orders: React.FC = () => {
                             <div>
                                 <CardTitle>Orders</CardTitle>
                                 <CardDescription>
-                                    Recent orders from your customers
+                                    All orders from your customers
                                 </CardDescription>
                             </div>
                             <Button
