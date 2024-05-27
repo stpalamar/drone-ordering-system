@@ -31,7 +31,7 @@ const MyOrdersTableItem: React.FC<Properties> = ({
             <TableCell>
                 <div className="font-medium">
                     {manager
-                        ? `${manager.details?.firstName} ${manager.details?.firstName}`
+                        ? `${manager.details?.firstName} ${manager.details?.lastName}`
                         : 'No manager yet'}
                 </div>
             </TableCell>
