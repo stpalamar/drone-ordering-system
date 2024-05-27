@@ -1,1 +1,1 @@
-export { OrderStatus, Period } from 'shared';
+export { AssignedType, OrderStatus, Period } from 'shared';

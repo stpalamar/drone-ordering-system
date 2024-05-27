@@ -22,6 +22,7 @@ export {
     type MessageResponseDto,
 } from './bundles/messages/messages.js';
 export {
+    AssignedType,
     type OrderItemDto,
     type OrderQueryDto,
     orderQueryValidationSchema,

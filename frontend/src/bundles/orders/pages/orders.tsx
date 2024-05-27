@@ -20,10 +20,7 @@ import {
 } from '~/bundles/common/components/ui/dropdown-menu.js';
 import { Pagination } from '~/bundles/common/components/ui/pagination.js';
 import { AppRoute } from '~/bundles/common/enums/enums.js';
-import {
-    capitalizeFirstLetter,
-    getFiltersArray,
-} from '~/bundles/common/helpers/helpers.js';
+import { capitalizeFirstLetter } from '~/bundles/common/helpers/helpers.js';
 import {
     useAppSelector,
     useCallback,
@@ -38,7 +35,11 @@ import {
     OrdersTable,
     RevenueCards,
 } from '~/bundles/orders/components/components.js';
-import { OrderStatus, Period } from '~/bundles/orders/enums/enums.js';
+import {
+    AssignedType,
+    OrderStatus,
+    Period,
+} from '~/bundles/orders/enums/enums.js';
 import { useGetOrdersQuery } from '~/bundles/orders/orders-api.js';
 import { type OrderResponseDto } from '~/bundles/orders/types/types.js';
 
@@ -49,8 +50,8 @@ const Orders: React.FC = () => {
 
     const [searchParameters, setSearchParameters] = useSearchParams({
         page: '1',
-        period: 'all',
-        assigned: 'true',
+        period: Period.ALL,
+        assigned: AssignedType.ALL,
     });
 
     const [selectedOrder, setSelectedOrder] = useState<OrderResponseDto | null>(
@@ -66,10 +67,12 @@ const Orders: React.FC = () => {
         period:
             (searchParameters.get('period') as ValueOf<typeof Period>) ??
             Period.ALL,
-        status: getFiltersArray(searchParameters.get('status')) as
+        status: searchParameters.get('status') as
             | ValueOf<typeof OrderStatus>[]
             | null,
-        assigned: searchParameters.get('assigned') === 'true',
+        assigned: searchParameters.get('assigned') as ValueOf<
+            typeof AssignedType
+        >,
         limit: 10,
     });
 
@@ -82,29 +85,37 @@ const Orders: React.FC = () => {
 
     const handlePeriodChange = useCallback(
         (period: ValueOf<typeof Period>) => {
-            setSearchParameters({ period, page: '1' });
+            const status = searchParameters.get('status');
+            setSearchParameters({
+                period,
+                page: '1',
+                assigned: searchParameters.get('assigned') ?? AssignedType.ALL,
+                ...(status ? { status } : {}),
+            });
         },
-        [setSearchParameters],
+        [setSearchParameters, searchParameters],
     );
 
     const handleStatusChange = useCallback(
-        (status: ValueOf<typeof OrderStatus>) => {
+        (status: ValueOf<typeof OrderStatus> | null) => {
             setSearchParameters({
                 page: '1',
                 period: searchParameters.get('period') ?? Period.ALL,
-                status: status,
+                assigned: searchParameters.get('assigned') ?? AssignedType.ALL,
+                ...(status ? { status } : {}),
             });
         },
         [searchParameters, setSearchParameters],
     );
 
-    const handleUnassignedChange = useCallback(
-        (assigned: boolean) => {
+    const handleAssignedTypeChange = useCallback(
+        (assignedType: ValueOf<typeof AssignedType>) => {
+            const status = searchParameters.get('status');
             setSearchParameters({
                 page: '1',
                 period: searchParameters.get('period') ?? Period.ALL,
-                // status: searchParameters.get('status'),
-                assigned: String(assigned),
+                assigned: assignedType,
+                ...(status ? { status } : {}),
             });
         },
         [searchParameters, setSearchParameters],
@@ -160,9 +171,28 @@ const Orders: React.FC = () => {
                                     size="tab"
                                     className={cn(
                                         searchParameters.get('assigned') ===
-                                            'true' && activeTab,
+                                            AssignedType.ALL && activeTab,
                                     )}
-                                    onClick={() => handleUnassignedChange(true)}
+                                    onClick={() =>
+                                        handleAssignedTypeChange(
+                                            AssignedType.ALL,
+                                        )
+                                    }
+                                >
+                                    All
+                                </Button>
+                                <Button
+                                    variant="tab"
+                                    size="tab"
+                                    className={cn(
+                                        searchParameters.get('assigned') ===
+                                            AssignedType.ME && activeTab,
+                                    )}
+                                    onClick={() =>
+                                        handleAssignedTypeChange(
+                                            AssignedType.ME,
+                                        )
+                                    }
                                 >
                                     Yours
                                 </Button>
@@ -171,10 +201,13 @@ const Orders: React.FC = () => {
                                     size="tab"
                                     className={cn(
                                         searchParameters.get('assigned') ===
-                                            'false' && activeTab,
+                                            AssignedType.UNASSIGNED &&
+                                            activeTab,
                                     )}
                                     onClick={() =>
-                                        handleUnassignedChange(false)
+                                        handleAssignedTypeChange(
+                                            AssignedType.UNASSIGNED,
+                                        )
                                     }
                                 >
                                     Unassigned
@@ -266,16 +299,23 @@ const Orders: React.FC = () => {
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuCheckboxItem
+                                        onClick={() => handleStatusChange(null)}
+                                        checked={
+                                            searchParameters.get('status') ===
+                                                null ?? false
+                                        }
+                                    >
+                                        All
+                                    </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem
                                         onClick={() =>
                                             handleStatusChange(
                                                 OrderStatus.PENDING,
                                             )
                                         }
                                         checked={
-                                            getFiltersArray(
-                                                searchParameters.get('status'),
-                                            )?.includes(OrderStatus.PENDING) ??
-                                            false
+                                            searchParameters.get('status') ===
+                                                OrderStatus.PENDING ?? false
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -289,11 +329,8 @@ const Orders: React.FC = () => {
                                             )
                                         }
                                         checked={
-                                            getFiltersArray(
-                                                searchParameters.get('status'),
-                                            )?.includes(
-                                                OrderStatus.CONFIRMED,
-                                            ) ?? false
+                                            searchParameters.get('status') ===
+                                                OrderStatus.CONFIRMED ?? false
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -307,11 +344,8 @@ const Orders: React.FC = () => {
                                             )
                                         }
                                         checked={
-                                            getFiltersArray(
-                                                searchParameters.get('status'),
-                                            )?.includes(
-                                                OrderStatus.IN_PROGRESS,
-                                            ) ?? false
+                                            searchParameters.get('status') ===
+                                                OrderStatus.IN_PROGRESS ?? false
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -325,10 +359,8 @@ const Orders: React.FC = () => {
                                             )
                                         }
                                         checked={
-                                            getFiltersArray(
-                                                searchParameters.get('status'),
-                                            )?.includes(OrderStatus.READY) ??
-                                            false
+                                            searchParameters.get('status') ===
+                                                OrderStatus.READY ?? false
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -342,11 +374,8 @@ const Orders: React.FC = () => {
                                             )
                                         }
                                         checked={
-                                            getFiltersArray(
-                                                searchParameters.get('status'),
-                                            )?.includes(
-                                                OrderStatus.DELIVERED,
-                                            ) ?? false
+                                            searchParameters.get('status') ===
+                                                OrderStatus.DELIVERED ?? false
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -360,11 +389,8 @@ const Orders: React.FC = () => {
                                             )
                                         }
                                         checked={
-                                            getFiltersArray(
-                                                searchParameters.get('status'),
-                                            )?.includes(
-                                                OrderStatus.CANCELLED,
-                                            ) ?? false
+                                            searchParameters.get('status') ===
+                                                OrderStatus.CANCELLED ?? false
                                         }
                                     >
                                         {capitalizeFirstLetter(
@@ -397,7 +423,6 @@ const Orders: React.FC = () => {
                                 selectedOrder={selectedOrder}
                                 onSelect={handleSelectOrder}
                                 isLoading={isLoading}
-                                isAdmin={user?.role === UserRole.ADMIN}
                             />
                         </CardContent>
                         <CardFooter>

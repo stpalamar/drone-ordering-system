@@ -11,7 +11,7 @@ import { UserRole } from '@modules/users/enums/enums';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { Order } from './entities/order.entity';
-import { OrderStatus } from './enums/enums';
+import { AssignedType, OrderStatus } from './enums/enums';
 import { getPeriodDate } from './helpers/helpers';
 import {
     OrderItemDto,
@@ -96,10 +96,13 @@ export class OrdersService {
 
         const [orders, count] = await this.orderRepository.findAndCount(
             {
-                status: status ? { $in: status } : {},
+                status: status ? status : {},
                 createdAt: periodDate ? { $gte: periodDate } : {},
-                ...(role === UserRole.MANAGER && assigned ? allForManager : {}),
-                ...(role === UserRole.MANAGER && !assigned
+                ...(role === UserRole.MANAGER && assigned === AssignedType.ME
+                    ? allForManager
+                    : {}),
+                ...(role === UserRole.MANAGER &&
+                assigned === AssignedType.UNASSIGNED
                     ? { manager: null }
                     : {}),
                 ...(role === UserRole.USER ? allForCustomer : {}),

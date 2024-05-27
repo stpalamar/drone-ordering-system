@@ -34,7 +34,7 @@ const RevenueCard: React.FC<Properties> = ({ revenue, period }) => {
                     {formatPrice(revenue.revenue)}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                    {revenue.increaseFromLastPeriod} from last month
+                    {revenue.increaseFromLastPeriod}% from last month
                 </p>
             </CardContent>
         </Card>

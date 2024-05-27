@@ -1,4 +1,4 @@
-export { OrderStatus } from './enums/enums.js';
+export { AssignedType, OrderStatus } from './enums/enums.js';
 export {
     type OrderItemDto,
     type OrderQueryDto,

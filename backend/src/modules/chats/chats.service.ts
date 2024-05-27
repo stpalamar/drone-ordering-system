@@ -24,6 +24,7 @@ export class ChatsService {
                 populate: [
                     'messages',
                     'messages.sender',
+                    'messages.sender.details',
                     'users',
                     'users.details',
                     'users.details.avatar',

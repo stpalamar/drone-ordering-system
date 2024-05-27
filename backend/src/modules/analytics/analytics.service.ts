@@ -93,27 +93,31 @@ export class AnalyticsService {
         const { currentPeriod, previousPeriod } = this.getPeriodDates(period);
 
         const knex = this.em.getKnex();
-        const [{ sum, count }] = await knex('order')
+        const [{ sum: sumString, count: countString }] = await knex('order')
             .where('created_at', '>=', currentPeriod)
             .whereNotIn('status', [OrderStatus.CANCELLED])
             .sum('total_price')
             .count('id')
             .select();
 
-        const [{ sum: previousSum }] = await knex('order')
+        const [{ sum: previousSumString }] = await knex('order')
             .whereBetween('created_at', [previousPeriod, currentPeriod])
             .whereNotIn('status', [OrderStatus.CANCELLED])
             .sum('total_price')
             .select();
+
+        const sum = Number(sumString);
+        const count = Number(countString);
+        const previousSum = Number(previousSumString);
 
         const increasePercentage = previousSum
             ? ((sum - previousSum) / previousSum) * 100
             : 100;
 
         return {
-            revenue: Number(sum),
-            amountOfOrders: Number(count),
-            increaseFromLastPeriod: increasePercentage,
+            revenue: sum,
+            amountOfOrders: count,
+            increaseFromLastPeriod: parseFloat(increasePercentage.toFixed(2)),
         };
     }
 

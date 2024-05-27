@@ -17,12 +17,8 @@ const RevenueCards: React.FC = () => {
     const skeletonCard = (
         <Card>
             <CardHeader className="pb-2">
-                <CardDescription>
-                    <Skeleton className="w-20 h-5" />
-                </CardDescription>
-                <CardTitle className="text-4xl">
-                    <Skeleton className="w-32 h-10" />
-                </CardTitle>
+                <Skeleton className="w-20 h-5" />
+                <Skeleton className="w-32 h-10" />
             </CardHeader>
             <CardContent>
                 <Skeleton className="w-32 h-4" />
@@ -53,7 +49,7 @@ const RevenueCards: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                     <div className="text-xs text-muted-foreground">
-                        +{revenue.week.increaseFromLastPeriod}% from last week
+                        {revenue.week.increaseFromLastPeriod}% from last week
                     </div>
                 </CardContent>
                 <CardFooter>
@@ -72,7 +68,7 @@ const RevenueCards: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                     <div className="text-xs text-muted-foreground">
-                        +{revenue.month.increaseFromLastPeriod}% from last month
+                        {revenue.month.increaseFromLastPeriod}% from last month
                     </div>
                 </CardContent>
                 <CardFooter>

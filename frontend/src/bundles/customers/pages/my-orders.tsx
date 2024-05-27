@@ -4,7 +4,7 @@ import {
     useSearchParams,
     useState,
 } from '~/bundles/common/hooks/hooks.js';
-import { Period } from '~/bundles/orders/enums/enums.js';
+import { AssignedType, Period } from '~/bundles/orders/enums/enums.js';
 import { useGetOrdersQuery } from '~/bundles/orders/orders-api.js';
 import { type OrderResponseDto } from '~/bundles/orders/types/types.js';
 
@@ -25,7 +25,7 @@ const MyOrders: React.FC = () => {
         period: Period.ALL,
         status: null,
         limit: 10,
-        assigned: false,
+        assigned: AssignedType.ALL,
     });
 
     const handleSelectOrder = useCallback((order: OrderResponseDto) => {
