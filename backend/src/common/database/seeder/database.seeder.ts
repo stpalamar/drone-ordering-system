@@ -42,6 +42,9 @@ export class DatabaseSeeder extends Seeder {
         const fileSubject = em.create(Subject, {
             name: PermissionSubject.FILE,
         });
+        const analyticsSubject = em.create(Subject, {
+            name: PermissionSubject.ANALYTICS,
+        });
 
         const manageAll = em.create(Permission, {
             action: PermissionAction.MANAGE,
@@ -87,6 +90,11 @@ export class DatabaseSeeder extends Seeder {
             },
         });
 
+        const readAnalytics = em.create(Permission, {
+            action: PermissionAction.READ,
+            subject: analyticsSubject,
+        });
+
         managerRole.permissions.add([
             readProduct,
             createOrder,
@@ -95,6 +103,7 @@ export class DatabaseSeeder extends Seeder {
             deleteOrder,
             readFile,
             createFile,
+            readAnalytics,
         ]);
 
         adminRole.permissions.add(manageAll);
@@ -107,27 +116,11 @@ export class DatabaseSeeder extends Seeder {
             readFile,
         );
 
-        const adminUserDetails = em.create(UserDetails, {
-            firstName: 'John',
-            lastName: 'Wick',
-            phone: '0123456789',
-            dateOfBirth: new Date('2000-01-01'),
-            avatar: null,
-        });
-
-        const managerUserDetails = em.create(UserDetails, {
-            firstName: 'Jack',
-            lastName: 'Doe',
-            phone: '0123456789',
-            dateOfBirth: new Date('2001-01-01'),
-            avatar: null,
-        });
-
-        const userDetails = em.create(UserDetails, {
-            firstName: 'Michael',
-            lastName: 'Doe',
-            phone: '0123456789',
-            dateOfBirth: new Date('2002-01-01'),
+        const adminDetails = em.create(UserDetails, {
+            firstName: 'Richard',
+            lastName: 'Price',
+            phone: '+13213954644',
+            dateOfBirth: new Date('1984-06-09'),
             avatar: null,
         });
 
@@ -135,326 +128,226 @@ export class DatabaseSeeder extends Seeder {
             email: 'admin@drone.com',
             password: 'admin123',
             role: adminRole,
-            details: adminUserDetails,
+            details: adminDetails,
             isEmailConfirmed: true,
         });
 
+        const managerDetails1 = em.create(UserDetails, {
+            firstName: 'Brandon',
+            lastName: 'Waugh',
+            phone: '+15053431902',
+            dateOfBirth: new Date('1994-07-15'),
+            avatar: null,
+        });
+
+        const managerDetails2 = em.create(UserDetails, {
+            firstName: 'Daniel',
+            lastName: 'Duncan',
+            phone: '+17908597463',
+            dateOfBirth: new Date('1993-12-18'),
+            avatar: null,
+        });
+
         em.create(User, {
-            email: 'manager@mail.com',
-            password: 'test123',
+            email: 'brandonmanager@mail.com',
+            password: 'manager123',
             role: managerRole,
-            details: managerUserDetails,
+            details: managerDetails1,
             isEmailConfirmed: true,
         });
 
         em.create(User, {
-            email: 'michael@mail.com',
-            password: 'test123',
-            role: userRole,
-            details: userDetails,
+            email: 'danielmanager@mail.com',
+            password: 'manager123',
+            role: managerRole,
+            details: managerDetails2,
             isEmailConfirmed: true,
         });
 
-        const photo1 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo2 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo3 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo4 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo5 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo6 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo7 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo8 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo9 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        });
-        const photo10 = em.create(PublicFile, {
-            key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
+        const customerDetails1 = em.create(UserDetails, {
+            firstName: 'Tim',
+            lastName: 'Wilcox',
+            phone: '+14046160572',
+            dateOfBirth: new Date('1988-10-06'),
+            avatar: null,
         });
 
-        const productPrice1 = em.create(ProductPrice, {
-            basePrice: 999,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
-            additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
-            }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
+        const customerDetails2 = em.create(UserDetails, {
+            firstName: 'Wanda',
+            lastName: 'Harris',
+            phone: '+17033846145',
+            dateOfBirth: new Date('1982-06-18'),
+            avatar: null,
         });
 
-        const productPrice2 = em.create(ProductPrice, {
+        const customerDetails3 = em.create(UserDetails, {
+            firstName: 'Dominic',
+            lastName: 'Puleo',
+            phone: '+17027319670',
+            dateOfBirth: new Date('1975-04-23'),
+            avatar: null,
+        });
+
+        const customerDetails4 = em.create(UserDetails, {
+            firstName: 'Carla',
+            lastName: 'Brashear',
+            phone: '+12035925599',
+            dateOfBirth: new Date('1993-09-17'),
+            avatar: null,
+        });
+
+        em.create(User, {
+            email: 'timwilcox@mail.com',
+            password: 'user123',
+            role: userRole,
+            details: customerDetails1,
+            isEmailConfirmed: true,
+        });
+
+        em.create(User, {
+            email: 'wandajharris@mail.com',
+            password: 'user123',
+            role: userRole,
+            details: customerDetails2,
+            isEmailConfirmed: true,
+        });
+
+        em.create(User, {
+            email: 'dominicpuleo@mail.com',
+            password: 'user123',
+            role: userRole,
+            details: customerDetails3,
+            isEmailConfirmed: true,
+        });
+
+        em.create(User, {
+            email: 'carlabrashear@mail.com',
+            password: 'user123',
+            role: userRole,
+            details: customerDetails4,
+            isEmailConfirmed: true,
+        });
+
+        const quadAgroImage = em.create(PublicFile, {
+            key: 'f57514b3-c1dd-4ed6-a9be-c9cca8ae98d0',
+            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/f57514b3-c1dd-4ed6-a9be-c9cca8ae98d0',
+        });
+        const quadDeliveryImage = em.create(PublicFile, {
+            key: '255ee219-c568-4f07-89a1-2f6c72491139',
+            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/255ee219-c568-4f07-89a1-2f6c72491139',
+        });
+        const quadMilitaryImage = em.create(PublicFile, {
+            key: 'd994a30c-ed1a-4f61-971c-78df3781b31f',
+            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/d994a30c-ed1a-4f61-971c-78df3781b31f',
+        });
+        const quadCameraImage = em.create(PublicFile, {
+            key: 'b4627ac9-084d-4a5a-a3d3-ef1d06f77830',
+            url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/b4627ac9-084d-4a5a-a3d3-ef1d06f77830',
+        });
+
+        const quadAgroPrices = em.create(ProductPrice, {
             basePrice: 1999,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
+            lengthUnitPrice: 6,
+            widthUnitPrice: 6,
+            payloadCapacityUnitPrice: 12,
+            flightDistanceUnitPrice: 8,
+            flightTimeUnitPrice: 12,
             additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
+                camera: 300,
+                thermographicCamera: 450,
+                nightVision: 600,
+                parachute: 120,
+                autopilot: 700,
+                targetIdentification: 650,
+                gps: 100,
             }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
+            colorPrice: 50,
+            coatingTexturePrice: 120,
         });
 
-        const productPrice3 = em.create(ProductPrice, {
+        const quadDeliveryPrices = em.create(ProductPrice, {
             basePrice: 1599,
             lengthUnitPrice: 10,
             widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
+            payloadCapacityUnitPrice: 5,
             flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
+            flightTimeUnitPrice: 8,
             additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
+                camera: 150,
+                thermographicCamera: 200,
+                nightVision: 250,
+                parachute: 80,
+                autopilot: 800,
+                targetIdentification: 500,
+                gps: 150,
             }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
+            colorPrice: 50,
+            coatingTexturePrice: 100,
         });
 
-        const productPrice4 = em.create(ProductPrice, {
-            basePrice: 1299,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
+        const quadMilitaryPrices = em.create(ProductPrice, {
+            basePrice: 2499,
+            lengthUnitPrice: 5,
+            widthUnitPrice: 5,
+            payloadCapacityUnitPrice: 8,
+            flightDistanceUnitPrice: 8,
+            flightTimeUnitPrice: 5,
             additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
+                camera: 100,
+                thermographicCamera: 300,
+                nightVision: 500,
+                parachute: 120,
+                autopilot: 1000,
+                targetIdentification: 600,
+                gps: 120,
             }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
+            colorPrice: 40,
+            coatingTexturePrice: 80,
         });
 
-        const productPrice5 = em.create(ProductPrice, {
-            basePrice: 2599,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
+        const quadCameraPrices = em.create(ProductPrice, {
+            basePrice: 599,
+            lengthUnitPrice: 3,
+            widthUnitPrice: 3,
+            payloadCapacityUnitPrice: 3,
+            flightDistanceUnitPrice: 5,
+            flightTimeUnitPrice: 5,
             additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
+                camera: 0,
+                thermographicCamera: 100,
+                nightVision: 120,
+                parachute: 50,
+                autopilot: 160,
+                targetIdentification: 240,
+                gps: 100,
             }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
+            colorPrice: 40,
+            coatingTexturePrice: 50,
         });
 
-        const productPrice6 = em.create(ProductPrice, {
-            basePrice: 3299,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
-            additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
-            }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
-        });
-
-        const productPrice7 = em.create(ProductPrice, {
-            basePrice: 4599,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
-            additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
-            }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
-        });
-
-        const productPrice8 = em.create(ProductPrice, {
-            basePrice: 6599,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
-            additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
-            }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
-        });
-
-        const productPrice9 = em.create(ProductPrice, {
-            basePrice: 5599,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
-            additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
-            }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
-        });
-
-        const productPrice10 = em.create(ProductPrice, {
-            basePrice: 6899,
-            lengthUnitPrice: 10,
-            widthUnitPrice: 10,
-            payloadCapacityUnitPrice: 10,
-            flightDistanceUnitPrice: 10,
-            flightTimeUnitPrice: 10,
-            additionalEquipmentPrices: JSON.stringify({
-                camera: 10,
-                thermographicCamera: 10,
-                nightVision: 10,
-                parachute: 10,
-                autopilot: 10,
-                targetIdentification: 10,
-                gps: 10,
-            }),
-            colorPrice: 10,
-            coatingTexturePrice: 10,
-        });
-
-        em.create(Product, {
-            purpose: 'Photo/video',
-            wingsType: 'Quadcopter',
-            price: productPrice1,
-            image: photo1,
-        });
-        em.create(Product, {
-            purpose: 'Military',
-            wingsType: 'Quadcopter',
-            price: productPrice2,
-            image: photo2,
-        });
         em.create(Product, {
             purpose: 'Agriculture',
             wingsType: 'Quadcopter',
-            price: productPrice3,
-            image: photo3,
+            price: quadAgroPrices,
+            image: quadAgroImage,
         });
         em.create(Product, {
             purpose: 'Delivery',
             wingsType: 'Quadcopter',
-            price: productPrice4,
-            image: photo4,
+            price: quadDeliveryPrices,
+            image: quadDeliveryImage,
         });
         em.create(Product, {
             purpose: 'Military',
-            wingsType: 'Hexacopter',
-            price: productPrice5,
-            image: photo5,
+            wingsType: 'Quadcopter',
+            price: quadMilitaryPrices,
+            image: quadMilitaryImage,
         });
         em.create(Product, {
-            purpose: 'Photo/video',
-            wingsType: 'Octocopter',
-            price: productPrice6,
-            image: photo6,
-        });
-        em.create(Product, {
-            purpose: 'Agriculture',
-            wingsType: 'Fixed-wing',
-            price: productPrice7,
-            image: photo7,
-        });
-        em.create(Product, {
-            purpose: 'Delivery',
-            wingsType: 'Single-rotor',
-            price: productPrice8,
-            image: photo8,
-        });
-        em.create(Product, {
-            purpose: 'Military',
-            wingsType: 'Fixed-wing VTOL',
-            price: productPrice9,
-            image: photo9,
-        });
-        em.create(Product, {
-            purpose: 'Military',
-            wingsType: 'Fixed-wing',
-            price: productPrice10,
-            image: photo10,
+            purpose: 'Photography',
+            wingsType: 'Quadcopter',
+            price: quadCameraPrices,
+            image: quadCameraImage,
         });
     }
 }
