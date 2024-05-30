@@ -1,4 +1,5 @@
 import { VersioningType } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 
@@ -15,6 +16,7 @@ async function bootstrap() {
         defaultVersion: '1',
     });
 
-    await app.listen(3001);
+    const configService = app.get(ConfigService);
+    await app.listen(configService.get('PORT'));
 }
 bootstrap();

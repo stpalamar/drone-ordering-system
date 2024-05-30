@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src", "./packages.d.ts"],
+    "include": ["src"],
     "compilerOptions": {
         "outDir": "build"
     }

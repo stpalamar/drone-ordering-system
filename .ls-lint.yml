@@ -21,6 +21,6 @@ ignore:
     - shared/node_modules
     - frontend/build
     - frontend/node_modules
-    - backend/dist
+    - backend/build
     - backend/node_modules
     - backend/src/migrations
