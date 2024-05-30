@@ -3,7 +3,6 @@ import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { wrap } from '@mikro-orm/postgresql';
 import { PublicFile } from '@modules/files/entities/public-file.entity';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 
 import { User } from './entities/user.entity';
 import { UserDetailsDto } from './types/types';
@@ -15,7 +14,6 @@ export class UsersService {
         private readonly usersRepository: EntityRepository<User>,
         @InjectRepository(PublicFile)
         private readonly publicFilesRepository: EntityRepository<PublicFile>,
-        private readonly jwtService: JwtService,
         private readonly em: EntityManager,
     ) {}
 

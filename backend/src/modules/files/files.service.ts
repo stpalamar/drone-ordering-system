@@ -25,7 +25,6 @@ export class FilesService {
         });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async uploadPublicFile(file: Express.Multer.File) {
         const uploadResult = await this.s3
             .upload({
@@ -45,14 +44,7 @@ export class FilesService {
             { persist: true },
         );
 
-        // Hardcoded for development purposes
-        // const newFile = this.publicFilesRepository.create({
-        //     key: '6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        //     url: 'https://drone-ordering-images.s3.eu-central-1.amazonaws.com/6d38679f-7e1f-47db-ba9a-e68b2cd03a4d',
-        // });
-
         await this.em.persistAndFlush(newFile);
-
         return newFile.toObject();
     }
 

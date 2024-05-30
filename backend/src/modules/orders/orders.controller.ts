@@ -3,7 +3,6 @@ import fs from 'node:fs';
 import { RequestUser } from '@common/decorators/user.decorator';
 import { ZodValidationPipe } from '@common/pipes/zod-validation.pipe';
 import { JwtAuthGuard } from '@modules/auth/guards/jwt-auth.guard';
-import { CaslAbilityFactory } from '@modules/permission/casl-ability.factory';
 import { CheckPermissions } from '@modules/permission/decorators/permissions.decorator';
 import {
     PermissionAction,
@@ -39,10 +38,7 @@ import {
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
-    constructor(
-        private readonly ordersService: OrdersService,
-        private abilityFactory: CaslAbilityFactory,
-    ) {}
+    constructor(private readonly ordersService: OrdersService) {}
 
     @Post()
     @UseGuards(PermissionsGuard)
