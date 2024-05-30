@@ -1,0 +1,47 @@
+name: Deployment
+
+env:
+    AWS_REGION: eu-central-1
+    EBS_APP_NAME: drone-ordering-app
+    ENVIRONMENT: development
+
+on:
+    workflow_dispatch:
+
+concurrency:
+    group: ${{ github.ref_name }}
+    cancel-in-progress: false
+
+jobs:
+    deploy:
+        name: Deploy
+        runs-on: ubuntu-latest
+        environment:
+            name: development
+            url: drone-ordering.eu-central-1.elasticbeanstalk.com
+
+        steps:
+            - name: Code Checkout
+              uses: actions/checkout@v4
+
+            - name: Install NodeJS
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+
+            - name: Prepare deployment package
+              run: |
+                  zip -r build.zip . -x .github
+
+            - name: Deploy to Beanstalk
+              uses: einaregilsson/beanstalk-deploy@v21
+              with:
+                  aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+                  aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+                  region: ${{ env.AWS_REGION }}
+                  application_name: ${{ env.EBS_APP_NAME }}
+                  environment_name: ${{ env.ENVIRONMENT }}
+                  version_label: ${{ github.sha }}
+                  use_existing_version_if_available: true
+                  deployment_package: ./build.zip
+                  wait_for_environment_recovery: 300
