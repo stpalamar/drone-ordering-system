@@ -58,7 +58,12 @@ export class ManagersService {
     }
 
     async generateRegistrationUrl(origin: string) {
-        const token = this.jwtService.sign({}, { expiresIn: '1h' });
+        const token = this.jwtService.sign(
+            {
+                isManager: true,
+            },
+            { expiresIn: '1h' },
+        );
 
         const url = `${origin}${AppRoute.SIGN_UP_MANAGER}?token=${token}`;
 
