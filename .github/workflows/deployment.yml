@@ -3,7 +3,7 @@ name: Deployment
 env:
     AWS_REGION: eu-central-1
     EBS_APP_NAME: drone-ordering-app
-    ENVIRONMENT: Drone-ordering-app-env
+    ENVIRONMENT: development
 
 on:
     workflow_dispatch:
