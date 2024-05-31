@@ -65,15 +65,15 @@ const Analytics: React.FC = () => {
                     </h4>
                     <div className="grid gap-4 grid-flow-row md:grid-flow-col">
                         <TopManagerCard
-                            topManager={topManager.week}
+                            topManager={topManager.week ?? null}
                             period={Period.WEEK}
                         />
                         <TopManagerCard
-                            topManager={topManager.month}
+                            topManager={topManager.month ?? null}
                             period={Period.MONTH}
                         />
                         <TopManagerCard
-                            topManager={topManager.year}
+                            topManager={topManager.year ?? null}
                             period={Period.YEAR}
                         />
                     </div>

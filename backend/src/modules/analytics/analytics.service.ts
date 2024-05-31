@@ -171,6 +171,10 @@ export class AnalyticsService {
             .orderBy('count', 'desc')
             .limit(1);
 
+        if (!topManager.length) {
+            return null;
+        }
+
         const manager = await this.userRepository.findOne(
             topManager[0].manager_id,
             {

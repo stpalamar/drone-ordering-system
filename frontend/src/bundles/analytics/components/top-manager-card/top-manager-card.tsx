@@ -23,11 +23,26 @@ type Properties = {
     topManager: {
         manager: UserResponseDto;
         amountOfOrders: number;
-    };
+    } | null;
     period: ValueOf<typeof Period>;
 };
 
 const TopManagerCard: React.FC<Properties> = ({ topManager, period }) => {
+    if (!topManager) {
+        return (
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                        This {capitalizeFirstLetter(period)}: no top manager
+                        found
+                    </CardTitle>
+                    <User2 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent></CardContent>
+            </Card>
+        );
+    }
+
     const { manager, amountOfOrders } = topManager;
 
     const avatarFallback =
