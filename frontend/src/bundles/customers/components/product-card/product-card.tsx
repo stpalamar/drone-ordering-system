@@ -26,7 +26,7 @@ const ProductCard: React.FC<Properties> = ({ product }) => {
                 <img
                     src={product.image.url}
                     alt={`${product.purpose} ${product.wingsType}`}
-                    className="rounded-lg size-[24rem] md:size-full"
+                    className="rounded-lg size-full aspect-square"
                 />
             </CardContent>
         </Card>
