@@ -25,7 +25,7 @@
         "lint": "npm run lint:editor && npm run lint:fs && npm run lint:format && npm run lint:type && npm run lint:js && npm run lint:css",
         "build": "npm run build:shared && npm run build:backend && npm run build:frontend && sh ./prepare-build.sh",
         "prestart": "npm install --include=dev && npm run build",
-        "start": "cd ./build/backend && node main"
+        "start": "cd ./backend && npm run start:prod"
     },
     "devDependencies": {
         "@commitlint/cli": "19.2.1",

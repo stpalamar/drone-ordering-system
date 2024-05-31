@@ -7,7 +7,7 @@ dotEnv.config({ path: envFilePath });
 
 export default defineConfig({
     driver: PostgreSqlDriver,
-    entities: ['dist/**/*.entity.js'],
+    entities: ['build/**/*.entity.js'],
     entitiesTs: ['src/**/*.entity.ts'],
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),

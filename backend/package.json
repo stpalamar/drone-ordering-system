@@ -11,7 +11,7 @@
         "start": "nest start",
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
-        "start:prod": "node dist/main",
+        "start:prod": "node build/main",
         "lint:js": "eslint \"{src,apps,libs,test}/**/*.ts\"",
         "lint": "npm run lint:js",
         "test": "jest",
@@ -84,7 +84,7 @@
         "useTsNode": true,
         "configPaths": [
             "./src/common/database/mikro-orm.config.ts",
-            "./dist/common/database/mikro-orm.config.js"
+            "./build/common/database/mikro-orm.config.js"
         ]
     },
     "jest": {
